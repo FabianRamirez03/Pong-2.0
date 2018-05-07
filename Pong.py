@@ -97,7 +97,16 @@ class Juego:
 		self.tablero = tablero
 		self.dificultad = dificultad
 		self.modo_juego = modo_juego
-
+	
+	def gettablero(self):
+		return self.tablero
+	
+	def getmarcador_1(self):
+		return self.marcador_1
+	
+	def getmarcador_2(self):
+		return self.marcador_2
+	
 	def gana_punto(self, posicion_x, posicion_y):
 		if posicion_x > 1119:
 			marcador_2 += 1
@@ -105,13 +114,14 @@ class Juego:
 			marcador_1 += 1
 
 	def ganador(self, marcador_1, marcador_2):
-		if marcador_1 == 7 or marcador_2 == 7:
-			posicion_y = 375
-			posicion_x = 600
-			marcador_1 = 0
-			marcador_2 = 0
-			dificultad = 2
-			print ("Felicidades")
+		while dificultad <= 3:
+			if marcador_1 == 7 or marcador_2 == 7:
+				posicion_y = 375
+				posicion_x = 600
+				marcador_1 = 0
+				marcador_2 = 0
+				dificultad += 1
+				print ("Felicidades")
 	
 	def escoger_dificultad(self, dificultad):
 		dificultad = dificultad
