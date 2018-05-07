@@ -54,21 +54,22 @@ class Cuadrilateros:
     def moveUP(self, movimiento_y):
         movimiento_y = 2
         return movimiento_y
-    def crash():
-    if ancho_bola + ancho_paleta + espacio_paleta_pantalla <= posicion_x_bola:
-      if posicion_y_bola + ancho_bola <= posicion_y_paleta + largo_paleta and posicion_y_bola > = posicion_y_paleta:
-        rebote()
+    def crash(self):
+        if ancho_bola + ancho_paleta + espacio_paleta_pantalla <= posicion_x_bola:
+            if posicion_y_bola + ancho_bola <= posicion_y_paleta + largo_paleta and posicion_y_bola >= posicion_y_paleta:
+                self.rebote()
 
-   def rebote():
-    if (posicion_y_bola + ancho_bola) <= (posicion_y_paleta + largo_paleta/3) and (posicion_y_bola) > (posicion_y_paleta - ancho_bola):
-      velocidad_y = 3
-      velocidad_x += 1
-    if (posicion_y_bola + ancho_bola) <= (posicion_y_paleta + (largo_paleta/3)*2) and (posicion_y_bola) > (posicion_y_paleta + largo_paleta/3):
-      velocidad_y = por definir
-      velocidad_x += 1
-    if (posicion_y_bola) <= (posicion_y_paleta + largo_paleta) and (posicion_y_bola) > (posicion_y_paleta + 2*(largo_paleta)):
-      velocidad_y = -3
-      velocidad_x += 1
+
+    def rebote(self):
+        if (posicion_y_bola + ancho_bola) <= (posicion_y_paleta + largo_paleta/3) and (posicion_y_bola) > (posicion_y_paleta - ancho_bola):
+          velocidad_y = 3
+          velocidad_x += 1
+        if (posicion_y_bola + ancho_bola) <= (posicion_y_paleta + (largo_paleta/3)*2) and (posicion_y_bola) > (posicion_y_paleta + largo_paleta/3):
+          velocidad_y = 0
+          velocidad_x += 1
+        if (posicion_y_bola) <= (posicion_y_paleta + largo_paleta) and (posicion_y_bola) > (posicion_y_paleta + 2*(largo_paleta)):
+          velocidad_y = -3
+          velocidad_x += 1
 
 
 
