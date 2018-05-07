@@ -18,6 +18,18 @@ negro = (0,0,0)
 reloj = pygame.time.Clock()
 FPS = 60
 
+def matriz(A,B,a,b):
+    while b <= 780:
+        while a <= 480:
+            A += [[b,a]]
+            a += 20
+        b += 20
+        a = 0
+        B += A
+        A = [] 
+    return B
+tablero = matriz([],[],0,0)
+
 class Cuadrilateros:
     def __init__(self, largo, ancho, movimiento_x, movimiento_y, posicion_x, posicion_y):
         self.largo = largo
