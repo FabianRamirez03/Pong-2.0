@@ -87,7 +87,7 @@ Paleta2Dual_player2 = Cuadrilateros(largo_paletas,ancho_paletas,0,0,X_paletaP2,3
 class Juego:
 	marcador_1 = 0
 	marcador_2 = 0
-	tablero = []
+	global tablero 
 	dificultad = 1
 	modo_juego = True
 
