@@ -16,10 +16,17 @@ negro = (0,0,0)
 reloj = pygame.time.Clock()
 FPS = 60
 
+pantalla = pygame.display.set_mode((ancho_display,largo_display))
+pygame.display.set_caption("Pong")
+
 #Posiciones
 pos_bola = 268
 pos_paleta1 = 13
 pos_paleta2 = 988
+pos_paletaDual1_1 = 1
+pos_paletaDual1_2 = 16
+pos_paletaDual2_1 = 976
+pos_paletaDual2_2 = 991
 
 
 def matriz(A,B,a,b):
@@ -67,19 +74,14 @@ Borde_Superior = Cuadrilateros(grueso,ancho_bordes,tablero[0])
 Borde_Inferior = Cuadrilateros(grueso,ancho_bordes,tablero[24])
 Paleta_Player1 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paleta1])
 Paleta_Player2 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paleta2])
-Paleta1Dual_player1 = Cuadrilateros(largo_paletas,ancho_paletas,0,0,X_paletaP1,250)
-Paleta2Dual_player1 = Cuadrilateros(largo_paletas,ancho_paletas,0,0,X_paletaP1,350)
-Paleta1Dual_player2 = Cuadrilateros(largo_paletas,ancho_paletas,0,0,X_paletaP2,250)
-Paleta2Dual_player2 = Cuadrilateros(largo_paletas,ancho_paletas,0,0,X_paletaP2,350)
+Paleta1Dual_player1 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paletaDual1_1])
+Paleta2Dual_player1 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paletaDual1_1])
+Paleta1Dual_player2 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paletaDual2_1])
+Paleta2Dual_player2 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paletaDual2_2])
 
 
 
 class Juego:
-    marcador_1 = 0
-    marcador_2 = 0
-    global tablero
-    dificultad = 1
-    modo_juego = True
 
     def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego):
     	self.marcador_1 = marcador_1
@@ -96,6 +98,9 @@ class Juego:
 
     def getmarcador_2(self):
     	return self.marcador_2
+
+    def getDificultad(self):
+        return self.dificultad
 	
     def gana_punto(self, posicion_x, posicion_y):
     	if posicion_x > 1119:
@@ -116,12 +121,44 @@ class Juego:
     def escoger_dificultad(self, dificultad):
     	print("Hola")
 
+Game = Juego(0,0,tablero,1,True)
+
 def GameLoop():
     global pos_bola
     global pos_paleta1
-    while
+    global pos_paleta2
+    global pos_paletaDual1_1
+    global pos_paletaDual1_2
+    global pos_paletaDual2_1
+    global pos_paletaDual2_2
+    score1 = Game.getmarcador_1()
+    score2 = Game.getmarcador_2()
+    dificultad = Game.getDificultad()
+    global salir_juego
+
+
+    while not salir_juego:
+        while dificultad == 1 and not salir_juego:
+            pantalla.fill(negro)
+            pygame.display.update()
+            for event in pygame.event.get():
+                print(salir_juego)
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        salir_juego = True
+
+                if event.type == pygame.QUIT:
+                    exit()
+
+    exit()
+
+
+
+
+
 
 GameLoop()
+
 
     
 
