@@ -4,125 +4,121 @@ import random
 
 pygame.init()
 #Globales
-ancho_display = 1200
-largo_display = 750
-ancho_bordes = 1100
+ancho_display = 860
+largo_display = 560
+ancho_bordes = 820
 grueso = 20
-ancho_paletas = 150
-largo_paletas = 25
-X_paletaP2 = 1150
-X_paletaP1 = 50
+ancho_paletas = 20
+largo_paletas = 150
 salir_juego = False
 blanco = (255,255,255)
 negro = (0,0,0)
 reloj = pygame.time.Clock()
 FPS = 60
 
+#Posiciones
+pos_bola = 268
+pos_paleta1 = 13
+pos_paleta2 = 988
+
+
+def matriz(A,B,a,b):
+    while a <= 820:
+        while b <= 520:
+            A += [[a,b]]
+            b += 20
+        a += 20
+        b = 40
+        B += A
+        A = [] 
+    return B
+
+
+def conseguir_posicion(i, matriz, x, y):  #Para uso de consola, solamente
+    if i < len(a):                        #Consigue el indice de la matriz para un par ordenado
+
+        if matriz[i][0] == x and matriz[i][1] == y:
+            return i
+        else:
+            return conseguir_posicion(i + 1, matriz, x, y)
+    else:
+        return "Error"
+
+
+tablero = matriz([],[],0,0)
+
 class Cuadrilateros:
-    def __init__(self, largo, ancho, movimiento_x, movimiento_y, posicion_x, posicion_y):
+    def __init__(self, largo, ancho, posicion):
         self.largo = largo
         self.ancho = ancho
-        self.movimiento_x = movimiento_x
-        self.movimiento_y = movimiento_y
-        self.posicion_x = posicion_x
-        self.posicion_y = posicion_y
+        self.posicion = posicion
 
     def getLargo(self):
         return self.largo
     def getAncho(self):
         return self.ancho
-    def getMovX(self):
-        return self.movimiento_x
-    def getMovY(self):
-        return self.movimiento_y
-    def getPosX(self):
-        return self.posicion_x
-    def getPosY(self):
-        return self.posicion_y
-    def moveUP(self, movimiento_y):
-        movimiento_y = 2
-        return movimiento_y
+    def getPosicion(self):
+        return self.posicion
 
 
 
-
-Bola = Cuadrilateros(grueso,grueso,0,0,200,200)
-Borde_Superior = Cuadrilateros(grueso,ancho_bordes,0,0,10,10)
-Borde_Inferior = Cuadrilateros(grueso,ancho_bordes,0,0,10,650)
-Paleta_Player1 = Cuadrilateros(largo_paletas,ancho_paletas,0,0,X_paletaP1,300)
-Paleta_Player2 = Cuadrilateros(largo_paletas,ancho_paletas,0,0,X_paletaP2,300)
+Bola = Cuadrilateros(grueso,grueso,tablero[pos_bola])
+Borde_Superior = Cuadrilateros(grueso,ancho_bordes,tablero[0])
+Borde_Inferior = Cuadrilateros(grueso,ancho_bordes,tablero[24])
+Paleta_Player1 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paleta1])
+Paleta_Player2 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paleta2])
 Paleta1Dual_player1 = Cuadrilateros(largo_paletas,ancho_paletas,0,0,X_paletaP1,250)
 Paleta2Dual_player1 = Cuadrilateros(largo_paletas,ancho_paletas,0,0,X_paletaP1,350)
 Paleta1Dual_player2 = Cuadrilateros(largo_paletas,ancho_paletas,0,0,X_paletaP2,250)
 Paleta2Dual_player2 = Cuadrilateros(largo_paletas,ancho_paletas,0,0,X_paletaP2,350)
 
 
-pantalla = pygame.display.set_mode((ancho_display, largo_display))
-pygame.display.set_caption("PONG")
-pygame.display.update()
 
+class Juego:
+    marcador_1 = 0
+    marcador_2 = 0
+    global tablero
+    dificultad = 1
+    modo_juego = True
 
+    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego):
+    	self.marcador_1 = marcador_1
+    	self.marcador_2 = marcador_2
+    	self.tablero = tablero
+    	self.dificultad = dificultad
+    	self.modo_juego = modo_juego
+	
+    def gettablero(self):
+    	return self.tablero
+	
+    def getmarcador_1(self):
+    	return self.marcador_1
 
+    def getmarcador_2(self):
+    	return self.marcador_2
+	
+    def gana_punto(self, posicion_x, posicion_y):
+    	if posicion_x > 1119:
+    		marcador_2 += 1
+    	if posicion_x < 10:
+    		marcador_1 += 1
 
-def gameLoop():
-    global salir_juego
-    pantalla.fill(negro)
-    pygame.display.update()
+    def ganador(self, marcador_1, marcador_2):
+        while dificultad <= 3:
+             if marcador_1 == 7 or marcador_2 == 7:
+                posicion_y = 375
+                posicion_x = 600
+                marcador_1 = 0
+                marcador_2 = 0
+                dificultad += 1
+                print ("Felicidades")
+	
+    def escoger_dificultad(self, dificultad):
+    	print("Hola")
 
-    y_paleta2 = Paleta_Player1.getPosY()
-    y_paleta1 = Paleta_Player1.getPosY()
-    move1 = Paleta_Player1.getMovY()
-    move2 = Paleta_Player2.getMovY()
-    borde_superior = Borde_Superior.getPosY()
-    borde_inferior = Borde_Inferior.getPosY()
+def GameLoop():
+    global pos_bola
+    global pos_paleta1
+    while
 
-    while not salir_juego:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                salir_juego = True
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_DOWN:
-                    move2 = 2
-                if event.key == pygame.K_s:
-                    move1 = 2
-                if event.key == pygame.K_UP:
-                    move2 = -2
-                if event.key == pygame.K_w:
-                    move1 = -2
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_DOWN:
-                    move2 = 0
-                if event.key == pygame.K_UP:
-                    move2 = 0
-                if event.key == pygame.K_s:
-                    move1 = 0
-                if event.key == pygame.K_w:
-                    move1 = 0
-
-
-        pygame.draw.rect(pantalla, blanco,[X_paletaP1, y_paleta1, largo_paletas,ancho_paletas]) #Paleta jugador 1
-        pygame.draw.rect(pantalla, blanco, [X_paletaP2, y_paleta2, largo_paletas, ancho_paletas]) #Paleta jugador 2
-        pygame.draw.rect(pantalla, blanco, [ancho_display//2, largo_display//2, grueso, grueso]) #Bola
-        pygame.draw.rect(pantalla, blanco, [50, 20, ancho_bordes, grueso]) #Borde superior
-        pygame.draw.rect(pantalla, blanco, [50, 710, ancho_bordes, grueso])  #Borde inferior
-
-        pygame.display.update()
-        reloj.tick(FPS)
-        pantalla.fill(negro)
-
-        if y_paleta1 + largo_paletas > largo_display:
-            move1 = 0
-        if y_paleta2 + largo_paletas == borde_inferior:
-            move2 = 0
-
-
-        print(y_paleta1 + largo_paletas)
-
-
-
-        y_paleta1 += move1
-        y_paleta2 += move2
-
-    pygame.quit()
-
-gameLoop()
+GameLoop()
