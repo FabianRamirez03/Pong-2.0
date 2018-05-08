@@ -6,7 +6,7 @@ pygame.init()
 #Globales
 ancho_display = 860
 largo_display = 560
-ancho_bordes = 820
+ancho_bordes = 780
 grueso = 20
 ancho_paletas = 20
 largo_paletas = 150
@@ -14,7 +14,7 @@ salir_juego = False
 blanco = (255,255,255)
 negro = (0,0,0)
 reloj = pygame.time.Clock()
-FPS = 60
+FPS = 15
 
 pantalla = pygame.display.set_mode((ancho_display,largo_display))
 pygame.display.set_caption("Pong")
@@ -52,7 +52,7 @@ def conseguir_posicion(i, matriz, x, y):  #Para uso de consola, solamente
         return "Error"
 
 
-tablero = matriz([],[],0,0)
+tablero = matriz([],[],40,40)
 
 class Cuadrilateros:
     def __init__(self, largo, ancho, posicion):
@@ -135,20 +135,65 @@ def GameLoop():
     score2 = Game.getmarcador_2()
     dificultad = Game.getDificultad()
     global salir_juego
+    moveX_bola = 25
+    moveY_bola = 1
+    move_p1 = 0
+
 
 
     while not salir_juego:
         while dificultad == 1 and not salir_juego:
-            pantalla.fill(negro)
+
             pygame.display.update()
             for event in pygame.event.get():
-                print(salir_juego)
+                print(event)
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        salir_juego = True
+                    if event.key == pygame.K_s:
+                        move_p1 = 1
+                    if event.key == pygame.K_w:
+                        move_p1 = -1
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_s:
+                        move_p1 = 0
+                    if event.key == pygame.K_w:
+                        move_p1 = 0
+
+
 
                 if event.type == pygame.QUIT:
-                    exit()
+                    salir_juego = True
+
+
+
+            if pos_paleta1 == 0:
+                pos_paleta1 = 1
+                move_p1 = 0
+            if pos_paleta1 == 16:
+                pos_paleta1 = 15
+                move_p1 = 0
+            if tablero[pos_bola][1] == 60:
+                moveY_bola = 1
+            if tablero[pos_bola][1] == 500:
+                moveY_bola = -1
+            if tablero[pos_bola][0] == 40:
+                moveX_bola = 25
+            if tablero[pos_bola][0] == 820:
+                moveX_bola = -25
+
+
+
+            pos_bola += moveY_bola + moveX_bola
+            pos_paleta1 += move_p1
+            pantalla.fill(negro)
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paleta1][0],tablero[pos_paleta1][1],ancho_paletas,largo_paletas])
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paleta2][0],tablero[pos_paleta2][1],ancho_paletas,largo_paletas])
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_bola][0],tablero[pos_bola][1],grueso,grueso])
+            pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],ancho_bordes,grueso])
+            pygame.draw.rect(pantalla, blanco, [tablero[24][0], tablero[24][1], ancho_bordes, grueso])
+
+            pygame.display.update()
+            reloj.tick(FPS)
+
 
     exit()
 
