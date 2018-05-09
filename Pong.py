@@ -139,13 +139,18 @@ def GameLoop():
     moveY_bola = 1
     move_p1 = 0
     move_p2 = 0
-
+    punto = False
 
 
     while not salir_juego:
         while dificultad == 1 and not salir_juego:
 
             pygame.display.update()
+
+            if punto == True:
+                time.sleep(1)
+                punto = False
+
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s:
@@ -194,10 +199,14 @@ def GameLoop():
                 moveY_bola = -1
             if tablero[pos_bola][0] == 40:
                 print("Punto 1")
-                pos_bola = 268
+                pos_bola = 461
+                punto = True
             if tablero[pos_bola][0] == 820:
                 print("Punto 2")
-                pos_bola = 268
+                pos_bola = 461
+                punto = True
+                #moveX_bola =  random.choice([1,-1])
+                #moveY_bola = random.choice([25,-25])
             if  tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and tablero[pos_paleta1][1]<tablero[pos_bola][1]< (tablero[pos_paleta1][1]+50):
                 moveX_bola = 25
                 moveY_bola = -1
