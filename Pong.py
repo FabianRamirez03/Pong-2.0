@@ -4,9 +4,9 @@ import random
 
 pygame.init()
 #Globales
-ancho_display = 860
-largo_display = 560
-ancho_bordes = 780
+ancho_display = 880
+largo_display = 580
+ancho_bordes = 800
 grueso = 20
 ancho_paletas = 20
 largo_paletas = 150
@@ -42,7 +42,7 @@ def matriz(A,B,a,b):
 
 
 def conseguir_posicion(i, matriz, x, y):  #Para uso de consola, solamente
-    if i < len(a):                        #Consigue el indice de la matriz para un par ordenado
+    if i < len(tablero):                        #Consigue el indice de la matriz para un par ordenado
 
         if matriz[i][0] == x and matriz[i][1] == y:
             return i
@@ -138,6 +138,7 @@ def GameLoop():
     moveX_bola = 25
     moveY_bola = 1
     move_p1 = 0
+    move_p2 = 0
 
 
 
@@ -146,17 +147,24 @@ def GameLoop():
 
             pygame.display.update()
             for event in pygame.event.get():
-                print(event)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s:
                         move_p1 = 1
                     if event.key == pygame.K_w:
                         move_p1 = -1
+                    if event.key == pygame.K_UP:
+                        move_p2 = -1
+                    if event.key == pygame.K_DOWN:
+                        move_p2 = 1
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_s:
                         move_p1 = 0
                     if event.key == pygame.K_w:
                         move_p1 = 0
+                    if event.key == pygame.K_DOWN:
+                        move_p2 = 0
+                    if event.key == pygame.K_UP:
+                        move_p2 = 0
 
 
 
@@ -171,25 +179,58 @@ def GameLoop():
             if pos_paleta1 == 16:
                 pos_paleta1 = 15
                 move_p1 = 0
+            if pos_paleta2 == 975:
+                pos_paleta2 = 976
+                move_p1 = 0
+            if pos_paleta2 == 991:
+                pos_paleta2 = 990
+                move_p1 = 0
+
+
+
             if tablero[pos_bola][1] == 60:
                 moveY_bola = 1
             if tablero[pos_bola][1] == 500:
                 moveY_bola = -1
             if tablero[pos_bola][0] == 40:
-                moveX_bola = 25
+                print("Punto 1")
+                pos_bola = 268
             if tablero[pos_bola][0] == 820:
+                print("Punto 2")
+                pos_bola = 268
+            if  tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and tablero[pos_paleta1][1]<tablero[pos_bola][1]< (tablero[pos_paleta1][1]+50):
+                moveX_bola = 25
+                moveY_bola = -1
+            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+51) < tablero[pos_bola][1]<(tablero[pos_paleta1][1]+100):
+                moveX_bola = 25
+                moveY_bola = 0
+            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+101) <tablero[pos_bola][1]<(tablero[pos_paleta1][1]+150):
+                moveY_bola = 1
+                moveX_bola = 25
+            if  tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1]<tablero[pos_bola][1] < (tablero[pos_paleta2][1]+50):
                 moveX_bola = -25
+                moveY_bola = -1
+            if tablero[pos_bola+25][0] == tablero[pos_paleta2 ][0] and (tablero[pos_paleta2][1]+50) < tablero[pos_bola][1]<(tablero[pos_paleta2][1]+100):
+                moveX_bola = -25
+                moveY_bola = 0
+            if tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and (tablero[pos_paleta2][1]+101) <tablero[pos_bola][1]<(tablero[pos_paleta2][1]+150):
+                moveY_bola = 1
+                moveX_bola = -25
+
+
+
 
 
 
             pos_bola += moveY_bola + moveX_bola
             pos_paleta1 += move_p1
+            pos_paleta2 += move_p2
             pantalla.fill(negro)
-            pygame.draw.rect(pantalla,blanco,[tablero[pos_paleta1][0],tablero[pos_paleta1][1],ancho_paletas,largo_paletas])
-            pygame.draw.rect(pantalla,blanco,[tablero[pos_paleta2][0],tablero[pos_paleta2][1],ancho_paletas,largo_paletas])
-            pygame.draw.rect(pantalla,blanco,[tablero[pos_bola][0],tablero[pos_bola][1],grueso,grueso])
-            pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],ancho_bordes,grueso])
-            pygame.draw.rect(pantalla, blanco, [tablero[24][0], tablero[24][1], ancho_bordes, grueso])
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paleta1][0],tablero[pos_paleta1][1],ancho_paletas,largo_paletas])#paleta 1
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paleta2][0],tablero[pos_paleta2][1],ancho_paletas,largo_paletas])#paleta 2
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_bola][0],tablero[pos_bola][1],grueso,grueso]) #Bola
+            pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],ancho_bordes,grueso]) #Borde superior
+            pygame.draw.rect(pantalla, blanco, [tablero[24][0], tablero[24][1], ancho_bordes, grueso]) #borde inferior
 
             pygame.display.update()
             reloj.tick(FPS)
