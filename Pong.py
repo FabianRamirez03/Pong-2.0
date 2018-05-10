@@ -14,7 +14,7 @@ salir_juego = False
 blanco = (255,255,255)
 negro = (0,0,0)
 reloj = pygame.time.Clock()
-FPS = 15
+FPS = 10
 
 pantalla = pygame.display.set_mode((ancho_display,largo_display))
 pygame.display.set_caption("Pong")
