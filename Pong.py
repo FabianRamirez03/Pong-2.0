@@ -101,7 +101,8 @@ class Juego:
 
     def getDificultad(self):
         return self.dificultad
-	
+    def getmodo(self):
+	    return self.modo_juego
     def gana_punto(self, posicion_x, posicion_y):
     	if posicion_x > 1119:
     		marcador_2 += 1
@@ -135,6 +136,7 @@ def GameLoop():
     score2 = Game.getmarcador_2()
     dificultad = Game.getDificultad()
     global salir_juego
+    modo = Game.getmodo() #Si modo es true, habra dos paletas, en False sera dual
     moveX_bola = 25
     moveY_bola = 1
     move_p1 = 0
@@ -143,7 +145,7 @@ def GameLoop():
 
 
     while not salir_juego:
-        while dificultad == 1 and not salir_juego:
+        while dificultad == 1 and not salir_juego and modo == True:
 
             pygame.display.update()
 
@@ -243,7 +245,106 @@ def GameLoop():
 
             pygame.display.update()
             reloj.tick(FPS)
+        while dificultad == 1 and not salir_juego and modo == True:
 
+            pygame.display.update()
+
+            if punto == True:
+                time.sleep(1)
+                punto = False
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_s:
+                        move_p1 = 1
+                    if event.key == pygame.K_w:
+                        move_p1 = -1
+                    if event.key == pygame.K_UP:
+                        move_p2 = -1
+                    if event.key == pygame.K_DOWN:
+                        move_p2 = 1
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_s:
+                        move_p1 = 0
+                    if event.key == pygame.K_w:
+                        move_p1 = 0
+                    if event.key == pygame.K_DOWN:
+                        move_p2 = 0
+                    if event.key == pygame.K_UP:
+                        move_p2 = 0
+
+
+
+                if event.type == pygame.QUIT:
+                    salir_juego = True
+
+
+
+            if pos_paleta1 == 0:
+                pos_paleta1 = 1
+                move_p1 = 0
+            if pos_paleta1 == 16:
+                pos_paleta1 = 15
+                move_p1 = 0
+            if pos_paleta2 == 975:
+                pos_paleta2 = 976
+                move_p1 = 0
+            if pos_paleta2 == 991:
+                pos_paleta2 = 990
+                move_p1 = 0
+
+
+
+            if tablero[pos_bola][1] == 60:
+                moveY_bola = 1
+            if tablero[pos_bola][1] == 500:
+                moveY_bola = -1
+            if tablero[pos_bola][0] == 40:
+                print("Punto 1")
+                pos_bola = 461
+                punto = True
+            if tablero[pos_bola][0] == 820:
+                print("Punto 2")
+                pos_bola = 461
+                punto = True
+                #moveX_bola =  random.choice([1,-1])
+                #moveY_bola = random.choice([25,-25])
+            if  tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and tablero[pos_paleta1][1]<tablero[pos_bola][1]< (tablero[pos_paleta1][1]+50):
+                moveX_bola = 25
+                moveY_bola = -1
+            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+51) < tablero[pos_bola][1]<(tablero[pos_paleta1][1]+100):
+                moveX_bola = 25
+                moveY_bola = 0
+            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+101) <tablero[pos_bola][1]<(tablero[pos_paleta1][1]+150):
+                moveY_bola = 1
+                moveX_bola = 25
+            if  tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1]<tablero[pos_bola][1] < (tablero[pos_paleta2][1]+50):
+                moveX_bola = -25
+                moveY_bola = -1
+            if tablero[pos_bola+25][0] == tablero[pos_paleta2 ][0] and (tablero[pos_paleta2][1]+50) < tablero[pos_bola][1]<(tablero[pos_paleta2][1]+100):
+                moveX_bola = -25
+                moveY_bola = 0
+            if tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and (tablero[pos_paleta2][1]+101) <tablero[pos_bola][1]<(tablero[pos_paleta2][1]+150):
+                moveY_bola = 1
+                moveX_bola = -25
+
+
+
+
+
+
+            pos_bola += moveY_bola + moveX_bola
+            pos_paleta1 += move_p1
+            pos_paleta2 += move_p2
+            pantalla.fill(negro)
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paleta1][0],tablero[pos_paleta1][1],ancho_paletas,largo_paletas])#paleta 1
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paleta2][0],tablero[pos_paleta2][1],ancho_paletas,largo_paletas])#paleta 2
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_bola][0],tablero[pos_bola][1],grueso,grueso]) #Bola
+            pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],ancho_bordes,grueso]) #Borde superior
+            pygame.draw.rect(pantalla, blanco, [tablero[24][0], tablero[24][1], ancho_bordes, grueso]) #borde inferior
+
+            pygame.display.update()
+            reloj.tick(FPS)
 
     exit()
 
