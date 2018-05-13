@@ -24,9 +24,9 @@ pos_bola = 268
 pos_paleta1 = 13
 pos_paleta2 = 988
 pos_paletaDual1_1 = 1
-pos_paletaDual1_2 = 16
+pos_paletaDual1_2 = 11
 pos_paletaDual2_1 = 976
-pos_paletaDual2_2 = 991
+pos_paletaDual2_2 = 986
 
 
 def matriz(A,B,a,b):
@@ -122,7 +122,7 @@ class Juego:
     def escoger_dificultad(self, dificultad):
     	print("Hola")
 
-Game = Juego(0,0,tablero,1,True)
+Game = Juego(0,0,tablero,1,False)
 
 def GameLoop():
     global pos_bola
@@ -245,8 +245,10 @@ def GameLoop():
 
             pygame.display.update()
             reloj.tick(FPS)
-        while dificultad == 1 and not salir_juego and modo == True:
 
+#_____________________________________________________________________________________________________________________________________________________________________________________
+
+        while dificultad == 1 and not salir_juego and modo == False:
             pygame.display.update()
 
             if punto == True:
@@ -280,17 +282,21 @@ def GameLoop():
 
 
 
-            if pos_paleta1 == 0:
-                pos_paleta1 = 1
+            if pos_paletaDual1_1 == 0:
+                pos_paletaDual1_1 = 1
+                pos_paletaDual1_2 = 11
                 move_p1 = 0
-            if pos_paleta1 == 16:
-                pos_paleta1 = 15
+            if pos_paletaDual1_2 == 18:
+                pos_paletaDual1_2 = 17
+                pos_paletaDual1_1 = 7
                 move_p1 = 0
-            if pos_paleta2 == 975:
-                pos_paleta2 = 976
+            if pos_paletaDual2_1 == 975:
+                pos_paletaDual2_1 = 976
+                pos_paletaDual2_2 = 986
                 move_p1 = 0
-            if pos_paleta2 == 991:
-                pos_paleta2 = 990
+            if pos_paletaDual2_2 == 993:
+                pos_paletaDual2_2 = 992
+                pos_paletaDual2_1 = 982
                 move_p1 = 0
 
 
@@ -334,17 +340,29 @@ def GameLoop():
 
 
             pos_bola += moveY_bola + moveX_bola
-            pos_paleta1 += move_p1
-            pos_paleta2 += move_p2
+            pos_paletaDual1_2 += move_p1
+            pos_paletaDual1_1 += move_p1
+            pos_paletaDual2_1 += move_p2
+            pos_paletaDual2_2 += move_p2
+
+
             pantalla.fill(negro)
-            pygame.draw.rect(pantalla,blanco,[tablero[pos_paleta1][0],tablero[pos_paleta1][1],ancho_paletas,largo_paletas])#paleta 1
-            pygame.draw.rect(pantalla,blanco,[tablero[pos_paleta2][0],tablero[pos_paleta2][1],ancho_paletas,largo_paletas])#paleta 2
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual1_1][0],tablero[pos_paletaDual1_1][1],ancho_paletas,largo_paletas-30])#paleta 1.1
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual1_2][0],tablero[pos_paletaDual1_2][1],ancho_paletas,largo_paletas-30])#paleta 1.2
+
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual2_1][0],tablero[pos_paletaDual2_1][1],ancho_paletas,largo_paletas-30])#paleta 2.1
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual2_2][0],tablero[pos_paletaDual2_2][1],ancho_paletas,largo_paletas-30])#paleta 2.2
+
             pygame.draw.rect(pantalla,blanco,[tablero[pos_bola][0],tablero[pos_bola][1],grueso,grueso]) #Bola
             pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],ancho_bordes,grueso]) #Borde superior
             pygame.draw.rect(pantalla, blanco, [tablero[24][0], tablero[24][1], ancho_bordes, grueso]) #borde inferior
 
             pygame.display.update()
             reloj.tick(FPS)
+            
+
+
+#___________________________________________________________________________________________________________________________________________________________________________________        
 
     exit()
 
