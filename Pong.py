@@ -9,12 +9,19 @@ largo_display = 580
 ancho_bordes = 800
 grueso = 20
 ancho_paletas = 20
-largo_paletas = 150
+largo_paletas = 180
 salir_juego = False
 blanco = (255,255,255)
 negro = (0,0,0)
 reloj = pygame.time.Clock()
 FPS = 10
+borde_inferior1 = 16
+borde1_1 = 10
+borde2_1 = 10
+borde_inferior2 = 991
+borde_inferior2_2 = 990
+borde_inferior1_2 = 13
+seccion = 60
 
 pantalla = pygame.display.set_mode((ancho_display,largo_display))
 pygame.display.set_caption("Pong")
@@ -24,9 +31,9 @@ pos_bola = 268
 pos_paleta1 = 13
 pos_paleta2 = 988
 pos_paletaDual1_1 = 1
-pos_paletaDual1_2 = 11
+pos_paletaDual1_2 = 12
 pos_paletaDual2_1 = 976
-pos_paletaDual2_2 = 986
+pos_paletaDual2_2 = 987
 
 
 #Textos
@@ -125,7 +132,7 @@ class Juego:
     def escoger_dificultad(self, dificultad):
     	print("Hola")
 
-Game = Juego(0,0,tablero,1,False)
+Game = Juego(0,0,tablero,1,True)
 
 def GameLoop():
     global pos_bola
@@ -148,9 +155,29 @@ def GameLoop():
 
 
     while not salir_juego:
-        while dificultad == 1 and not salir_juego and modo == True: #modo con solo una paleta y dificultad minima
+        while not salir_juego and modo == True: #modo con solo una paleta y persona vs persona
 
             pygame.display.update()
+
+            if dificultad == 1:
+                FPS = 10
+                largo_paletas = 180
+                borde_inferior1 = 15
+                borde_inferior2 = 990
+                seccion = 60
+            if dificultad == 2:
+                FPS = 15
+                largo_paletas = 120
+                borde_inferior1 = 18
+                borde_inferior2 = 993
+                seccion = 40
+
+            if dificultad == 3:
+                FPS = 20
+                largo_paletas = 60
+                borde_inferior1 = 21
+                borde_inferior2 = 996
+                seccion = 20
 
             if punto == True:
                 time.sleep(1)
@@ -175,6 +202,10 @@ def GameLoop():
                         move_p2 = 0
                     if event.key == pygame.K_UP:
                         move_p2 = 0
+                    if event.key == pygame.K_SPACE:
+                        modo = False
+                    if event.key == pygame.K_CAPSLOCK:
+                        dificultad += 1
 
 
 
@@ -186,14 +217,14 @@ def GameLoop():
             if pos_paleta1 == 0:
                 pos_paleta1 = 1
                 move_p1 = 0
-            if pos_paleta1 == 16:
-                pos_paleta1 = 15
+            if pos_paleta1 == borde_inferior1:
+                pos_paleta1 = borde_inferior1-1
                 move_p1 = 0
             if pos_paleta2 == 975:
                 pos_paleta2 = 976
                 move_p1 = 0
-            if pos_paleta2 == 991:
-                pos_paleta2 = 990
+            if pos_paleta2 == borde_inferior2:
+                pos_paleta2 = borde_inferior2-1
                 move_p1 = 0
 
 
@@ -203,31 +234,31 @@ def GameLoop():
             if tablero[pos_bola][1] == 500:
                 moveY_bola = -1
             if tablero[pos_bola][0] == 40:
-                print("Punto 1")
+                score1 += 1
                 pos_bola = 461
                 punto = True
             if tablero[pos_bola][0] == 820:
-                print("Punto 2")
+                score2 += 1
                 pos_bola = 461
                 punto = True
                 #moveX_bola =  random.choice([1,-1])
                 #moveY_bola = random.choice([25,-25])
-            if  tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and tablero[pos_paleta1][1]<tablero[pos_bola][1]< (tablero[pos_paleta1][1]+50):
+            if  tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and tablero[pos_paleta1][1]<=tablero[pos_bola][1]<=(tablero[pos_paleta1][1]+seccion):
                 moveX_bola = 25
                 moveY_bola = -1
-            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+51) < tablero[pos_bola][1]<(tablero[pos_paleta1][1]+100):
+            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+seccion) < tablero[pos_bola][1]<=(tablero[pos_paleta1][1]+seccion*2):
                 moveX_bola = 25
                 moveY_bola = 0
-            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+101) <tablero[pos_bola][1]<(tablero[pos_paleta1][1]+150):
+            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+seccion*2) <tablero[pos_bola][1]<=(tablero[pos_paleta1][1]+seccion*3):
                 moveY_bola = 1
                 moveX_bola = 25
-            if  tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1]<tablero[pos_bola][1] < (tablero[pos_paleta2][1]+50):
+            if  tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1]<=tablero[pos_bola][1] <= (tablero[pos_paleta2][1]+seccion):
                 moveX_bola = -25
                 moveY_bola = -1
-            if tablero[pos_bola+25][0] == tablero[pos_paleta2 ][0] and (tablero[pos_paleta2][1]+50) < tablero[pos_bola][1]<(tablero[pos_paleta2][1]+100):
+            if tablero[pos_bola+25][0] == tablero[pos_paleta2 ][0] and (tablero[pos_paleta2][1]+seccion) < tablero[pos_bola][1]<=(tablero[pos_paleta2][1]+seccion*2):
                 moveX_bola = -25
                 moveY_bola = 0
-            if tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and (tablero[pos_paleta2][1]+101) <tablero[pos_bola][1]<(tablero[pos_paleta2][1]+150):
+            if tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and (tablero[pos_paleta2][1]+seccion*2) <tablero[pos_bola][1]<=(tablero[pos_paleta2][1]+seccion*3):
                 moveY_bola = 1
                 moveX_bola = -25
 
@@ -271,12 +302,19 @@ def GameLoop():
 
 #_____________________________________________________________________________________________________________________________________________________________________________________
 
-        while dificultad == 1 and not salir_juego and modo == False: #modo dual con dificultad minima
+        while not salir_juego and modo == False: #modo dual con dificultad minima
             pygame.display.update()
 
             if punto == True:
                 time.sleep(1)
                 punto = False
+
+            if dificultad == 1:
+                FPS = 10
+            if dificultad == 2:
+                FPS = 15
+            if dificultad == 3:
+                FPS = 20
 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -309,17 +347,17 @@ def GameLoop():
                 pos_paletaDual1_1 = 1
                 pos_paletaDual1_2 = 11
                 move_p1 = 0
-            if pos_paletaDual1_2 == 18:
-                pos_paletaDual1_2 = 17
-                pos_paletaDual1_1 = 7
+            if pos_paletaDual1_2 == 17:
+                pos_paletaDual1_2 = 16
+                pos_paletaDual1_1 = 5
                 move_p1 = 0
             if pos_paletaDual2_1 == 975:
                 pos_paletaDual2_1 = 976
                 pos_paletaDual2_2 = 986
                 move_p1 = 0
-            if pos_paletaDual2_2 == 993:
-                pos_paletaDual2_2 = 992
-                pos_paletaDual2_1 = 982
+            if pos_paletaDual2_2 == 992:
+                pos_paletaDual2_2 = 991
+                pos_paletaDual2_1 = 981
                 move_p1 = 0
 
 
