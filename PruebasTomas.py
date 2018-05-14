@@ -52,6 +52,12 @@ def conseguir_posicion(i, matriz, x, y):  #Para uso de consola, solamente
     else:
         return "Error"
 
+def boton(pos_x, pos_y, ancho, alto, color_activo, color_inactivo):
+	mouse = pygame.mouse.get_pos()
+	if pos_x + ancho > mouse[0] > pos_x and pos_y + alto > mouse[1] > pos_y:
+		pygame.draw.rect(pantalla, color_activo, [pos_x,pos_y, ancho, alto])
+	else:
+		pygame.draw.rect(pantalla, color_inactivo, [pos_x,pos_y, ancho, alto])
 
 tablero = matriz([],[],40,40)
 
@@ -225,14 +231,29 @@ def GameLoop():
             aceptar_rect.center = (tablero[496][0], tablero[496][1])
             pantalla.blit(aceptar_txt, aceptar_rect)
 
-            pygame.draw.circle(pantalla, verde, (tablero[633][0],tablero[633][1]), 15, 0)
-            pygame.draw.circle(pantalla, verde, (tablero[933][0],tablero[933][1]), 15, 0)
-            pygame.draw.circle(pantalla, verde, (tablero[536][0],tablero[536][1]), 15, 0)
-            pygame.draw.circle(pantalla, verde, (tablero[686][0],tablero[686][1]), 15, 0)
-            pygame.draw.circle(pantalla, verde, (tablero[539][0],tablero[539][1]), 15, 0)
-            pygame.draw.circle(pantalla, verde, (tablero[689][0],tablero[689][1]), 15, 0)
-            pygame.draw.circle(pantalla, verde, (tablero[864][0],tablero[864][1]), 15, 0)
-            pygame.draw.rect(pantalla, negro, [tablero[24][0], tablero[24][1], 50, 30])
+            #pygame.draw.rect(pantalla, verde, [tablero[632][0],tablero[632][1], 30, 30])
+            #pygame.draw.circle(pantalla, verde, (tablero[933][0],tablero[933][1]), 15, 0)
+            #pygame.draw.circle(pantalla, verde, (tablero[536][0],tablero[536][1]), 15, 0)
+            #pygame.draw.circle(pantalla, verde, (tablero[686][0],tablero[686][1]), 15, 0)
+            #pygame.draw.circle(pantalla, verde, (tablero[539][0],tablero[539][1]), 15, 0)
+            #pygame.draw.circle(pantalla, verde, (tablero[689][0],tablero[689][1]), 15, 0)
+            #pygame.draw.circle(pantalla, verde, (tablero[864][0],tablero[864][1]), 15, 0)
+            #pygame.draw.rect(pantalla, negro, [tablero[24][0], tablero[24][1], 50, 30])
+
+
+            boton(tablero[632][0],tablero[632][1], 30, 30, negro, verde)
+            boton(tablero[932][0],tablero[932][1], 30, 30, negro, verde)
+            boton(tablero[535][0],tablero[535][1], 30, 30, negro, verde)
+            boton(tablero[685][0],tablero[685][1], 30, 30, negro, verde)
+            boton(tablero[538][0],tablero[538][1], 30, 30, negro, verde)
+            boton(tablero[688][0],tablero[688][1], 30, 30, negro, verde)
+            boton(tablero[863][0],tablero[863][1], 30, 30, negro, verde)
+            
+            
+            '''for event in pygame.event.get():
+            	if event.type == pygame.MOUSEBUTTONDOWN((525,85),1):
+		            pygame.draw.circle(pantalla, blanco, (tablero[633][0],tablero[633][1]), 15, 0)'''
+
 
 
             pygame.display.update()
