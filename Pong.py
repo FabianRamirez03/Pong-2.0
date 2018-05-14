@@ -125,7 +125,7 @@ class Juego:
     def escoger_dificultad(self, dificultad):
     	print("Hola")
 
-Game = Juego(0,0,tablero,1,True)
+Game = Juego(0,0,tablero,1,False)
 
 def GameLoop():
     global pos_bola
@@ -148,7 +148,7 @@ def GameLoop():
 
 
     while not salir_juego:
-        while dificultad == 1 and not salir_juego and modo == True:
+        while dificultad == 1 and not salir_juego and modo == True: #modo con solo una paleta y dificultad minima
 
             pygame.display.update()
 
@@ -271,7 +271,7 @@ def GameLoop():
 
 #_____________________________________________________________________________________________________________________________________________________________________________________
 
-        while dificultad == 1 and not salir_juego and modo == False:
+        while dificultad == 1 and not salir_juego and modo == False: #modo dual con dificultad minima
             pygame.display.update()
 
             if punto == True:
@@ -297,8 +297,8 @@ def GameLoop():
                         move_p2 = 0
                     if event.key == pygame.K_UP:
                         move_p2 = 0
-
-
+                    if event.key == pygame.K_SPACE:
+                        modo = True
 
                 if event.type == pygame.QUIT:
                     salir_juego = True
@@ -362,7 +362,7 @@ def GameLoop():
 
 
 
-            pos_bola += moveY_bola + moveX_bola
+            pos_bola += moveY_bola + moveX_bola #Suma de indices para movimiento sobre la matriz
             pos_paletaDual1_2 += move_p1
             pos_paletaDual1_1 += move_p1
             pos_paletaDual2_1 += move_p2
@@ -380,7 +380,7 @@ def GameLoop():
             pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],ancho_bordes,grueso]) #Borde superior
             pygame.draw.rect(pantalla, blanco, [tablero[24][0], tablero[24][1], ancho_bordes, grueso]) #borde inferior
 
-            title = tipografia_juego.render("PONG", True, blanco, negro)
+            title = tipografia_juego.render("PONG", True, blanco, negro) #funciones que generan los textos dentro de la ventana del juego
             title_rect = title.get_rect()
             title_rect.center = (420, 20)
             pantalla.blit(title, title_rect)
