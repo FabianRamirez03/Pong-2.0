@@ -11,11 +11,15 @@ grueso = 20
 ancho_paletas = 20
 largo_paletas = 150
 salir_juego = False
+P1_P2 = False
+modo_juego = True
+dificultad = 1
 blanco = (255,255,255)
 negro = (0,0,0)
 verde = (0, 255, 0)
 reloj = pygame.time.Clock()
 FPS = 15
+
 
 pantalla = pygame.display.set_mode((ancho_display,largo_display))
 pygame.display.set_caption("Pong")
@@ -52,14 +56,55 @@ def conseguir_posicion(i, matriz, x, y):  #Para uso de consola, solamente
     else:
         return "Error"
 
-def boton(pos_x, pos_y, ancho, alto, color_activo, color_inactivo):
+def boton(pos_x, pos_y, ancho, alto, color_activo, color_inactivo, opcion):
+	global P1_P2
+	global modo_juego
+	global dificultad
+	click = pygame.mouse.get_pressed()
 	mouse = pygame.mouse.get_pos()
 	if pos_x + ancho > mouse[0] > pos_x and pos_y + alto > mouse[1] > pos_y:
 		pygame.draw.rect(pantalla, color_activo, [pos_x,pos_y, ancho, alto])
+		if click[0] == 1:
+			if opcion == "P1 vs P2":
+				P1_P2 = True
+			if opcion == "P1 vs PC":
+				P1_P2 = False
+			if opcion == "Sencillo":
+				modo_juego = False
+				#sencillo()
+			if opcion == "Doble":
+				modo_juego = True
+			if opcion == "1":
+				dificultad = 1
+			if opcion == "2":
+				dificultad = 2
+			if opcion == "3":
+				dificultad = 3
+			if opcion == "Aceptar":
+				aceptar()
+			print(P1_P2)
+			print(modo_juego)
+			print(dificultad)
+
+
+
 	else:
 		pygame.draw.rect(pantalla, color_inactivo, [pos_x,pos_y, ancho, alto])
 
+def aceptar():
+	global modo_juego
+	global dificultad
+	GameLoop()
+
+
+def sencillo():
+	pygame.draw.rect(pantalla, blanco, [tablero[535][0],tablero[535][1], 30, 30])
+	pygame.draw.rect(pantalla, blanco, [tablero[685][0],tablero[685][1], 30, 30])
+
+
+
 tablero = matriz([],[],40,40)
+
 
 class Cuadrilateros:
     def __init__(self, largo, ancho, posicion):
@@ -132,6 +177,59 @@ class Juego:
 
 Game = Juego(0,0,tablero,1,True)
 
+def Menu():
+	menu = True
+	while menu:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				quit()		
+
+		pantalla.fill(blanco)
+		#pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],800,500])
+
+		tipografia = pygame.font.Font("Comfortaa-Bold.ttf", 60)
+
+		titulo = tipografia.render("PONG", True, negro, blanco)
+		titulo_rect = titulo.get_rect()
+		titulo_rect.center = (tablero[453][0],tablero[453][1])
+		pantalla.blit(titulo, titulo_rect)
+
+		tipografia_menor = pygame.font.Font("Comfortaa-Bold.ttf", 30)
+
+		modo_txt = tipografia_menor.render("Modo de juego:" + " "*13 + "P1 vs P2" + " "*13 + "P1 vs PC", True, negro, blanco)
+		modo_rect = modo_txt.get_rect()
+		modo_rect.center = (tablero[458][0], tablero[458][1])
+		pantalla.blit(modo_txt, modo_rect)
+
+		paletas_txt = tipografia_menor.render("Paletas:" + " "*26 + "1" + " "*13 + "2", True, negro, blanco)
+		paletas_rect = paletas_txt.get_rect()
+		paletas_rect.center = (tablero[336][0], tablero[336][1])
+		pantalla.blit(paletas_txt, paletas_rect)
+
+		dificultad_txt = tipografia_menor.render("Dificultad:" + " "*23 + "1" + " "*13 + "2" + " "*13 + "3", True, negro, blanco)
+		dificultad_rect = dificultad_txt.get_rect()
+		dificultad_rect.center = (tablero[414][0], tablero[414][1])
+		pantalla.blit(dificultad_txt, dificultad_rect)
+
+		aceptar_txt = tipografia_menor.render("Aceptar", True, blanco, negro)
+		aceptar_rect = aceptar_txt.get_rect()
+		aceptar_rect.center = (tablero[496][0], tablero[496][1])
+		boton(tablero[394][0], tablero[394][1], 180, 80, verde, negro, "Aceptar")
+		pantalla.blit(aceptar_txt, aceptar_rect)
+
+		boton(tablero[632][0],tablero[632][1], 30, 30, negro, verde, "P1 vs P2")
+		boton(tablero[932][0],tablero[932][1], 30, 30, negro, verde, "P1 vs PC")
+		boton(tablero[535][0],tablero[535][1], 30, 30, negro, verde, "Sencillo")
+		boton(tablero[685][0],tablero[685][1], 30, 30, negro, verde, "Doble")
+		boton(tablero[538][0],tablero[538][1], 30, 30, negro, verde, "1")
+		boton(tablero[688][0],tablero[688][1], 30, 30, negro, verde, "2")
+		boton(tablero[863][0],tablero[863][1], 30, 30, negro, verde, "3")
+
+		pygame.display.update()
+		reloj.tick(FPS)
+
+
 def GameLoop():
     global pos_bola
     global pos_paleta1
@@ -151,7 +249,8 @@ def GameLoop():
 
 
     while not salir_juego:
-        while dificultad == 1 and not salir_juego:
+
+    	while dificultad == 1 and not salir_juego:
             
 
             pygame.display.update()
@@ -201,59 +300,9 @@ def GameLoop():
             pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],ancho_bordes,grueso])
             pygame.draw.rect(pantalla, blanco, [tablero[24][0], tablero[24][1], ancho_bordes, grueso])
            
-            pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],800,500])
-            
-            tipografia = pygame.font.Font("Comfortaa-Bold.ttf", 60)
-            titulo = tipografia.render("PONG", True, negro, blanco)
-            titulo_rect = titulo.get_rect()
-            titulo_rect.center = (tablero[453][0],tablero[453][1])
-            pantalla.blit(titulo, titulo_rect)
-
-            tipografia_menor = pygame.font.Font("Comfortaa-Bold.ttf", 30)
-            
-            modo_txt = tipografia_menor.render("Modo de juego:" + " "*13 + "P1 vs P2" + " "*13 + "P1 vs PC", True, negro, blanco)
-            modo_rect = modo_txt.get_rect()
-            modo_rect.center = (tablero[458][0], tablero[458][1])
-            pantalla.blit(modo_txt, modo_rect)
-
-            paletas_txt = tipografia_menor.render("Paletas:" + " "*26 + "1" + " "*13 + "2", True, negro, blanco)
-            paletas_rect = paletas_txt.get_rect()
-            paletas_rect.center = (tablero[336][0], tablero[336][1])
-            pantalla.blit(paletas_txt, paletas_rect)
-
-            dificultad_txt = tipografia_menor.render("Dificultad:" + " "*23 + "1" + " "*13 + "2" + " "*13 + "3", True, negro, blanco)
-            dificultad_rect = dificultad_txt.get_rect()
-            dificultad_rect.center = (tablero[414][0], tablero[414][1])
-            pantalla.blit(dificultad_txt, dificultad_rect)
-
-            aceptar_txt = tipografia_menor.render("Aceptar", True, blanco, negro)
-            aceptar_rect = aceptar_txt.get_rect()
-            aceptar_rect.center = (tablero[496][0], tablero[496][1])
-            pantalla.blit(aceptar_txt, aceptar_rect)
-
-            #pygame.draw.rect(pantalla, verde, [tablero[632][0],tablero[632][1], 30, 30])
-            #pygame.draw.circle(pantalla, verde, (tablero[933][0],tablero[933][1]), 15, 0)
-            #pygame.draw.circle(pantalla, verde, (tablero[536][0],tablero[536][1]), 15, 0)
-            #pygame.draw.circle(pantalla, verde, (tablero[686][0],tablero[686][1]), 15, 0)
-            #pygame.draw.circle(pantalla, verde, (tablero[539][0],tablero[539][1]), 15, 0)
-            #pygame.draw.circle(pantalla, verde, (tablero[689][0],tablero[689][1]), 15, 0)
-            #pygame.draw.circle(pantalla, verde, (tablero[864][0],tablero[864][1]), 15, 0)
-            #pygame.draw.rect(pantalla, negro, [tablero[24][0], tablero[24][1], 50, 30])
-
-
-            boton(tablero[632][0],tablero[632][1], 30, 30, negro, verde)
-            boton(tablero[932][0],tablero[932][1], 30, 30, negro, verde)
-            boton(tablero[535][0],tablero[535][1], 30, 30, negro, verde)
-            boton(tablero[685][0],tablero[685][1], 30, 30, negro, verde)
-            boton(tablero[538][0],tablero[538][1], 30, 30, negro, verde)
-            boton(tablero[688][0],tablero[688][1], 30, 30, negro, verde)
-            boton(tablero[863][0],tablero[863][1], 30, 30, negro, verde)
             
             
-            '''for event in pygame.event.get():
-            	if event.type == pygame.MOUSEBUTTONDOWN((525,85),1):
-		            pygame.draw.circle(pantalla, blanco, (tablero[633][0],tablero[633][1]), 15, 0)'''
-
+           
 
 
             pygame.display.update()
@@ -266,6 +315,6 @@ def GameLoop():
 
 
 
+Menu()
 
-GameLoop()
 		
