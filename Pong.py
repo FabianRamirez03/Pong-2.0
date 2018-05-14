@@ -16,7 +16,11 @@ negro = (0,0,0)
 reloj = pygame.time.Clock()
 FPS = 10
 borde_inferior1 = 16
+borde1_1 = 10
+borde2_1 = 10
 borde_inferior2 = 991
+borde_inferior2_2 = 990
+borde_inferior1_2 = 13
 seccion = 60
 
 pantalla = pygame.display.set_mode((ancho_display,largo_display))
