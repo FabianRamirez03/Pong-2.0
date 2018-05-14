@@ -4,8 +4,8 @@ import random
 
 pygame.init()
 #Globales
-ancho_display = 860
-largo_display = 560
+ancho_display = 880
+largo_display = 580
 ancho_bordes = 780
 grueso = 20
 ancho_paletas = 20
