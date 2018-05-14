@@ -29,6 +29,9 @@ pos_paletaDual2_1 = 976
 pos_paletaDual2_2 = 986
 
 
+#Textos
+tipografia_juego = pygame.font.Font("Comfortaa-Bold.ttf", 15)
+
 def matriz(A,B,a,b):
     while a <= 820:
         while b <= 520:
