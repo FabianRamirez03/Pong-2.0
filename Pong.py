@@ -17,6 +17,7 @@ reloj = pygame.time.Clock()
 FPS = 10
 borde_inferior1 = 16
 borde_inferior2 = 991
+seccion = 60
 
 pantalla = pygame.display.set_mode((ancho_display,largo_display))
 pygame.display.set_caption("Pong")
@@ -157,13 +158,22 @@ def GameLoop():
             if dificultad == 1:
                 FPS = 10
                 largo_paletas = 180
+                borde_inferior1 = 15
+                borde_inferior2 = 990
+                seccion = 60
             if dificultad == 2:
                 FPS = 15
                 largo_paletas = 120
+                borde_inferior1 = 18
+                borde_inferior2 = 993
+                seccion = 40
+
             if dificultad == 3:
                 FPS = 20
                 largo_paletas = 60
-
+                borde_inferior1 = 21
+                borde_inferior2 = 996
+                seccion = 20
 
             if punto == True:
                 time.sleep(1)
@@ -229,22 +239,22 @@ def GameLoop():
                 punto = True
                 #moveX_bola =  random.choice([1,-1])
                 #moveY_bola = random.choice([25,-25])
-            if  tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and tablero[pos_paleta1][1]<tablero[pos_bola][1]< (tablero[pos_paleta1][1]+50):
+            if  tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and tablero[pos_paleta1][1]<=tablero[pos_bola][1]<=(tablero[pos_paleta1][1]+seccion):
                 moveX_bola = 25
                 moveY_bola = -1
-            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+51) < tablero[pos_bola][1]<(tablero[pos_paleta1][1]+100):
+            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+seccion) < tablero[pos_bola][1]<=(tablero[pos_paleta1][1]+seccion*2):
                 moveX_bola = 25
                 moveY_bola = 0
-            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+101) <tablero[pos_bola][1]<(tablero[pos_paleta1][1]+150):
+            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+seccion*2) <tablero[pos_bola][1]<=(tablero[pos_paleta1][1]+seccion*3):
                 moveY_bola = 1
                 moveX_bola = 25
-            if  tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1]<tablero[pos_bola][1] < (tablero[pos_paleta2][1]+50):
+            if  tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1]<=tablero[pos_bola][1] <= (tablero[pos_paleta2][1]+seccion):
                 moveX_bola = -25
                 moveY_bola = -1
-            if tablero[pos_bola+25][0] == tablero[pos_paleta2 ][0] and (tablero[pos_paleta2][1]+50) < tablero[pos_bola][1]<(tablero[pos_paleta2][1]+100):
+            if tablero[pos_bola+25][0] == tablero[pos_paleta2 ][0] and (tablero[pos_paleta2][1]+seccion) < tablero[pos_bola][1]<=(tablero[pos_paleta2][1]+seccion*2):
                 moveX_bola = -25
                 moveY_bola = 0
-            if tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and (tablero[pos_paleta2][1]+101) <tablero[pos_bola][1]<(tablero[pos_paleta2][1]+150):
+            if tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and (tablero[pos_paleta2][1]+seccion*2) <tablero[pos_bola][1]<=(tablero[pos_paleta2][1]+seccion*3):
                 moveY_bola = 1
                 moveX_bola = -25
 
