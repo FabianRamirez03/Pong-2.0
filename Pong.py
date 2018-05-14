@@ -30,7 +30,7 @@ pos_paletaDual2_2 = 986
 
 
 #Textos
-tipografia_juego = pygame.font.Font("Comfortaa-Bold.ttf", 15)
+tipografia_juego = pygame.font.Font("Comfortaa-Bold.ttf", 30)
 
 def matriz(A,B,a,b):
     while a <= 820:
@@ -125,7 +125,7 @@ class Juego:
     def escoger_dificultad(self, dificultad):
     	print("Hola")
 
-Game = Juego(0,0,tablero,1,False)
+Game = Juego(0,0,tablero,1,True)
 
 def GameLoop():
     global pos_bola
@@ -246,6 +246,26 @@ def GameLoop():
             pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],ancho_bordes,grueso]) #Borde superior
             pygame.draw.rect(pantalla, blanco, [tablero[24][0], tablero[24][1], ancho_bordes, grueso]) #borde inferior
 
+            title = tipografia_juego.render("PONG", True, blanco, negro)
+            title_rect = title.get_rect()
+            title_rect.center = (420, 20)
+            pantalla.blit(title, title_rect)
+
+            marcador_1 = tipografia_juego.render(str(score1), True, blanco, negro)
+            Marc1_rect = marcador_1.get_rect()
+            Marc1_rect.center = (150, 20)
+            pantalla.blit(marcador_1, Marc1_rect)
+
+            marcador_2 = tipografia_juego.render(str(score2), True, blanco, negro)
+            Marc2_rect = marcador_2.get_rect()
+            Marc2_rect.center = (680, 20)
+            pantalla.blit(marcador_2, Marc2_rect)
+
+
+
+
+
+
             pygame.display.update()
             reloj.tick(FPS)
 
@@ -359,6 +379,21 @@ def GameLoop():
             pygame.draw.rect(pantalla,blanco,[tablero[pos_bola][0],tablero[pos_bola][1],grueso,grueso]) #Bola
             pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],ancho_bordes,grueso]) #Borde superior
             pygame.draw.rect(pantalla, blanco, [tablero[24][0], tablero[24][1], ancho_bordes, grueso]) #borde inferior
+
+            title = tipografia_juego.render("PONG", True, blanco, negro)
+            title_rect = title.get_rect()
+            title_rect.center = (420, 20)
+            pantalla.blit(title, title_rect)
+
+            marcador_1 = tipografia_juego.render(str(score1), True, blanco, negro)
+            Marc1_rect = marcador_1.get_rect()
+            Marc1_rect.center = (150, 20)
+            pantalla.blit(marcador_1, Marc1_rect)
+
+            marcador_2 = tipografia_juego.render(str(score2), True, blanco, negro)
+            Marc2_rect = marcador_2.get_rect()
+            Marc2_rect.center = (680, 20)
+            pantalla.blit(marcador_2, Marc2_rect)
 
             pygame.display.update()
             reloj.tick(FPS)
