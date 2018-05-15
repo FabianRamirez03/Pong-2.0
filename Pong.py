@@ -152,6 +152,7 @@ def GameLoop():
     move_p1 = 0
     move_p2 = 0
     punto = False
+    distancia_paletas = 0
 
 
     while not salir_juego:
@@ -311,10 +312,27 @@ def GameLoop():
 
             if dificultad == 1:
                 FPS = 10
+                largo_paletas = 180
+                borde_inferior1 = 15
+                borde_inferior2 = 990
+                seccion = 60
+                distancia_paletas = 11
+
             if dificultad == 2:
                 FPS = 15
+                largo_paletas = 120
+                borde_inferior1 = 18
+                borde_inferior2 = 993
+                seccion = 40
+                distancia_paletas = 8
+
             if dificultad == 3:
                 FPS = 20
+                largo_paletas = 60
+                borde_inferior1 = 21
+                borde_inferior2 = 996
+                seccion = 20
+                distancia_paletas = 4
 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -401,10 +419,10 @@ def GameLoop():
 
 
             pos_bola += moveY_bola + moveX_bola #Suma de indices para movimiento sobre la matriz
-            pos_paletaDual1_2 += move_p1
             pos_paletaDual1_1 += move_p1
+            pos_paletaDual1_2 = pos_paletaDual1_1 + distancia_paletas
             pos_paletaDual2_1 += move_p2
-            pos_paletaDual2_2 += move_p2
+            pos_paletaDual2_2 = pos_paletaDual2_1 + distancia_paletas
 
 
             pantalla.fill(negro)
