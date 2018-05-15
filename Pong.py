@@ -332,7 +332,7 @@ def GameLoop():
                 borde_inferior1 = 21
                 borde_inferior2 = 996
                 seccion = 20
-                distancia_paletas = 4
+                distancia_paletas = 6
 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -365,17 +365,17 @@ def GameLoop():
                 pos_paletaDual1_1 = 1
                 pos_paletaDual1_2 = 11
                 move_p1 = 0
-            if pos_paletaDual1_2 == 17:
-                pos_paletaDual1_2 = 16
-                pos_paletaDual1_1 = 5
+            if pos_paletaDual1_2 == borde_inferior1:
+                pos_paletaDual1_2 = borde_inferior1 - 1
+                pos_paletaDual1_1 = pos_paletaDual1_2 - distancia_paletas
                 move_p1 = 0
-            if pos_paletaDual2_1 == 975:
+            if pos_paletaDual2_1 == borde_inferior2:
                 pos_paletaDual2_1 = 976
                 pos_paletaDual2_2 = 986
                 move_p1 = 0
-            if pos_paletaDual2_2 == 992:
-                pos_paletaDual2_2 = 991
-                pos_paletaDual2_1 = 981
+            if pos_paletaDual2_2 == borde_inferior2:
+                pos_paletaDual2_2 = borde_inferior2 -1
+                pos_paletaDual2_1 = pos_paletaDual2_2 - distancia_paletas
                 move_p1 = 0
 
 
@@ -394,22 +394,53 @@ def GameLoop():
                 punto = True
                 #moveX_bola =  random.choice([1,-1])
                 #moveY_bola = random.choice([25,-25])
-            if  tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and tablero[pos_paleta1][1]<tablero[pos_bola][1]< (tablero[pos_paleta1][1]+50):
+
+            if  tablero[pos_bola][0] == tablero[pos_paletaDual1_1+25][0] and tablero[pos_paletaDual1_1][1]<=tablero[pos_bola][1]< (tablero[pos_paletaDual1_1][1]+seccion):
                 moveX_bola = 25
                 moveY_bola = -1
-            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+51) < tablero[pos_bola][1]<(tablero[pos_paleta1][1]+100):
+            if  tablero[pos_bola][0] == tablero[pos_paletaDual1_2+25][0] and tablero[pos_paletaDual1_2][1]<=tablero[pos_bola][1]< (tablero[pos_paletaDual1_2][1]+seccion):
+                moveX_bola = 25
+                moveY_bola = -1
+
+
+            if tablero[pos_bola][0] == tablero[pos_paletaDual1_1+25][0] and (tablero[pos_paletaDual1_1][1]+seccion) <= tablero[pos_bola][1]<(tablero[pos_paletaDual1_1][1]+seccion*2):
                 moveX_bola = 25
                 moveY_bola = 0
-            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+101) <tablero[pos_bola][1]<(tablero[pos_paleta1][1]+150):
+            if tablero[pos_bola][0] == tablero[pos_paletaDual1_2+25][0] and (tablero[pos_paletaDual1_2][1]+seccion) <= tablero[pos_bola][1]<(tablero[pos_paletaDual1_2][1]+seccion*2):
+                moveX_bola = 25
+                moveY_bola = 0
+
+
+            if tablero[pos_bola][0] == tablero[pos_paletaDual1_1+25][0] and (tablero[pos_paletaDual1_1][1]+seccion*2)<=tablero[pos_bola][1]<=(tablero[pos_paletaDual1_1][1]+seccion*3):
                 moveY_bola = 1
                 moveX_bola = 25
-            if  tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1]<tablero[pos_bola][1] < (tablero[pos_paleta2][1]+50):
+            if tablero[pos_bola][0] == tablero[pos_paletaDual1_2+25][0] and (tablero[pos_paletaDual1_2][1]+seccion*2)<=tablero[pos_bola][1]<=(tablero[pos_paletaDual1_2][1]+seccion*3):
+                moveY_bola = 1
+                moveX_bola = 25
+
+
+
+
+            if  tablero[pos_bola+25][0] == tablero[pos_paletaDual2_1][0] and tablero[pos_paletaDual2_1][1]<=tablero[pos_bola][1]< (tablero[pos_paletaDual2_1][1]+seccion):
                 moveX_bola = -25
                 moveY_bola = -1
-            if tablero[pos_bola+25][0] == tablero[pos_paleta2 ][0] and (tablero[pos_paleta2][1]+50) < tablero[pos_bola][1]<(tablero[pos_paleta2][1]+100):
+            if  tablero[pos_bola+25][0] == tablero[pos_paletaDual2_2][0] and tablero[pos_paletaDual2_2][1]<=tablero[pos_bola][1]< (tablero[pos_paletaDual2_2][1]+seccion):
+                moveX_bola = -25
+                moveY_bola = -1
+
+
+            if tablero[pos_bola+25][0] == tablero[pos_paletaDual2_1][0] and (tablero[pos_paletaDual2_1][1]+seccion) <= tablero[pos_bola][1]<(tablero[pos_paletaDual2_1][1]+seccion*2):
                 moveX_bola = -25
                 moveY_bola = 0
-            if tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and (tablero[pos_paleta2][1]+101) <tablero[pos_bola][1]<(tablero[pos_paleta2][1]+150):
+            if tablero[pos_bola+25][0] == tablero[pos_paletaDual2_2][0] and (tablero[pos_paletaDual2_2][1]+seccion) <= tablero[pos_bola][1]<(tablero[pos_paletaDual2_2][1]+seccion*2):
+                moveX_bola = -25
+                moveY_bola = 0
+
+
+            if tablero[pos_bola+25][0] == tablero[pos_paletaDual2_1][0] and (tablero[pos_paletaDual2_1][1]+seccion*2)<=tablero[pos_bola][1]<=(tablero[pos_paletaDual2_1][1]+seccion*3):
+                moveY_bola = 1
+                moveX_bola = -25
+            if tablero[pos_bola+25][0] == tablero[pos_paletaDual2_2][0] and (tablero[pos_paletaDual2_2][1]+seccion*2)<=tablero[pos_bola][1]<=(tablero[pos_paletaDual2_2][1]+seccion*3):
                 moveY_bola = 1
                 moveX_bola = -25
 
@@ -426,11 +457,11 @@ def GameLoop():
 
 
             pantalla.fill(negro)
-            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual1_1][0],tablero[pos_paletaDual1_1][1],ancho_paletas,largo_paletas-30])#paleta 1.1
-            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual1_2][0],tablero[pos_paletaDual1_2][1],ancho_paletas,largo_paletas-30])#paleta 1.2
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual1_1][0],tablero[pos_paletaDual1_1][1],ancho_paletas,largo_paletas])#paleta 1.1
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual1_2][0],tablero[pos_paletaDual1_2][1],ancho_paletas,largo_paletas])#paleta 1.2
 
-            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual2_1][0],tablero[pos_paletaDual2_1][1],ancho_paletas,largo_paletas-30])#paleta 2.1
-            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual2_2][0],tablero[pos_paletaDual2_2][1],ancho_paletas,largo_paletas-30])#paleta 2.2
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual2_1][0],tablero[pos_paletaDual2_1][1],ancho_paletas,largo_paletas])#paleta 2.1
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual2_2][0],tablero[pos_paletaDual2_2][1],ancho_paletas,largo_paletas])#paleta 2.2
 
             pygame.draw.rect(pantalla,blanco,[tablero[pos_bola][0],tablero[pos_bola][1],grueso,grueso]) #Bola
             pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],ancho_bordes,grueso]) #Borde superior
