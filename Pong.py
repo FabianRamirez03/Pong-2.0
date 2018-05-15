@@ -243,22 +243,22 @@ def GameLoop():
                 punto = True
                 #moveX_bola =  random.choice([1,-1])
                 #moveY_bola = random.choice([25,-25])
-            if  tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and tablero[pos_paleta1][1]<=tablero[pos_bola][1]<=(tablero[pos_paleta1][1]+seccion):
+            if  tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and tablero[pos_paleta1][1]<=tablero[pos_bola][1]<(tablero[pos_paleta1][1]+seccion):
                 moveX_bola = 25
                 moveY_bola = -1
-            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+seccion) < tablero[pos_bola][1]<=(tablero[pos_paleta1][1]+seccion*2):
+            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+seccion) <= tablero[pos_bola][1]<(tablero[pos_paleta1][1]+seccion*2):
                 moveX_bola = 25
                 moveY_bola = 0
-            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+seccion*2) <tablero[pos_bola][1]<=(tablero[pos_paleta1][1]+seccion*3):
+            if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+seccion*2) <= tablero[pos_bola][1]<=(tablero[pos_paleta1][1]+seccion*3):
                 moveY_bola = 1
                 moveX_bola = 25
-            if  tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1]<=tablero[pos_bola][1] <= (tablero[pos_paleta2][1]+seccion):
+            if  tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1]<=tablero[pos_bola][1] < (tablero[pos_paleta2][1]+seccion):
                 moveX_bola = -25
                 moveY_bola = -1
-            if tablero[pos_bola+25][0] == tablero[pos_paleta2 ][0] and (tablero[pos_paleta2][1]+seccion) < tablero[pos_bola][1]<=(tablero[pos_paleta2][1]+seccion*2):
+            if tablero[pos_bola+25][0] == tablero[pos_paleta2 ][0] and (tablero[pos_paleta2][1]+seccion) <= tablero[pos_bola][1]<(tablero[pos_paleta2][1]+seccion*2):
                 moveX_bola = -25
                 moveY_bola = 0
-            if tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and (tablero[pos_paleta2][1]+seccion*2) <tablero[pos_bola][1]<=(tablero[pos_paleta2][1]+seccion*3):
+            if tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and (tablero[pos_paleta2][1]+seccion*2) <= tablero[pos_bola][1]<=(tablero[pos_paleta2][1]+seccion*3):
                 moveY_bola = 1
                 moveX_bola = -25
 
