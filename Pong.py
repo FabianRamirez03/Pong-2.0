@@ -13,6 +13,7 @@ largo_paletas = 180
 salir_juego = False
 blanco = (255,255,255)
 negro = (0,0,0)
+verde = (0, 255, 0)
 reloj = pygame.time.Clock()
 FPS = 10 #define la velocidad del juego
 borde_inferior1 = 16
@@ -22,8 +23,6 @@ borde_inferior2 = 991
 borde_inferior2_2 = 990
 borde_inferior1_2 = 13
 seccion = 60
-play_again = False
-
 
 pantalla = pygame.display.set_mode((ancho_display,largo_display)) #pantalla del juego
 pygame.display.set_caption("Pong") #titulo de la ventana
@@ -63,6 +62,35 @@ def conseguir_posicion(i, matriz, x, y):  #Para uso de consola, solamente
     else:
         return "Error"
 
+def boton(pos_x, pos_y, ancho, alto, color_activo, color_inactivo, opcion):
+    P1_P2 = Game.getjugadores()
+    modo_juego = Game.getmodo()
+    dificultad = Game.getDificultad()
+    click = pygame.mouse.get_pressed()
+    mouse = pygame.mouse.get_pos()
+    if pos_x + ancho > mouse[0] > pos_x and pos_y + alto > mouse[1] > pos_y:
+        pygame.draw.rect(pantalla, color_activo, [pos_x,pos_y, ancho, alto])
+        if click[0] == 1:
+            if opcion == "P1 vs P2":
+                Game.setJugador(True)
+            if opcion == "P1 vs PC":
+                Game.setJugador(False)
+            if opcion == "Sencillo":
+                Game.setModo(True)
+            if opcion == "Doble":
+                Game.setModo(False)
+            if opcion == "1":
+                Game.setDificultad(1)
+            if opcion == "2":
+                Game.setDificultad(2)
+            if opcion == "3":
+                Game.setDificultad(3)
+            if opcion == "Aceptar":
+                Game.aceptar()
+
+    else:
+        pygame.draw.rect(pantalla, color_inactivo, [pos_x,pos_y, ancho, alto])
+
 
 tablero = matriz([],[],40,40)
 
@@ -95,46 +123,100 @@ Paleta2Dual_player2 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_pale
 
 class Juego:
 
-    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego):
-    	self.marcador_1 = marcador_1
-    	self.marcador_2 = marcador_2
-    	self.tablero = tablero
-    	self.dificultad = dificultad
-    	self.modo_juego = modo_juego
-	
+    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores):
+        self.marcador_1 = marcador_1
+        self.marcador_2 = marcador_2
+        self.tablero = tablero
+        self.dificultad = dificultad
+        self.modo_juego = modo_juego
+        self.jugadores = jugadores
+    
     def gettablero(self):
-    	return self.tablero
-	
+        return self.tablero
+    
     def getmarcador_1(self):
-    	return self.marcador_1
+        return self.marcador_1
 
-    def getmarcador_2(self):           #funciones para obtener atributos de la clase juego
-    	return self.marcador_2
+    def getmarcador_2(self):
+        return self.marcador_2
 
     def getDificultad(self):
         return self.dificultad
+
     def getmodo(self):
-	    return self.modo_juego
-    def gana_punto(self, posicion_x, posicion_y):
-    	if posicion_x > 1119:
-    		marcador_2 += 1
-    	if posicion_x < 10:
-    		marcador_1 += 1
+        return self.modo_juego
 
-    def ganador(self, marcador_1, marcador_2):
-        while dificultad <= 3:
-             if marcador_1 == 7 or marcador_2 == 7:
-                posicion_y = 375
-                posicion_x = 600
-                marcador_1 = 0
-                marcador_2 = 0
-                dificultad += 1
-                print ("Felicidades")
-	
-    def escoger_dificultad(self, dificultad):
-    	print("Hola")
+    def getjugadores(self):
+        return self.jugadores
 
-Game = Juego(0,0,tablero,1,True)
+    def aceptar(self):
+        print(Game.getmodo())
+        print(Game.getjugadores())
+        print(Game.getDificultad())
+        GameLoop()
+
+    def setJugador(self, boolean):
+        self.jugadores = boolean
+
+    def setDificultad(self, nuevaDificultad):
+        self.dificultad = nuevaDificultad
+
+    def setModo(self, nuevoModo):
+        self.modo_juego = nuevoModo
+
+Game = Juego(0,0,tablero,1,True, False)
+
+def Menu():
+    menu = True
+    while menu:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()      
+
+        pantalla.fill(blanco)
+        #pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],800,500])
+
+        tipografia = pygame.font.Font("Comfortaa-Bold.ttf", 60)
+
+        titulo = tipografia.render("PONG", True, negro, blanco)
+        titulo_rect = titulo.get_rect()
+        titulo_rect.center = (tablero[453][0],tablero[453][1])
+        pantalla.blit(titulo, titulo_rect)
+
+        tipografia_menor = pygame.font.Font("Comfortaa-Bold.ttf", 30)
+
+        modo_txt = tipografia_menor.render("Modo de juego:" + " "*13 + "P1 vs P2" + " "*13 + "P1 vs PC", True, negro, blanco)
+        modo_rect = modo_txt.get_rect()
+        modo_rect.center = (tablero[458][0], tablero[458][1])
+        pantalla.blit(modo_txt, modo_rect)
+
+        paletas_txt = tipografia_menor.render("Paletas:" + " "*26 + "1" + " "*13 + "2", True, negro, blanco)
+        paletas_rect = paletas_txt.get_rect()
+        paletas_rect.center = (tablero[336][0], tablero[336][1])
+        pantalla.blit(paletas_txt, paletas_rect)
+
+        dificultad_txt = tipografia_menor.render("Dificultad:" + " "*23 + "1" + " "*13 + "2" + " "*13 + "3", True, negro, blanco)
+        dificultad_rect = dificultad_txt.get_rect()
+        dificultad_rect.center = (tablero[414][0], tablero[414][1])
+        pantalla.blit(dificultad_txt, dificultad_rect)
+
+        aceptar_txt = tipografia_menor.render("Aceptar", True, blanco, negro)
+        aceptar_rect = aceptar_txt.get_rect()
+        aceptar_rect.center = (tablero[496][0], tablero[496][1])
+        boton(tablero[394][0], tablero[394][1], 180, 80, verde, negro, "Aceptar")
+        pantalla.blit(aceptar_txt, aceptar_rect)
+
+        boton(tablero[632][0],tablero[632][1], 30, 30, negro, verde, "P1 vs P2")
+        boton(tablero[932][0],tablero[932][1], 30, 30, negro, verde, "P1 vs PC")
+        boton(tablero[535][0],tablero[535][1], 30, 30, negro, verde, "Sencillo")
+        boton(tablero[685][0],tablero[685][1], 30, 30, negro, verde, "Doble")
+        boton(tablero[538][0],tablero[538][1], 30, 30, negro, verde, "1")
+        boton(tablero[688][0],tablero[688][1], 30, 30, negro, verde, "2")
+        boton(tablero[863][0],tablero[863][1], 30, 30, negro, verde, "3")
+
+        pygame.display.update()
+        reloj.tick(FPS)
 
 def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera mantenerse dentro
     global pos_bola
@@ -144,11 +226,11 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
     global pos_paletaDual1_2
     global pos_paletaDual2_1
     global pos_paletaDual2_2
-    global play_again
     score1 = Game.getmarcador_1() #solicita el dato de los marcadores de la clase juego
     score2 = Game.getmarcador_2()
     dificultad = Game.getDificultad()
     global salir_juego
+    jugador = Game.getjugadores()
     modo = Game.getmodo() #Si modo es true, habra dos paletas, en False sera dual
     moveX_bola = 25
     moveY_bola = 1
@@ -159,7 +241,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
     while not salir_juego:  #si no se cumple salir juego, sale y cierra la ventana
-        while not salir_juego and modo == True: #modo con solo una paleta y persona vs persona
+        while not salir_juego and modo == True and jugador == True: #modo con solo una paleta y persona vs persona
 
             pygame.display.update()
 
@@ -218,8 +300,8 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
 
-            if pos_paleta1 < 0: #rebotes de la bola
-                pos_paleta1 = 0
+            if pos_paleta1 == 0: #rebotes de la bola
+                pos_paleta1 = 1
                 move_p1 = 0
             if pos_paleta1 == borde_inferior1:
                 pos_paleta1 = borde_inferior1-1
@@ -238,11 +320,11 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             if tablero[pos_bola][1] == 500:
                 moveY_bola = -1
             if tablero[pos_bola][0] == 40:
-                score2 += 1
+                score1 += 1
                 pos_bola = 461
                 punto = True
             if tablero[pos_bola][0] == 820:
-                score1 += 1
+                score2 += 1
                 pos_bola = 461
                 punto = True
                 #moveX_bola =  random.choice([1,-1])
@@ -306,60 +388,12 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 #_____________________________________________________________________________________________________________________________________________________________________________________
 
-        while not salir_juego and modo == False: #modo dual con dificultad minima
+        while not salir_juego and modo == False and jugador == True: #modo dual con dificultad minima
             pygame.display.update()
 
             if punto == True:
-                if score2  < 3 and score1 < 3:
-                    time.sleep(1)
-                    punto = False
-                else:
-                    if score1 > score2:
-                        pantalla.fill(negro)
-                        pygame.display.update()
-                        ganador = tipografia_juego.render("Felicidades jugador UNO", True, blanco, negro)
-                        ganador_rect = ganador.get_rect()
-                        ganador_rect.center = (300, 300)
-                        pantalla.blit(ganador, ganador_rect)
-                        pygame.display.update()
-                        time.sleep(1)
-                        punto = False
-                        play_again = True
-
-
-                    else:
-                        pantalla.fill(negro)
-                        pygame.display.update()
-
-            while play_again == True and not salir_juego:
-                pantalla.fill(negro)
-                volver =  tipografia_juego.render("Querés volver a jugar? Presioná SPACE. y ESC si querés salir", True, blanco, negro)
-                volver_rect = volver.get_rect()
-                volver_rect.center = (200, 100)
-                pantalla.blit(volver, volver_rect)
-                pygame.display.update()
-                for event in pygame.event.get():
-                    print(event)
-                    if event.type == pygame.QUIT:
-
-                        salir_juego = True
-
-
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_SPACE:
-                            score2 = 0
-                            score1 = 0
-                            play_again = False
-                        if event.key == pygame.K_ESCAPE:
-                            salir_juego = True
-
-
-
-
-
-
-
-
+                time.sleep(1)
+                punto = False
 
             if dificultad == 1:
                 FPS = 10
@@ -420,7 +454,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 pos_paletaDual1_2 = borde_inferior1 - 1
                 pos_paletaDual1_1 = pos_paletaDual1_2 - distancia_paletas
                 move_p1 = 0
-            if pos_paletaDual2_1 == 975:
+            if pos_paletaDual2_1 == borde_inferior2:
                 pos_paletaDual2_1 = 976
                 pos_paletaDual2_2 = 986
                 move_p1 = 0
@@ -439,12 +473,13 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 print("Punto 1")
                 pos_bola = 461
                 punto = True
-                score1 += 1
+                score2 += 1
+
             if tablero[pos_bola][0] == 820:
                 print("Punto 2")
                 pos_bola = 461
                 punto = True
-                score2 += 1
+                score1 += 1
                 #moveX_bola =  random.choice([1,-1])
                 #moveY_bola = random.choice([25,-25])
 
@@ -549,14 +584,4 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
 
-GameLoop()
-
-
-    
-
-
-
-
-
-
-
+Menu()
