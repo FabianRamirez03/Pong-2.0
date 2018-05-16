@@ -230,6 +230,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
     score2 = Game.getmarcador_2()
     dificultad = Game.getDificultad()
     global salir_juego
+    jugador = Game.getjugadores()
     modo = Game.getmodo() #Si modo es true, habra dos paletas, en False sera dual
     moveX_bola = 25
     moveY_bola = 1
@@ -240,7 +241,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
     while not salir_juego:  #si no se cumple salir juego, sale y cierra la ventana
-        while not salir_juego and modo == True: #modo con solo una paleta y persona vs persona
+        while not salir_juego and modo == True and jugador == True: #modo con solo una paleta y persona vs persona
 
             pygame.display.update()
 
@@ -387,7 +388,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 #_____________________________________________________________________________________________________________________________________________________________________________________
 
-        while not salir_juego and modo == False: #modo dual con dificultad minima
+        while not salir_juego and modo == False and jugador == True: #modo dual con dificultad minima
             pygame.display.update()
 
             if punto == True:
@@ -472,10 +473,13 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 print("Punto 1")
                 pos_bola = 461
                 punto = True
+                score2 += 1
+
             if tablero[pos_bola][0] == 820:
                 print("Punto 2")
                 pos_bola = 461
                 punto = True
+                score1 += 1
                 #moveX_bola =  random.choice([1,-1])
                 #moveY_bola = random.choice([25,-25])
 

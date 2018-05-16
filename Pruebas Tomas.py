@@ -460,10 +460,12 @@ def GameLoop():
                 print("Punto 1")
                 pos_bola = 461
                 punto = True
+                score2 += 1
             if tablero[pos_bola][0] == 820:
                 print("Punto 2")
                 pos_bola = 461
                 punto = True
+                score1 += 1
                 #moveX_bola =  random.choice([1,-1])
                 #moveY_bola = random.choice([25,-25])
             if  tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and tablero[pos_paleta1][1]<tablero[pos_bola][1]< (tablero[pos_paleta1][1]+50):

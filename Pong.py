@@ -439,12 +439,12 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 print("Punto 1")
                 pos_bola = 461
                 punto = True
-                score2 += 1
+                score1 += 1
             if tablero[pos_bola][0] == 820:
                 print("Punto 2")
                 pos_bola = 461
                 punto = True
-                score1 += 1
+                score2 += 1
                 #moveX_bola =  random.choice([1,-1])
                 #moveY_bola = random.choice([25,-25])
 
