@@ -255,7 +255,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 seccion = 60
             if dificultad == 2:
                 FPS = 15
-                largo_paletas = 120
+                largo_paletas = 120  #En caso de aumentar los fps aumentan, haciendo que visualmente sea más rapido
                 borde_inferior1 = 18
                 borde_inferior2 = 993
                 seccion = 40
