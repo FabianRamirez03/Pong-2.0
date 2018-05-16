@@ -79,9 +79,9 @@ def boton(pos_x, pos_y, ancho, alto, color_activo, color_inactivo, opcion):
 			if opcion == "P1 vs PC":
 				Game.setJugador(False)
 			if opcion == "Sencillo":
-				Game.setModo(False)
-			if opcion == "Doble":
 				Game.setModo(True)
+			if opcion == "Doble":
+				Game.setModo(False)
 			if opcion == "1":
 				Game.setDificultad(1)
 			if opcion == "2":
@@ -90,9 +90,6 @@ def boton(pos_x, pos_y, ancho, alto, color_activo, color_inactivo, opcion):
 				Game.setDificultad(3)
 			if opcion == "Aceptar":
 				Game.aceptar()
-				#print(P1_P2)
-				print(Game.getmodo())
-				print(Game.getDificultad())
 
 	else:
 		pygame.draw.rect(pantalla, color_inactivo, [pos_x,pos_y, ancho, alto])
@@ -155,24 +152,11 @@ class Juego:
     def getjugadores(self):
 	    return self.jugadores
 
-	def gana_punto(self, posicion_x, posicion_y):
-		if posicion_x > 1119:
-			marcador_2 += 1
-		if posicion_x < 10:
-			marcador_1 += 1
-
-    def ganador(self, marcador_1, marcador_2):
-        while dificultad <= 3:
-             if marcador_1 == 7 or marcador_2 == 7:
-                posicion_y = 375
-                posicion_x = 600
-                marcador_1 = 0
-                marcador_2 = 0
-                dificultad += 1
-                print ("Felicidades")
-
     def aceptar(self):
-    	GameLoop()
+        print(Game.getmodo())
+        print(Game.getjugadores())
+        print(Game.getDificultad())
+        GameLoop()
 
     def setJugador(self, boolean):
     	self.jugadores = boolean
@@ -183,8 +167,6 @@ class Juego:
     def setModo(self, nuevoModo):
     	self.modo_juego = nuevoModo
 	
-    def escoger_dificultad(self, dificultad):
-    	print("Hola")
 
 Game = Juego(0,0,tablero,1,True, False)
 
@@ -248,11 +230,13 @@ def GameLoop():
     global pos_paletaDual1_2
     global pos_paletaDual2_1
     global pos_paletaDual2_2
+    global largo_paletas
     score1 = Game.getmarcador_1()
     score2 = Game.getmarcador_2()
     dificultad = Game.getDificultad()
     global salir_juego
     modo = Game.getmodo() #Si modo es true, habra dos paletas, en False sera dual
+    jugadores = Game.getjugadores()
     moveX_bola = 25
     moveY_bola = 1
     move_p1 = 0
