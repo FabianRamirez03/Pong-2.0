@@ -66,43 +66,37 @@ def conseguir_posicion(i, matriz, x, y):  #Para uso de consola, solamente
         return "Error"
 
 def boton(pos_x, pos_y, ancho, alto, color_activo, color_inactivo, opcion):
-	global P1_P2
-	global modo_juego
-	global dificultad
+	P1_P2 = Game.getjugadores()
+	modo_juego = Game.getmodo()
+	dificultad = Game.getDificultad()
 	click = pygame.mouse.get_pressed()
 	mouse = pygame.mouse.get_pos()
 	if pos_x + ancho > mouse[0] > pos_x and pos_y + alto > mouse[1] > pos_y:
 		pygame.draw.rect(pantalla, color_activo, [pos_x,pos_y, ancho, alto])
 		if click[0] == 1:
 			if opcion == "P1 vs P2":
-				P1_P2 = True
+				Game.setJugador(True)
 			if opcion == "P1 vs PC":
-				P1_P2 = False
+				Game.setJugador(False)
 			if opcion == "Sencillo":
-				modo_juego = False
+				Game.setModo(False)
 			if opcion == "Doble":
-				modo_juego = True
+				Game.setModo(True)
 			if opcion == "1":
-				dificultad = 1
+				Game.setDificultad(1)
 			if opcion == "2":
-				dificultad = 2
+				Game.setDificultad(2)
 			if opcion == "3":
-				dificultad = 3
+				Game.setDificultad(3)
 			if opcion == "Aceptar":
-				aceptar()
-			print(P1_P2)
-			print(modo_juego)
-			print(dificultad)
-
-
+				Game.aceptar()
+				#print(P1_P2)
+				print(Game.getmodo())
+				print(Game.getDificultad())
 
 	else:
 		pygame.draw.rect(pantalla, color_inactivo, [pos_x,pos_y, ancho, alto])
 
-def aceptar():
-	global modo_juego
-	global dificultad
-	GameLoop()
 
 tablero = matriz([],[],40,40)
 
@@ -135,12 +129,13 @@ Paleta2Dual_player2 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_pale
 
 class Juego:
 
-    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego):
+    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores):
     	self.marcador_1 = marcador_1
     	self.marcador_2 = marcador_2
     	self.tablero = tablero
     	self.dificultad = dificultad
     	self.modo_juego = modo_juego
+    	self.jugadores = jugadores
 	
     def gettablero(self):
     	return self.tablero
@@ -153,13 +148,18 @@ class Juego:
 
     def getDificultad(self):
         return self.dificultad
+
     def getmodo(self):
 	    return self.modo_juego
-    def gana_punto(self, posicion_x, posicion_y):
-    	if posicion_x > 1119:
-    		marcador_2 += 1
-    	if posicion_x < 10:
-    		marcador_1 += 1
+
+    def getjugadores(self):
+	    return self.jugadores
+
+	def gana_punto(self, posicion_x, posicion_y):
+		if posicion_x > 1119:
+			marcador_2 += 1
+		if posicion_x < 10:
+			marcador_1 += 1
 
     def ganador(self, marcador_1, marcador_2):
         while dificultad <= 3:
@@ -170,11 +170,23 @@ class Juego:
                 marcador_2 = 0
                 dificultad += 1
                 print ("Felicidades")
+
+    def aceptar(self):
+    	GameLoop()
+
+    def setJugador(self, boolean):
+    	self.jugadores = boolean
+
+    def setDificultad(self, nuevaDificultad):
+    	self.dificultad = nuevaDificultad
+
+    def setModo(self, nuevoModo):
+    	self.modo_juego = nuevoModo
 	
     def escoger_dificultad(self, dificultad):
     	print("Hola")
 
-Game = Juego(0,0,tablero,1,True)
+Game = Juego(0,0,tablero,1,True, False)
 
 def Menu():
 	menu = True
@@ -227,6 +239,7 @@ def Menu():
 
 		pygame.display.update()
 		reloj.tick(FPS)
+
 def GameLoop():
     global pos_bola
     global pos_paleta1
@@ -237,9 +250,9 @@ def GameLoop():
     global pos_paletaDual2_2
     score1 = Game.getmarcador_1()
     score2 = Game.getmarcador_2()
-    #dificultad = Game.getDificultad()
+    dificultad = Game.getDificultad()
     global salir_juego
-    #modo = Game.getmodo() #Si modo es true, habra dos paletas, en False sera dual
+    modo = Game.getmodo() #Si modo es true, habra dos paletas, en False sera dual
     moveX_bola = 25
     moveY_bola = 1
     move_p1 = 0
