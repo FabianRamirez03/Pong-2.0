@@ -14,17 +14,17 @@ salir_juego = False
 blanco = (255,255,255)
 negro = (0,0,0)
 reloj = pygame.time.Clock()
-FPS = 10
+FPS = 10 #define la velocidad del juego
 borde_inferior1 = 16
 borde1_1 = 10
-borde2_1 = 10
+borde2_1 = 10                       #posiciones en la matriz
 borde_inferior2 = 991
 borde_inferior2_2 = 990
 borde_inferior1_2 = 13
 seccion = 60
 
-pantalla = pygame.display.set_mode((ancho_display,largo_display))
-pygame.display.set_caption("Pong")
+pantalla = pygame.display.set_mode((ancho_display,largo_display)) #pantalla del juego
+pygame.display.set_caption("Pong") #titulo de la ventana
 
 #Posiciones
 pos_bola = 268
@@ -37,9 +37,9 @@ pos_paletaDual2_2 = 987
 
 
 #Textos
-tipografia_juego = pygame.font.Font("Comfortaa-Bold.ttf", 30)
+tipografia_juego = pygame.font.Font("Comfortaa-Bold.ttf", 30) #fuente de texto para el juego
 
-def matriz(A,B,a,b):
+def matriz(A,B,a,b): #funcion generadora de la matriz
     while a <= 820:
         while b <= 520:
             A += [[a,b]]
@@ -64,13 +64,13 @@ def conseguir_posicion(i, matriz, x, y):  #Para uso de consola, solamente
 
 tablero = matriz([],[],40,40)
 
-class Cuadrilateros:
+class Cuadrilateros: #clase cuadrilateros, donde se definen las paletas, la bola y los bordes
     def __init__(self, largo, ancho, posicion):
         self.largo = largo
         self.ancho = ancho
         self.posicion = posicion
 
-    def getLargo(self):
+    def getLargo(self):  #funciones para obtener los atributos de cada instancia de la clase
         return self.largo
     def getAncho(self):
         return self.ancho
@@ -79,13 +79,13 @@ class Cuadrilateros:
 
 
 
-Bola = Cuadrilateros(grueso,grueso,tablero[pos_bola])
+Bola = Cuadrilateros(grueso,grueso,tablero[pos_bola])  #instancias de la clase cuadrilateros
 Borde_Superior = Cuadrilateros(grueso,ancho_bordes,tablero[0])
 Borde_Inferior = Cuadrilateros(grueso,ancho_bordes,tablero[24])
 Paleta_Player1 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paleta1])
 Paleta_Player2 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paleta2])
 Paleta1Dual_player1 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paletaDual1_1])
-Paleta2Dual_player1 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paletaDual1_1])
+Paleta2Dual_player1 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paletaDual1_1]) #un total de 6 paletas
 Paleta1Dual_player2 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paletaDual2_1])
 Paleta2Dual_player2 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_paletaDual2_2])
 
@@ -106,7 +106,7 @@ class Juego:
     def getmarcador_1(self):
     	return self.marcador_1
 
-    def getmarcador_2(self):
+    def getmarcador_2(self):           #funciones para obtener atributos de la clase juego
     	return self.marcador_2
 
     def getDificultad(self):
@@ -134,7 +134,7 @@ class Juego:
 
 Game = Juego(0,0,tablero,1,True)
 
-def GameLoop():
+def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera mantenerse dentro
     global pos_bola
     global pos_paleta1
     global pos_paleta2
@@ -142,7 +142,7 @@ def GameLoop():
     global pos_paletaDual1_2
     global pos_paletaDual2_1
     global pos_paletaDual2_2
-    score1 = Game.getmarcador_1()
+    score1 = Game.getmarcador_1() #solicita el dato de los marcadores de la clase juego
     score2 = Game.getmarcador_2()
     dificultad = Game.getDificultad()
     global salir_juego
@@ -155,12 +155,12 @@ def GameLoop():
     distancia_paletas = 0
 
 
-    while not salir_juego:
+    while not salir_juego:  #si no se cumple salir juego, sale y cierra la ventana
         while not salir_juego and modo == True: #modo con solo una paleta y persona vs persona
 
             pygame.display.update()
 
-            if dificultad == 1:
+            if dificultad == 1:   #define las velocidades y los tamaños de las paletas segùn la dificultad
                 FPS = 10
                 largo_paletas = 180
                 borde_inferior1 = 15
@@ -180,11 +180,11 @@ def GameLoop():
                 borde_inferior2 = 996
                 seccion = 20
 
-            if punto == True:
+            if punto == True: #le da una pausa al movimiento de la bola cada vez que se genera un punto
                 time.sleep(1)
                 punto = False
 
-            for event in pygame.event.get():
+            for event in pygame.event.get(): #movimiento de los jugadores.
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s:
                         move_p1 = 1
@@ -194,7 +194,7 @@ def GameLoop():
                         move_p2 = -1
                     if event.key == pygame.K_DOWN:
                         move_p2 = 1
-                if event.type == pygame.KEYUP:
+                if event.type == pygame.KEYUP: #debe mantenerse presionado el boton para que el movimiento se de
                     if event.key == pygame.K_s:
                         move_p1 = 0
                     if event.key == pygame.K_w:
@@ -211,11 +211,11 @@ def GameLoop():
 
 
                 if event.type == pygame.QUIT:
-                    salir_juego = True
+                    salir_juego = True         #si el usuario sale de la ventana, se finaliza el programa
 
 
 
-            if pos_paleta1 == 0:
+            if pos_paleta1 == 0: #rebotes de la bola
                 pos_paleta1 = 1
                 move_p1 = 0
             if pos_paleta1 == borde_inferior1:
