@@ -23,6 +23,9 @@ borde_inferior2 = 991
 borde_inferior2_2 = 990
 borde_inferior1_2 = 13
 seccion = 60
+reacciona = 400
+colores = [(0,0,0), "nada",(0,255,0)]
+setclor = 1
 
 pantalla = pygame.display.set_mode((ancho_display,largo_display)) #pantalla del juego
 pygame.display.set_caption("Pong") #titulo de la ventana
@@ -71,28 +74,56 @@ def boton(pos_x, pos_y, ancho, alto, color_activo, color_inactivo, opcion):
     dificultad = Game.getDificultad()
     click = pygame.mouse.get_pressed()
     mouse = pygame.mouse.get_pos()
-    if pos_x + ancho > mouse[0] > pos_x and pos_y + alto > mouse[1] > pos_y:
-        pygame.draw.rect(pantalla, color_activo, [pos_x,pos_y, ancho, alto])
-        if click[0] == 1:
-            if opcion == "P1 vs P2":
-                Game.setJugador(True)
-            if opcion == "P1 vs PC":
-                Game.setJugador(False)
-            if opcion == "Sencillo":
-                Game.setModo(True)
-            if opcion == "Doble":
-                Game.setModo(False)
-            if opcion == "1":
-                Game.setDificultad(1)
-            if opcion == "2":
-                Game.setDificultad(2)
-            if opcion == "3":
-                Game.setDificultad(3)
-            if opcion == "Aceptar":
-                Game.aceptar()
-
+    if opcion == "Regresar":
+        Menu()
     else:
-        pygame.draw.rect(pantalla, color_inactivo, [pos_x,pos_y, ancho, alto])
+        if pos_x + ancho > mouse[0] > pos_x and pos_y + alto > mouse[1] > pos_y:
+            pygame.draw.rect(pantalla, color_activo, [pos_x,pos_y, ancho, alto])
+            if click[0] == 1:
+                if opcion == "P1 vs P2":
+                    Game.setJugador(True)
+                if opcion == "P1 vs PC":
+                    Game.setJugador(False)
+                if opcion == "Sencillo":
+                    Game.setModo(True)
+                if opcion == "Doble":
+                    Game.setModo(False)
+                if opcion == "1":
+                    Game.setDificultad(1)
+                if opcion == "2":
+                    Game.setDificultad(2)
+                if opcion == "3":
+                    Game.setDificultad(3)
+                if opcion == "Aceptar":
+                    Game.aceptar()
+
+        if dificultad == 1:
+            pygame.draw.rect(pantalla, negro, [tablero[538][0], tablero[538][1], 30, 30])
+            pygame.draw.rect(pantalla, verde, [tablero[688][0], tablero[688][1], 30, 30])
+            pygame.draw.rect(pantalla, verde, [tablero[863][0], tablero[863][1], 30, 30])
+        if dificultad == 2:
+            pygame.draw.rect(pantalla, verde, [tablero[538][0], tablero[538][1], 30, 30])
+            pygame.draw.rect(pantalla, negro, [tablero[688][0], tablero[688][1], 30, 30])
+            pygame.draw.rect(pantalla, verde, [tablero[863][0], tablero[863][1], 30, 30])
+        if dificultad == 3:
+            pygame.draw.rect(pantalla, verde, [tablero[538][0], tablero[538][1], 30, 30])
+            pygame.draw.rect(pantalla, verde, [tablero[688][0], tablero[688][1], 30, 30])
+            pygame.draw.rect(pantalla, negro, [tablero[863][0], tablero[863][1], 30, 30])
+        if P1_P2 == False:
+            pygame.draw.rect(pantalla, negro, [tablero[632][0], tablero[632][1], 30, 30])
+            pygame.draw.rect(pantalla, verde, [tablero[932][0], tablero[932][1], 30, 30])
+        if P1_P2 == False:
+            pygame.draw.rect(pantalla, verde, [tablero[632][0], tablero[632][1], 30, 30])
+            pygame.draw.rect(pantalla, negro, [tablero[932][0], tablero[932][1], 30, 30])
+        if modo_juego == False:
+            pygame.draw.rect(pantalla, verde, [tablero[535][0], tablero[535][1], 30, 30])
+            pygame.draw.rect(pantalla, negro, [tablero[685][0], tablero[685][1], 30, 30])
+        if modo_juego == True:
+            pygame.draw.rect(pantalla, negro, [tablero[535][0], tablero[535][1], 30, 30])
+            pygame.draw.rect(pantalla, verde, [tablero[685][0], tablero[685][1], 30, 30])
+
+        else:
+            pygame.draw.rect(pantalla, color_inactivo, [pos_x,pos_y, ancho, alto])
 
 
 tablero = matriz([],[],40,40)
@@ -171,6 +202,7 @@ Game = Juego(0,0,tablero,1,True, False) #Instancia de la clase Juego, define los
 
 def Menu(): #Este es el ciclo de inicio para que el usuario definar las variables.
     menu = True
+    dificultad = Game.getDificultad()
     while menu:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -210,6 +242,8 @@ def Menu(): #Este es el ciclo de inicio para que el usuario definar las variable
         boton(tablero[394][0], tablero[394][1], 180, 80, verde, negro, "Aceptar")
         pantalla.blit(aceptar_txt, aceptar_rect)
 
+
+
         boton(tablero[632][0],tablero[632][1], 30, 30, negro, verde, "P1 vs P2")
         boton(tablero[932][0],tablero[932][1], 30, 30, negro, verde, "P1 vs PC")
         boton(tablero[535][0],tablero[535][1], 30, 30, negro, verde, "Sencillo")
@@ -233,6 +267,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
     score2 = Game.getmarcador_2()
     dificultad = Game.getDificultad()
     global salir_juego
+    global reacciona
     jugador = Game.getjugadores()
     modo = Game.getmodo() #Si modo es true, habra dos paletas, en False sera dual
     moveX_bola = 25
@@ -611,13 +646,15 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 largo_paletas = 180
                 borde_inferior1 = 15
                 borde_inferior2 = 990
-                seccion = 60
+                seccion = 660
+                reacciona =  650
             if dificultad == 2:
                 FPS = 15
                 largo_paletas = 120
                 borde_inferior1 = 18
                 borde_inferior2 = 993
                 seccion = 40
+                reacciona = 510
 
             if dificultad == 3:
                 FPS = 20
@@ -625,6 +662,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 borde_inferior1 = 21
                 borde_inferior2 = 996
                 seccion = 20
+                reacciona = 420
 
             if punto == True: #le da una pausa al movimiento de la bola cada vez que se genera un punto
                 time.sleep(1)
@@ -656,7 +694,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
 
-            if pos_paleta1 == 0: #rebotes de la bola
+            if pos_paleta1 == 0: #rebotes de las paletas
                 pos_paleta1 = 1
                 move_p1 = 0
             if pos_paleta1 == borde_inferior1:
@@ -671,7 +709,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
 
-            if tablero[pos_bola][1] == 60:
+            if tablero[pos_bola][1] == 60: #rebotes de bola en los bordes
                 moveY_bola = 1
                 sound_bordes.play()
             if tablero[pos_bola][1] == 500:
@@ -699,6 +737,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 moveY_bola = 1
                 moveX_bola = 25
                 sound_paletas.play()
+
             if  tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1]<=tablero[pos_bola][1] < (tablero[pos_paleta2][1]+seccion):
                 moveX_bola = -25
                 moveY_bola = -1
@@ -718,7 +757,8 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             pos_bola += moveY_bola + moveX_bola
             pos_paleta1 += move_p1
 
-            if moveX_bola > 0 and tablero[pos_bola][0]>300:
+            if moveX_bola > 0 and tablero[pos_bola][0]>reacciona:
+                print("reacciona")
                 if moveY_bola == 0 and tablero[pos_bola][1] != tablero[pos_paleta2][1] and tablero[pos_bola][0] > 500:
                     if tablero[pos_bola][1] < tablero[pos_paleta2][1]:
                         pos_paleta2 += -1
@@ -783,6 +823,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 borde_inferior2 = 990
                 seccion = 60
                 distancia_paletas = 11
+                reacciona = 640
 
             if dificultad == 2:
                 FPS = 15
@@ -791,6 +832,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 borde_inferior2 = 993
                 seccion = 40
                 distancia_paletas = 8
+                reacciona = 540
 
             if dificultad == 3:
                 FPS = 20
@@ -799,6 +841,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 borde_inferior2 = 996
                 seccion = 20
                 distancia_paletas = 6
+                reacciona = 420
 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -929,7 +972,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
 
-            if moveX_bola > 0 and tablero[pos_bola][0]>400:
+            if moveX_bola > 0 and tablero[pos_bola][0]>reacciona:
                 if moveY_bola == 0 and tablero[pos_bola][1] != tablero[pos_paleta2][1] and tablero[pos_bola][0] > 500:
                     if tablero[pos_bola][1] < tablero[pos_paleta2][1]:
                         pos_paletaDual2_1 += -1
@@ -972,9 +1015,13 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
 
+            boton(tablero[863][0], tablero[863][1], 50, 30, verde, verde, "Regresar")
+
             pygame.display.update()
             reloj.tick(FPS)
-#_____________________________________________________________________________________________________________________________________________________________________________________________
+
+
+        #_____________________________________________________________________________________________________________________________________________________________________________________________
     exit()
 
 
