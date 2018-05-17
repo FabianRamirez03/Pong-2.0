@@ -61,7 +61,9 @@ def conseguir_posicion(i, matriz, x, y):  #Para uso de consola, solamente
             return conseguir_posicion(i + 1, matriz, x, y)
     else:
         return "Error"
-
+'''La funcion boton se encarga de definir las variables que distinguen a cada modo de juego.
+Esta funcion trabaja en el menu de inicio, de manera interna y el usuario escoge las opciones
+del modo de juego. Al final llama al ciclo para correr el juego.'''
 def boton(pos_x, pos_y, ancho, alto, color_activo, color_inactivo, opcion):
     P1_P2 = Game.getjugadores()
     modo_juego = Game.getmodo()
