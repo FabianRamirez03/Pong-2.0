@@ -61,6 +61,7 @@ def conseguir_posicion(i, matriz, x, y):  #Para uso de consola, solamente
             return conseguir_posicion(i + 1, matriz, x, y)
     else:
         return "Error"
+
 '''La funcion boton se encarga de definir las variables que distinguen a cada modo de juego.
 Esta funcion trabaja en el menu de inicio, de manera interna y el usuario escoge las opciones
 del modo de juego. Al final llama al ciclo para correr el juego.'''
@@ -151,7 +152,7 @@ class Juego:
     def getjugadores(self):
         return self.jugadores
 
-    def aceptar(self):
+    def aceptar(self): #Esta funcion esta ligada al boton aceptar y llama el ciclo del juego con las variables definidas por el usuario
         print(Game.getmodo())
         print(Game.getjugadores())
         print(Game.getDificultad())
@@ -166,9 +167,9 @@ class Juego:
     def setModo(self, nuevoModo):
         self.modo_juego = nuevoModo
 
-Game = Juego(0,0,tablero,1,True, False)
+Game = Juego(0,0,tablero,1,True, False) #Instancia de la clase Juego, define los argumentos de Pong.
 
-def Menu():
+def Menu(): #Este es el ciclo de inicio para que el usuario definar las variables.
     menu = True
     while menu:
         for event in pygame.event.get():
