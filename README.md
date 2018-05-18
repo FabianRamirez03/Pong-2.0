@@ -24,4 +24,10 @@ Dia 6 13/05/18 3h.
 Se definio un segundo loop para el menu de inicio que define las variables para el modo de juego, la dificultad y los jugadores. Ademas, se trabaja la interfaz del menu. Se crea el método getModo en la clase juego para solicitar si serán una o dos paletas. Además de agregado el modo dual con sus respectivas colisiones. Tambien se agrega la tipografía que utilizarán los textos dentro del juego. Con esto se agrega el titulo y los marcadores dentro del juego. Se crea la función botón para la selección de modalidades dentro del menú. Se arreglan diversos bugs relacionados con los bordes y sus respectivas colisiones. Se adelanta la documentación interna del código. 
 
 Dia 7 14/05/18 4h.
-Se continua el menu de inicio. Los botones aun no quedan de color diferente al ser seleccionados pero ya definen las funciones y llaman a la clase de juego indicada. Se junta el codigo del menu con el oficial.
+Se continua el menu de inicio. Los botones aun no quedan de color diferente al ser seleccionados pero ya definen las funciones y llaman a la clase de juego indicada. Se junta el codigo del menu con el oficial. Se crean las funciones para los diferentes niveles de dificultad, incluyendo las colisiones dependiendo del tamaño de la paleta y su respectiva sección. Se hacen mejoras a las colisiones, al menú y arreglos de bugs varios. Arreglado error para que la distancia entre paletas del modo dual sea proporcional al tamaño de cada paleta. 
+
+Día 8 15/05/18.
+Hechas las colisiones de las paletas con los bordes en el modo dual, además de los rebotes de la bola con sus respectivas direcciones. Arreglo de algunos errores en el menú y diversas mejoras. Además de avanzar con la documentación interna del código. Se fusiona el código del juego junto con el código del menú. 
+
+Día 9 16/05/18.
+Se agrega la verificación en caso de que el usuario quiera jugar contra la computadora o contra otro jugador. Se agregan sonidos a los rebotes, tanto para cuando la pelota pega contra una paleta como cuando sucede con uno de los bordes.  Se comenta gran parte del código. Además de notables mejoras en la función botón.
