@@ -26,6 +26,7 @@ seccion = 60
 reacciona = 400
 colores = [(0,0,0), "nada",(0,255,0)]
 setclor = 1
+tipografia_menor = pygame.font.Font("Comfortaa-Bold.ttf", 30)
 
 pantalla = pygame.display.set_mode((ancho_display,largo_display)) #pantalla del juego
 pygame.display.set_caption("Pong") #titulo de la ventana
@@ -68,65 +69,88 @@ def conseguir_posicion(i, matriz, x, y):  #Para uso de consola, solamente
 '''La funcion boton se encarga de definir las variables que distinguen a cada modo de juego.
 Esta funcion trabaja en el menu de inicio, de manera interna y el usuario escoge las opciones
 del modo de juego. Al final llama al ciclo para correr el juego.'''
-def boton(pos_x, pos_y, ancho, alto, color_activo, color_inactivo, opcion):
+def boton(pos_x, pos_y, ancho, alto, opcion):
+    pygame.draw.rect(pantalla, verde, [tablero[394][0], tablero[394][1], 180, 80])
+    aceptar_txt = tipografia_menor.render("ACEPTAR", True, blanco, verde)
+    aceptar_rect = aceptar_txt.get_rect()
+    aceptar_rect.center = (tablero[496][0], tablero[496][1])
+    pantalla.blit(aceptar_txt, aceptar_rect)
+    
+
     P1_P2 = Game.getjugadores()
     modo_juego = Game.getmodo()
     dificultad = Game.getDificultad()
     click = pygame.mouse.get_pressed()
     mouse = pygame.mouse.get_pos()
-    if opcion == "Regresar":
-        Menu()
+
+    if pos_x + ancho > mouse[0] > pos_x and pos_y + alto > mouse[1] > pos_y:
+        if click[0] == 1:
+            if opcion == "P1 vs P2":
+                Game.setJugador(True)
+            if opcion == "P1 vs PC":
+                Game.setJugador(False)
+            if opcion == "Sencillo":
+                Game.setModo(True)
+            if opcion == "Doble":
+                Game.setModo(False)
+            if opcion == "1":
+                Game.setDificultad(1)
+            if opcion == "2":
+                Game.setDificultad(2)
+            if opcion == "3":
+                Game.setDificultad(3)
+            if opcion == "Aceptar":
+                Game.aceptar()
+
+
+    if dificultad == 1:
+        pygame.draw.rect(pantalla, negro, [tablero[538][0], tablero[538][1], 30, 30])
+        pygame.draw.rect(pantalla, verde, [tablero[688][0], tablero[688][1], 30, 30])
+        pygame.draw.rect(pantalla, verde, [tablero[863][0], tablero[863][1], 30, 30])
+    if dificultad == 2:
+        pygame.draw.rect(pantalla, verde, [tablero[538][0], tablero[538][1], 30, 30])
+        pygame.draw.rect(pantalla, negro, [tablero[688][0], tablero[688][1], 30, 30])
+        pygame.draw.rect(pantalla, verde, [tablero[863][0], tablero[863][1], 30, 30])
+    if dificultad == 3:
+        pygame.draw.rect(pantalla, verde, [tablero[538][0], tablero[538][1], 30, 30])
+        pygame.draw.rect(pantalla, verde, [tablero[688][0], tablero[688][1], 30, 30])
+        pygame.draw.rect(pantalla, negro, [tablero[863][0], tablero[863][1], 30, 30])
+    if P1_P2 == True:
+        pygame.draw.rect(pantalla, negro, [tablero[632][0], tablero[632][1], 30, 30])
+        pygame.draw.rect(pantalla, verde, [tablero[932][0], tablero[932][1], 30, 30])
+    if P1_P2 == False:
+        pygame.draw.rect(pantalla, verde, [tablero[632][0], tablero[632][1], 30, 30])
+        pygame.draw.rect(pantalla, negro, [tablero[932][0], tablero[932][1], 30, 30])
+    if modo_juego == False:
+        pygame.draw.rect(pantalla, verde, [tablero[535][0], tablero[535][1], 30, 30])
+        pygame.draw.rect(pantalla, negro, [tablero[685][0], tablero[685][1], 30, 30])
+    if modo_juego == True:
+        pygame.draw.rect(pantalla, negro, [tablero[535][0], tablero[535][1], 30, 30])
+        pygame.draw.rect(pantalla, verde, [tablero[685][0], tablero[685][1], 30, 30])
+
+''' boton_texto crea botonoes con una funcion y un texto escrito'''    
+def boton_texto(mensaje,pos_x,pos_y,ancho,alto,accion):
+    global tipografia_menor
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+    if pos_x + ancho > mouse[0] > pos_x and pos_y + alto > mouse[1] > pos_y:
+        pygame.draw.rect(pantalla, verde, [pos_x,pos_y, ancho, alto])
+
+        if click[0] == 1 and accion == "Inicio":
+            Menu()  
+        if click[0] == 1 and accion == "Ganador":
+            GameLoop()       
+    
     else:
-        if pos_x + ancho > mouse[0] > pos_x and pos_y + alto > mouse[1] > pos_y:
-            pygame.draw.rect(pantalla, color_activo, [pos_x,pos_y, ancho, alto])
-            if click[0] == 1:
-                if opcion == "P1 vs P2":
-                    Game.setJugador(True)
-                if opcion == "P1 vs PC":
-                    Game.setJugador(False)
-                if opcion == "Sencillo":
-                    Game.setModo(True)
-                if opcion == "Doble":
-                    Game.setModo(False)
-                if opcion == "1":
-                    Game.setDificultad(1)
-                if opcion == "2":
-                    Game.setDificultad(2)
-                if opcion == "3":
-                    Game.setDificultad(3)
-                if opcion == "Aceptar":
-                    Game.aceptar()
+        pygame.draw.rect(pantalla, negro, [pos_x,pos_y, ancho, alto])
 
-        if dificultad == 1:
-            pygame.draw.rect(pantalla, negro, [tablero[538][0], tablero[538][1], 30, 30])
-            pygame.draw.rect(pantalla, verde, [tablero[688][0], tablero[688][1], 30, 30])
-            pygame.draw.rect(pantalla, verde, [tablero[863][0], tablero[863][1], 30, 30])
-        if dificultad == 2:
-            pygame.draw.rect(pantalla, verde, [tablero[538][0], tablero[538][1], 30, 30])
-            pygame.draw.rect(pantalla, negro, [tablero[688][0], tablero[688][1], 30, 30])
-            pygame.draw.rect(pantalla, verde, [tablero[863][0], tablero[863][1], 30, 30])
-        if dificultad == 3:
-            pygame.draw.rect(pantalla, verde, [tablero[538][0], tablero[538][1], 30, 30])
-            pygame.draw.rect(pantalla, verde, [tablero[688][0], tablero[688][1], 30, 30])
-            pygame.draw.rect(pantalla, negro, [tablero[863][0], tablero[863][1], 30, 30])
-        if P1_P2 == False:
-            pygame.draw.rect(pantalla, negro, [tablero[632][0], tablero[632][1], 30, 30])
-            pygame.draw.rect(pantalla, verde, [tablero[932][0], tablero[932][1], 30, 30])
-        if P1_P2 == False:
-            pygame.draw.rect(pantalla, verde, [tablero[632][0], tablero[632][1], 30, 30])
-            pygame.draw.rect(pantalla, negro, [tablero[932][0], tablero[932][1], 30, 30])
-        if modo_juego == False:
-            pygame.draw.rect(pantalla, verde, [tablero[535][0], tablero[535][1], 30, 30])
-            pygame.draw.rect(pantalla, negro, [tablero[685][0], tablero[685][1], 30, 30])
-        if modo_juego == True:
-            pygame.draw.rect(pantalla, negro, [tablero[535][0], tablero[535][1], 30, 30])
-            pygame.draw.rect(pantalla, verde, [tablero[685][0], tablero[685][1], 30, 30])
-
-        else:
-            pygame.draw.rect(pantalla, color_inactivo, [pos_x,pos_y, ancho, alto])
+    inicio_txt = tipografia_menor.render(mensaje, True, blanco, verde)
+    inicio_rect = inicio_txt.get_rect()
+    inicio_rect.center = (pos_x + ancho/2, pos_y + alto/2)
+    pantalla.blit(inicio_txt, inicio_rect)
 
 
-tablero = matriz([],[],40,40)
+tablero = matriz([],[],40,40) #define la matriz del tablero
 
 class Cuadrilateros: #clase cuadrilateros, donde se definen las paletas, la bola y los bordes
     def __init__(self, largo, ancho, posicion):
@@ -200,7 +224,8 @@ class Juego:
 
 Game = Juego(0,0,tablero,1,True, False) #Instancia de la clase Juego, define los argumentos de Pong.
 
-def Menu(): #Este es el ciclo de inicio para que el usuario definar las variables.
+def Menu(): #Este es el ciclo de inicio para que el usuario defina las variables.
+    global tipografia_menor
     menu = True
     dificultad = Game.getDificultad()
     while menu:
@@ -210,16 +235,14 @@ def Menu(): #Este es el ciclo de inicio para que el usuario definar las variable
                 quit()      
 
         pantalla.fill(blanco)
-        #pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],800,500])
 
-        tipografia = pygame.font.Font("Comfortaa-Bold.ttf", 60)
+        tipografia = pygame.font.Font("Comfortaa-Bold.ttf", 60) #tipografias para texto titulo
 
-        titulo = tipografia.render("PONG", True, negro, blanco)
+        titulo = tipografia.render("PONG", True, negro, blanco) #bloques de definicion de texto
         titulo_rect = titulo.get_rect()
         titulo_rect.center = (tablero[453][0],tablero[453][1])
         pantalla.blit(titulo, titulo_rect)
 
-        tipografia_menor = pygame.font.Font("Comfortaa-Bold.ttf", 30)
 
         modo_txt = tipografia_menor.render("Modo de juego:" + " "*13 + "P1 vs P2" + " "*13 + "P1 vs PC", True, negro, blanco)
         modo_rect = modo_txt.get_rect()
@@ -235,22 +258,22 @@ def Menu(): #Este es el ciclo de inicio para que el usuario definar las variable
         dificultad_rect = dificultad_txt.get_rect()
         dificultad_rect.center = (tablero[414][0], tablero[414][1])
         pantalla.blit(dificultad_txt, dificultad_rect)
+ 
+        boton(tablero[394][0], tablero[394][1], 180, 80, "Aceptar")
 
-        aceptar_txt = tipografia_menor.render("Aceptar", True, blanco, negro)
-        aceptar_rect = aceptar_txt.get_rect()
-        aceptar_rect.center = (tablero[496][0], tablero[496][1])
-        boton(tablero[394][0], tablero[394][1], 180, 80, verde, negro, "Aceptar")
-        pantalla.blit(aceptar_txt, aceptar_rect)
+        intro_txt = tipografia_menor.render("SELECCIONE MODOS DE JUEGO Y DE CLICK EN ACEPTAR", True, negro, blanco)
+        intro_rect = dificultad_txt.get_rect()
+        intro_rect.center = (tablero[375][0],tablero[375][1])
+        pantalla.blit(intro_txt, intro_rect)
 
-
-
-        boton(tablero[632][0],tablero[632][1], 30, 30, negro, verde, "P1 vs P2")
-        boton(tablero[932][0],tablero[932][1], 30, 30, negro, verde, "P1 vs PC")
-        boton(tablero[535][0],tablero[535][1], 30, 30, negro, verde, "Sencillo")
-        boton(tablero[685][0],tablero[685][1], 30, 30, negro, verde, "Doble")
-        boton(tablero[538][0],tablero[538][1], 30, 30, negro, verde, "1")
-        boton(tablero[688][0],tablero[688][1], 30, 30, negro, verde, "2")
-        boton(tablero[863][0],tablero[863][1], 30, 30, negro, verde, "3")
+        '''Botones del menu inicio para definir las variables del juego'''
+        boton(tablero[632][0],tablero[632][1], 30, 30, "P1 vs P2")
+        boton(tablero[932][0],tablero[932][1], 30, 30, "P1 vs PC")
+        boton(tablero[535][0],tablero[535][1], 30, 30, "Sencillo")
+        boton(tablero[685][0],tablero[685][1], 30, 30, "Doble")
+        boton(tablero[538][0],tablero[538][1], 30, 30, "1")
+        boton(tablero[688][0],tablero[688][1], 30, 30, "2")
+        boton(tablero[863][0],tablero[863][1], 30, 30, "3")
 
         pygame.display.update()
         reloj.tick(FPS)
@@ -397,7 +420,10 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 moveX_bola = -25
                 sound_paletas.play()
 
-
+            if score1 >= 10 or score2 >= 10:
+                Menu()
+                
+                
 
 
 
@@ -426,7 +452,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
 
-
+            boton_texto("INICIO",755,2,80,35,"Inicio")
 
 
 
@@ -632,6 +658,8 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
 
+            boton_texto("INICIO",755,2,80,35,"Inicio")
+
             pygame.display.update()
             reloj.tick(FPS)
 
@@ -801,10 +829,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
 
-
-
-
-
+            boton_texto("INICIO",755,2,80,35,"Inicio")
 
             pygame.display.update()
             reloj.tick(FPS)
@@ -1015,7 +1040,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
 
-            boton(tablero[863][0], tablero[863][1], 50, 30, verde, verde, "Regresar")
+            boton_texto("INICIO",755,2,80,35,"Inicio")
 
             pygame.display.update()
             reloj.tick(FPS)
