@@ -278,6 +278,28 @@ def Menu(): #Este es el ciclo de inicio para que el usuario defina las variables
         pygame.display.update()
         reloj.tick(FPS)
 
+def playAgain(ganador):
+    otra_vez = True
+    while otra_vez:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        pantalla.fill(negro)
+        volver_font = pygame.font.Font("Comfortaa-Bold.ttf", 75)
+
+        titulo = volver_font.render(ganador, True, blanco, negro)  # bloques de definicion de texto
+        titulo_rect = titulo.get_rect()
+        titulo_rect.center = (tablero[505][0], tablero[505][1])
+        pantalla.blit(titulo, titulo_rect)
+
+
+
+
+        pygame.display.update()
+        reloj.tick(FPS)
+
+
 def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera mantenerse dentro
     global pos_bola
     global pos_paleta1
@@ -329,6 +351,11 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 seccion = 20
 
             if punto == True: #le da una pausa al movimiento de la bola cada vez que se genera un punto
+                if score1 == 10 or score2 == 10:
+                    if score1 > score2:
+                        return playAgain("Felicidades jugador 1")
+                    else:
+                        return playAgain("Felicidades jugador 2")
                 time.sleep(1)
                 punto = False
 
@@ -386,15 +413,15 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 moveY_bola = -1
                 sound_bordes.play()
             if tablero[pos_bola][0] == 40:
-                score1 += 1
-                pos_bola = 461
-                punto = True
-            if tablero[pos_bola][0] == 820:
                 score2 += 1
                 pos_bola = 461
                 punto = True
-                #moveX_bola =  random.choice([1,-1])
-                #moveY_bola = random.choice([25,-25])
+            if tablero[pos_bola][0] == 820:
+                score1 += 1
+                pos_bola = 461
+                punto = True
+
+
             if  tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and tablero[pos_paleta1][1]<=tablero[pos_bola][1]<(tablero[pos_paleta1][1]+seccion):
                 moveX_bola = 25
                 moveY_bola = -1
@@ -420,8 +447,6 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 moveX_bola = -25
                 sound_paletas.play()
 
-            if score1 >= 10 or score2 >= 10:
-                Menu()
                 
                 
 
@@ -466,6 +491,11 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             pygame.display.update()
 
             if punto == True:
+                if score1 == 10 or score2 == 10:
+                    if score1 > score2:
+                        return playAgain("Felicidades jugador 1")
+                    else:
+                        return playAgain("Felicidades jugador 2")
                 time.sleep(1)
                 punto = False
 
@@ -512,8 +542,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                         move_p2 = 0
                     if event.key == pygame.K_UP:
                         move_p2 = 0
-                    if event.key == pygame.K_SPACE:
-                        modo = True
+
 
                 if event.type == pygame.QUIT:
                     salir_juego = True
@@ -528,7 +557,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 pos_paletaDual1_2 = borde_inferior1 - 1
                 pos_paletaDual1_1 = pos_paletaDual1_2 - distancia_paletas
                 move_p1 = 0
-            if pos_paletaDual2_1 == borde_inferior2:
+            if pos_paletaDual2_1 == 975:
                 pos_paletaDual2_1 = 976
                 pos_paletaDual2_2 = 986
                 move_p1 = 0
@@ -674,7 +703,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 largo_paletas = 180
                 borde_inferior1 = 15
                 borde_inferior2 = 990
-                seccion = 660
+                seccion = 60
                 reacciona =  650
             if dificultad == 2:
                 FPS = 15
@@ -693,6 +722,11 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 reacciona = 420
 
             if punto == True: #le da una pausa al movimiento de la bola cada vez que se genera un punto
+                if score1 == 10 or score2 == 10:
+                    if score1 > score2:
+                        return playAgain("Felicidades jugador 1")
+                    else:
+                        return playAgain("Has perdido")
                 time.sleep(1)
                 punto = False
 
@@ -722,7 +756,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
 
-            if pos_paleta1 == 0: #rebotes de las paletas
+            if pos_paleta1 == 0: #rebotes de las paletas con los bordes
                 pos_paleta1 = 1
                 move_p1 = 0
             if pos_paleta1 == borde_inferior1:
@@ -757,14 +791,17 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                 moveX_bola = 25
                 moveY_bola = -1
                 sound_paletas.play()
+                print("rebota1")
             if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+seccion) <= tablero[pos_bola][1]<(tablero[pos_paleta1][1]+seccion*2):
                 moveX_bola = 25
                 moveY_bola = 0
                 sound_paletas.play()
+                print("rebota2")
             if tablero[pos_bola][0] == tablero[pos_paleta1+25][0] and (tablero[pos_paleta1][1]+seccion*2) <= tablero[pos_bola][1]<=(tablero[pos_paleta1][1]+seccion*3):
                 moveY_bola = 1
                 moveX_bola = 25
                 sound_paletas.play()
+                print("rebota3")
 
             if  tablero[pos_bola+25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1]<=tablero[pos_bola][1] < (tablero[pos_paleta2][1]+seccion):
                 moveX_bola = -25
@@ -786,7 +823,6 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             pos_paleta1 += move_p1
 
             if moveX_bola > 0 and tablero[pos_bola][0]>reacciona:
-                print("reacciona")
                 if moveY_bola == 0 and tablero[pos_bola][1] != tablero[pos_paleta2][1] and tablero[pos_bola][0] > 500:
                     if tablero[pos_bola][1] < tablero[pos_paleta2][1]:
                         pos_paleta2 += -1
@@ -838,6 +874,11 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             pygame.display.update()
 
             if punto == True:
+                if score1 == 10 or score2 == 10:
+                    if score1 > score2:
+                        return playAgain("Felicidades jugador 1")
+                    else:
+                        return playAgain("Has perdido")
                 time.sleep(1)
                 punto = False
 
