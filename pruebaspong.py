@@ -14,6 +14,7 @@ salir_juego = False
 blanco = (255,255,255)
 negro = (0,0,0)
 verde = (0, 255, 0)
+verde_oscuro = (0,144,0)
 reloj = pygame.time.Clock()
 FPS = 10 #define la velocidad del juego
 borde_inferior1 = 16
@@ -70,12 +71,6 @@ def conseguir_posicion(i, matriz, x, y):  #Para uso de consola, solamente
 Esta funcion trabaja en el menu de inicio, de manera interna y el usuario escoge las opciones
 del modo de juego. Al final llama al ciclo para correr el juego.'''
 def boton(pos_x, pos_y, ancho, alto, opcion):
-    pygame.draw.rect(pantalla, verde, [tablero[394][0], tablero[394][1], 180, 80])
-    aceptar_txt = tipografia_menor.render("ACEPTAR", True, blanco, verde)
-    aceptar_rect = aceptar_txt.get_rect()
-    aceptar_rect.center = (tablero[496][0], tablero[496][1])
-    pantalla.blit(aceptar_txt, aceptar_rect)
-    
 
     P1_P2 = Game.getjugadores()
     modo_juego = Game.getmodo()
@@ -99,8 +94,7 @@ def boton(pos_x, pos_y, ancho, alto, opcion):
                 Game.setDificultad(2)
             if opcion == "3":
                 Game.setDificultad(3)
-            if opcion == "Aceptar":
-                Game.aceptar()
+
 
 
     if dificultad == 1:
@@ -129,22 +123,29 @@ def boton(pos_x, pos_y, ancho, alto, opcion):
         pygame.draw.rect(pantalla, verde, [tablero[685][0], tablero[685][1], 30, 30])
 
 ''' boton_texto crea botonoes con una funcion y un texto escrito'''    
-def boton_texto(mensaje,pos_x,pos_y,ancho,alto,accion):
+def boton_texto(mensaje,pos_x,pos_y,ancho,alto,color_activo, color_inactivo, opcion):
     global tipografia_menor
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     if pos_x + ancho > mouse[0] > pos_x and pos_y + alto > mouse[1] > pos_y:
-        pygame.draw.rect(pantalla, verde, [pos_x,pos_y, ancho, alto])
+        pygame.draw.rect(pantalla, color_activo, [pos_x,pos_y, ancho, alto])
 
-        if click[0] == 1 and accion == "Inicio":
+        if click[0] == 1 and opcion == "Inicio":
             Menu()  
-        if click[0] == 1 and accion == "Ganador":
-            GameLoop()       
+        if click[0] == 1 and opcion == "Ganador":
+            GameLoop()
+        if click[0] == 1 and opcion == "Aceptar":
+            Game.aceptar()       
+        if click[0] == 1 and opcion == "Again":
+            GameLoop()  
+        if click[0] == 1 and opcion == "Cerrar":
+            pygame.quit()
+            quit()     
     
     else:
-        pygame.draw.rect(pantalla, negro, [pos_x,pos_y, ancho, alto])
+        pygame.draw.rect(pantalla, color_inactivo, [pos_x,pos_y, ancho, alto])
 
-    inicio_txt = tipografia_menor.render(mensaje, True, blanco, verde)
+    inicio_txt = tipografia_menor.render(mensaje, True, blanco)
     inicio_rect = inicio_txt.get_rect()
     inicio_rect.center = (pos_x + ancho/2, pos_y + alto/2)
     pantalla.blit(inicio_txt, inicio_rect)
@@ -225,6 +226,7 @@ class Juego:
 Game = Juego(0,0,tablero,1,True, False) #Instancia de la clase Juego, define los argumentos de Pong.
 
 def Menu(): #Este es el ciclo de inicio para que el usuario defina las variables.
+    pantalla.blit(pygame.image.load('Fondo.png'), [0, 0])
     global tipografia_menor
     menu = True
     dificultad = Game.getDificultad()
@@ -234,34 +236,34 @@ def Menu(): #Este es el ciclo de inicio para que el usuario defina las variables
                 pygame.quit()
                 quit()      
 
-        pantalla.fill(blanco)
+        #pantalla.fill(blanco)
 
         tipografia = pygame.font.Font("Comfortaa-Bold.ttf", 60) #tipografias para texto titulo
 
-        titulo = tipografia.render("PONG", True, negro, blanco) #bloques de definicion de texto
+        titulo = tipografia.render("PONG", True, blanco) #bloques de definicion de texto
         titulo_rect = titulo.get_rect()
         titulo_rect.center = (tablero[453][0],tablero[453][1])
         pantalla.blit(titulo, titulo_rect)
 
 
-        modo_txt = tipografia_menor.render("Modo de juego:" + " "*13 + "P1 vs P2" + " "*13 + "P1 vs PC", True, negro, blanco)
+        modo_txt = tipografia_menor.render("Modo de juego:" + " "*13 + "P1 vs P2" + " "*13 + "P1 vs PC", True, blanco)
         modo_rect = modo_txt.get_rect()
         modo_rect.center = (tablero[458][0], tablero[458][1])
         pantalla.blit(modo_txt, modo_rect)
 
-        paletas_txt = tipografia_menor.render("Paletas:" + " "*26 + "1" + " "*13 + "2", True, negro, blanco)
+        paletas_txt = tipografia_menor.render("Paletas:" + " "*26 + "1" + " "*13 + "2", True, blanco)
         paletas_rect = paletas_txt.get_rect()
         paletas_rect.center = (tablero[336][0], tablero[336][1])
         pantalla.blit(paletas_txt, paletas_rect)
 
-        dificultad_txt = tipografia_menor.render("Dificultad:" + " "*23 + "1" + " "*13 + "2" + " "*13 + "3", True, negro, blanco)
+        dificultad_txt = tipografia_menor.render("Dificultad:" + " "*23 + "1" + " "*13 + "2" + " "*13 + "3", True, blanco)
         dificultad_rect = dificultad_txt.get_rect()
         dificultad_rect.center = (tablero[414][0], tablero[414][1])
         pantalla.blit(dificultad_txt, dificultad_rect)
  
-        boton(tablero[394][0], tablero[394][1], 180, 80, "Aceptar")
+        boton_texto("ACEPTAR",tablero[394][0],tablero[394][1],200,40,verde, verde_oscuro, "Aceptar")
 
-        intro_txt = tipografia_menor.render("SELECCIONE MODOS DE JUEGO Y DE CLICK EN ACEPTAR", True, negro, blanco)
+        intro_txt = tipografia_menor.render("SELECCIONE MODOS DE JUEGO Y DE CLICK EN ACEPTAR", True, blanco)
         intro_rect = dificultad_txt.get_rect()
         intro_rect.center = (tablero[375][0],tablero[375][1])
         pantalla.blit(intro_txt, intro_rect)
@@ -292,7 +294,9 @@ def playAgain(ganador):
         titulo_rect = titulo.get_rect()
         titulo_rect.center = (tablero[505][0], tablero[505][1])
         pantalla.blit(titulo, titulo_rect)
-
+        boton_texto("VOLVER AL JUEGO",300,240,300,50, verde, verde_oscuro, "Again")
+        boton_texto("INICIO",300,300,300,50, verde, verde_oscuro, "Inicio")
+        boton_texto("CERRAR",300,360,300,50, verde, verde_oscuro, "Cerrar")
 
 
 
@@ -353,9 +357,9 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             if punto == True: #le da una pausa al movimiento de la bola cada vez que se genera un punto
                 if score1 == 10 or score2 == 10:
                     if score1 > score2:
-                        return playAgain("Felicidades jugador 1")
+                        return playAgain("¡Felicidades jugador 1!")
                     else:
-                        return playAgain("Felicidades jugador 2")
+                        return playAgain("¡Felicidades jugador 2!")
                 time.sleep(1)
                 punto = False
 
@@ -477,7 +481,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
 
-            boton_texto("INICIO",755,2,80,35,"Inicio")
+            boton_texto("INICIO",740,2,100,35,verde, verde_oscuro, "Inicio")
 
 
 
@@ -493,9 +497,9 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             if punto == True:
                 if score1 == 10 or score2 == 10:
                     if score1 > score2:
-                        return playAgain("Felicidades jugador 1")
+                        return playAgain("¡Felicidades jugador 1!")
                     else:
-                        return playAgain("Felicidades jugador 2")
+                        return playAgain("¡Felicidades jugador 2!")
                 time.sleep(1)
                 punto = False
 
@@ -687,7 +691,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
 
-            boton_texto("INICIO",755,2,80,35,"Inicio")
+            boton_texto("INICIO",740,2,100,35,verde, verde_oscuro, "Inicio")
 
             pygame.display.update()
             reloj.tick(FPS)
@@ -724,9 +728,10 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             if punto == True: #le da una pausa al movimiento de la bola cada vez que se genera un punto
                 if score1 == 10 or score2 == 10:
                     if score1 > score2:
-                        return playAgain("Felicidades jugador 1")
+                        return playAgain("¡Felicidades jugador 1!")
                     else:
-                        return playAgain("Has perdido")
+                        return playAgain("¡Has perdido!")
+
                 time.sleep(1)
                 punto = False
 
@@ -865,7 +870,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
 
-            boton_texto("INICIO",755,2,80,35,"Inicio")
+            boton_texto("INICIO",740,2,100,35,verde, verde_oscuro, "Inicio")
 
             pygame.display.update()
             reloj.tick(FPS)
@@ -876,9 +881,9 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             if punto == True:
                 if score1 == 10 or score2 == 10:
                     if score1 > score2:
-                        return playAgain("Felicidades jugador 1")
+                        return playAgain("¡Felicidades jugador 1!")
                     else:
-                        return playAgain("Has perdido")
+                        return playAgain("¡Has perdido!")
                 time.sleep(1)
                 punto = False
 
@@ -1081,7 +1086,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
 
-            boton_texto("INICIO",755,2,80,35,"Inicio")
+            boton_texto("INICIO",740,2,100,35,verde, verde_oscuro, "Inicio")
 
             pygame.display.update()
             reloj.tick(FPS)
