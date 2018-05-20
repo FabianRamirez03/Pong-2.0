@@ -36,3 +36,9 @@ Hechas las colisiones de las paletas con los bordes en el modo dual, además de 
 
 Día 9 16/05/18.
 Se agrega la verificación en caso de que el usuario quiera jugar contra la computadora o contra otro jugador. Se agregan sonidos a los rebotes, tanto para cuando la pelota pega contra una paleta como cuando sucede con uno de los bordes.  Se comenta gran parte del código. Además de notables mejoras en la función botón.
+
+Día 10 18/05/18 3h
+El menú quedó listo, los botones funcionan bien. Cada pantalla tiene su propio botón que redirige al inicio de ser necesario.
+
+Día 11 3h
+Se definió una pantalla de inicio de juego. Se trabajó más la interfaz y se agregaron los botonees para las pantallas de jugar de nuevo. 
