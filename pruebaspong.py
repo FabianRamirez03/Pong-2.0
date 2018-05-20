@@ -2,6 +2,7 @@ import pygame
 import time
 import random
 
+
 pygame.init()
 #Globales
 ancho_display = 880
@@ -225,6 +226,7 @@ class Juego:
 
 Game = Juego(0,0,tablero,1,True, False) #Instancia de la clase Juego, define los argumentos de Pong.
 
+
 def Menu(): #Este es el ciclo de inicio para que el usuario defina las variables.
     pantalla.blit(pygame.image.load('Fondo.png'), [0, 0])
     global tipografia_menor
@@ -330,9 +332,11 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
     while not salir_juego:  #si no se cumple salir juego, sale y cierra la ventana
+        pygame.mixer.music.load('RaymanTheme.mp3')
+        pygame.mixer.music.play(-1)
+        pygame.display.update()
         while not salir_juego and modo == True and jugador == True: #modo con solo una paleta y persona vs persona
 
-            pygame.display.update()
 
             if dificultad == 1:   #define las velocidades y los tamaños de las paletas segùn la dificultad
                 FPS = 10
@@ -387,6 +391,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
                 if event.type == pygame.QUIT:
+                    pygame.mixer.music.stop()
                     salir_juego = True         #si el usuario sale de la ventana, se finaliza el programa
 
 
@@ -550,7 +555,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
                 if event.type == pygame.QUIT:
                     salir_juego = True
-
+                    pygame.mixer.music.stop()
 
 
             if pos_paletaDual1_1 == 0:
@@ -757,6 +762,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
                 if event.type == pygame.QUIT:
+                    pygame.mixer.music.stop()
                     salir_juego = True         #si el usuario sale de la ventana, se finaliza el programa
 
 
