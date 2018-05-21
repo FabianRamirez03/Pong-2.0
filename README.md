@@ -40,5 +40,8 @@ Se agrega la verificación en caso de que el usuario quiera jugar contra la comp
 Día 10 18/05/18 3h
 El menú quedó listo, los botones funcionan bien. Cada pantalla tiene su propio botón que redirige al inicio de ser necesario.
 
-Día 11 3h
+Día 11 3h 19/05/18
 Se definió una pantalla de inicio de juego. Se trabajó más la interfaz y se agregaron los botonees para las pantallas de jugar de nuevo. 
+
+Día 12 20/05/18
+Se le agregó música al juego, además de añadir el archivo .mp3, se finaliza con la documentacion externa e interna.
