@@ -142,6 +142,7 @@ def boton_texto(mensaje,pos_x,pos_y,ancho,alto,color_activo, color_inactivo, opc
         if click[0] == 1 and opcion == "Again":
             GameLoop()  
         if click[0] == 1 and opcion == "Cerrar":
+            pygame.mixer.music.stop()
             pygame.quit()
             quit()   
         if click[0] == 1 and opcion == "Instrucciones": 
@@ -284,7 +285,8 @@ def Menu(): #Este es el ciclo de inicio para que el usuario defina las variables
         dificultad_rect.center = (tablero[414][0], tablero[414][1])
         pantalla.blit(dificultad_txt, dificultad_rect)
  
-        boton_texto("ACEPTAR",tablero[394][0],tablero[394][1],200,40,verde, negro, "Aceptar")
+        boton_texto("ACEPTAR",tablero[394][0],tablero[394][1],200,50,verde, negro, "Aceptar")
+        boton_texto("CERRAR",tablero[394][0],tablero[397][1],200,50,verde, negro, "Cerrar")
 
         instrucciones_txt = tipografia_enana.render("DE CLICK EN LOS CUADRADOS BLANCOS PARA SELECCIONAR.", True, blanco)
         instrucciones_rect = instrucciones_txt.get_rect()
@@ -359,6 +361,9 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
     while not salir_juego:  #si no se cumple salir juego, sale y cierra la ventana
+        pygame.mixer.music.load('RaymanTheme.mp3')
+        pygame.mixer.music.play(-1)
+        pygame.display.update()
         while not salir_juego and modo == True and jugador == True: #modo con solo una paleta y persona vs persona
 
             pygame.display.update()
@@ -416,6 +421,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
                 if event.type == pygame.QUIT:
+                    pygame.mixer.music.stop()
                     salir_juego = True         #si el usuario sale de la ventana, se finaliza el programa
 
 
@@ -578,6 +584,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
                 if event.type == pygame.QUIT:
+                    pygame.mixer.music.stop()
                     salir_juego = True
 
 
@@ -786,6 +793,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
                 if event.type == pygame.QUIT:
+                    pygame.mixer.music.stop()
                     salir_juego = True         #si el usuario sale de la ventana, se finaliza el programa
 
 
@@ -958,6 +966,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
                 if event.type == pygame.QUIT:
+                    pygame.mixer.music.stop()
                     salir_juego = True
 
 
