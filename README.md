@@ -24,6 +24,7 @@ Dia 6 13/05/18 3h.
 Se definio un segundo loop para el menu de inicio que define las variables para el modo de juego, la dificultad y los jugadores. Ademas, se trabaja la interfaz del menu. Se crea el método getModo en la clase juego para solicitar si serán una o dos paletas. Además de agregado el modo dual con sus respectivas colisiones. Tambien se agrega la tipografía que utilizarán los textos dentro del juego. Con esto se agrega el titulo y los marcadores dentro del juego. Se crea la función botón para la selección de modalidades dentro del menú. Se arreglan diversos bugs relacionados con los bordes y sus respectivas colisiones. Se adelanta la documentación interna del código.
 
 Día 7 17/05/18
+Arreglada la bitacora gracias a los commits dentro de Git.
 
 Dia 8 19/05/18
 Se arreglan errores varios. Además de crear la pantalla que emerge una vez alguno de ambos jugadores alcancen la máxima puntuación que en este caso se fijó en 10.
