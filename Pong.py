@@ -125,7 +125,8 @@ def boton(pos_x, pos_y, ancho, alto, opcion):
         pygame.draw.rect(pantalla, negro, [tablero[535][0], tablero[535][1], 30, 30])
         pygame.draw.rect(pantalla, blanco, [tablero[685][0], tablero[685][1], 30, 30])
 
-''' boton_texto crea botonoes con una funcion y un texto escrito'''    
+''' boton_texto crea botonoes con una funcion y un texto escrito. El color activo aparece cuando
+el boton tiene el mouse encima y el inactivo cuando no. La opcion indica la funcion que llama.'''    
 def boton_texto(mensaje,pos_x,pos_y,ancho,alto,color_activo, color_inactivo, opcion):
     global tipografia_menor
     mouse = pygame.mouse.get_pos()
@@ -145,8 +146,6 @@ def boton_texto(mensaje,pos_x,pos_y,ancho,alto,color_activo, color_inactivo, opc
             pygame.mixer.music.stop()
             pygame.quit()
             quit()   
-        if click[0] == 1 and opcion == "Instrucciones": 
-            Instrucciones()
     
     else:
         pygame.draw.rect(pantalla, color_inactivo, [pos_x,pos_y, ancho, alto])
@@ -199,7 +198,7 @@ class Juego:
     def gettablero(self):
         return self.tablero
     
-    def getmarcador_1(self):
+    def getmarcador_1(self):    
         return self.marcador_1
 
     def getmarcador_2(self):
@@ -254,15 +253,11 @@ def Menu(): #Este es el ciclo de inicio para que el usuario defina las variables
     global tipografia_enana
     global tipografia
     menu = True
-    #dificultad = Game.getDificultad()
     while menu:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()      
-
-        #pantalla.fill(blanco)
-
 
         titulo = tipografia.render("PONG", True, blanco) #bloques de definicion de texto
         titulo_rect = titulo.get_rect()
@@ -311,7 +306,7 @@ def Menu(): #Este es el ciclo de inicio para que el usuario defina las variables
         pygame.display.update()
         reloj.tick(FPS)
 
-def playAgain(ganador):
+def playAgain(ganador): #Ciclo para las pantallas cuando algun marcador indica 10 puntos.
     otra_vez = True
     while otra_vez:
         for event in pygame.event.get():
