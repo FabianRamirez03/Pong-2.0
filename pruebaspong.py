@@ -183,14 +183,14 @@ Paleta2Dual_player2 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_pale
 
 class Juego:
 
-    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores):
+    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores, practica):
         self.marcador_1 = marcador_1
         self.marcador_2 = marcador_2
         self.tablero = tablero
         self.dificultad = dificultad
         self.modo_juego = modo_juego
         self.jugadores = jugadores
-    
+        self.practica = practica
     def gettablero(self):
         return self.tablero
     
@@ -208,6 +208,8 @@ class Juego:
 
     def getjugadores(self):
         return self.jugadores
+    def getpractica(self):
+        return self.practica
 
     def aceptar(self): #Esta funcion esta ligada al boton aceptar y llama el ciclo del juego con las variables definidas por el usuario
         print(Game.getmodo())
@@ -223,8 +225,10 @@ class Juego:
 
     def setModo(self, nuevoModo):
         self.modo_juego = nuevoModo
+    def setPractica(self, nuevaPractica):
+        self.practica = nuevaPractica
 
-Game = Juego(0,0,tablero,1,True, False) #Instancia de la clase Juego, define los argumentos de Pong.
+Game = Juego(0,0,tablero,1,True, False, True) #Instancia de la clase Juego, define los argumentos de Pong.
 
 
 def Menu(): #Este es el ciclo de inicio para que el usuario defina las variables.
@@ -321,6 +325,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
     global reacciona
     jugador = Game.getjugadores()
     modo = Game.getmodo() #Si modo es true, habra dos paletas, en False sera dual
+    practica = Game.getpractica()
     moveX_bola = 25
     moveY_bola = 1
     move_p1 = 0
@@ -335,7 +340,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
         pygame.mixer.music.load('RaymanTheme.mp3')
         pygame.mixer.music.play(-1)
         pygame.display.update()
-        while not salir_juego and modo == True and jugador == True: #modo con solo una paleta y persona vs persona
+        while not salir_juego and modo == True and jugador == True and practica == False: #modo con solo una paleta y persona vs persona
 
 
             if dificultad == 1:   #define las velocidades y los tamaños de las paletas segùn la dificultad
@@ -496,7 +501,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 #_____________________________________________________________________________________________________________________________________________________________________________________
 
-        while not salir_juego and modo == False and jugador == True: #modo dual, PvP
+        while not salir_juego and modo == False and jugador == True and practica == False: #modo dual, PvP
             pygame.display.update()
 
             if punto == True:
@@ -703,7 +708,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 #___________________________________________________________________________________________________________________________________________________________________________________        
 
-        while not salir_juego and modo == True and jugador == False: #modo con solo una paleta y persona vs computador
+        while not salir_juego and modo == True and jugador == False and practica == False: #modo con solo una paleta y persona vs computador
 
             pygame.display.update()
 
@@ -881,7 +886,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             pygame.display.update()
             reloj.tick(FPS)
 #_____________________________________________________________________________________________________________________________________________________________________________________________
-        while not salir_juego and modo == False and jugador == False: #modo dual, Persona contra computador
+        while not salir_juego and modo == False and jugador == False and practica == False: #modo dual, Persona contra computador
             pygame.display.update()
 
             if punto == True:
@@ -1099,12 +1104,61 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
 
         #_____________________________________________________________________________________________________________________________________________________________________________________________
-    exit()
+
+
+        while practica == True:
+
+
+
+            if dificultad == 1:
+                FPS = 10
+                largo_paletas = 180
+                borde_inferior1 = 15
+                borde_inferior2 = 990
+                seccion = 60
+                distancia_paletas = 11
+                reacciona = 640
+
+            if dificultad == 2:
+                FPS = 15
+                largo_paletas = 120
+                borde_inferior1 = 18
+                borde_inferior2 = 993
+                seccion = 40
+                distancia_paletas = 8
+                reacciona = 540
+
+            if dificultad == 3:
+                FPS = 20
+                largo_paletas = 60
+                borde_inferior1 = 21
+                borde_inferior2 = 996
+                seccion = 20
+                distancia_paletas = 6
+                reacciona = 420
+
+           # if modo == False:
 
 
 
 
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_s:
+                        move_p1 = 1
+                    if event.key == pygame.K_w:
+                        move_p1 = -1
 
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_s:
+                        move_p1 = 0
+                    if event.key == pygame.K_w:
+                        move_p1 = 0
+
+                if event.type == pygame.QUIT:
+                    salir_juego = True
+
+        exit()
 
 Menu()
 
