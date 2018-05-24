@@ -45,4 +45,9 @@ Día 11 3h 19/05/18
 Se definió una pantalla de inicio de juego. Se trabajó más la interfaz y se agregaron los botonees para las pantallas de jugar de nuevo. 
 
 Día 12 20/05/18
-Se le agregó música al juego, además de añadir el archivo .mp3, se finaliza con la documentacion externa e interna.  
+Se le agregó música al juego, además de añadir el archivo .mp3, se finaliza con la documentacion externa e interna. 
+
+________________________________________________________________________________________________________________________________________
+                                                    Segunda parte del proyecto
+Día 1 23/05/18
+Agregado modo práctica para una y dos paletas, tomando en cuenta la dificultad. Falta por arreglar bug donde después de ingresar al modo práctica individual, sale e ingresa a la pantalla practica dual, solo aparece una paleta, además se deben agregar colisiones en modo práctica dual.  
