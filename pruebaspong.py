@@ -1106,7 +1106,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
         #_____________________________________________________________________________________________________________________________________________________________________________________________
 
 
-        while practica == True and not salir_juego:
+        while practica == True and not salir_juego: #modo practica
 
             if punto == True:
                 time.sleep(1)
@@ -1166,7 +1166,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
 
                 move_p1 = 0
 
-            if modo == False:
+            if modo == False: #colisiones de paletas con los bordes
                 if pos_paletaDual1_2 == borde_inferior1:
                     pos_paletaDual1_2 = borde_inferior1 - 1
                     pos_paletaDual1_1 = pos_paletaDual1_2 - distancia_paletas
@@ -1217,6 +1217,48 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
                     moveY_bola = 1
                     moveX_bola = 25
                     sound_paletas.play()
+
+            if modo == False:
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_1 + 25][0] and tablero[pos_paletaDual1_1][1] <= \
+                        tablero[pos_bola][1] < (tablero[pos_paletaDual1_1][1] + seccion):
+                    moveX_bola = 25
+                    moveY_bola = -1
+                    sound_paletas.play()
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and tablero[pos_paletaDual1_2][1] <= \
+                        tablero[pos_bola][1] < (tablero[pos_paletaDual1_2][1] + seccion):
+                    moveX_bola = 25
+                    moveY_bola = -1
+                    sound_paletas.play()
+
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_1 + 25][0] and (
+                        tablero[pos_paletaDual1_1][1] + seccion) <= tablero[pos_bola][1] < (
+                        tablero[pos_paletaDual1_1][1] + seccion * 2):
+                    moveX_bola = 25
+                    moveY_bola = 0
+                    sound_paletas.play()
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and (
+                        tablero[pos_paletaDual1_2][1] + seccion) <= tablero[pos_bola][1] < (
+                        tablero[pos_paletaDual1_2][1] + seccion * 2):
+                    moveX_bola = 25
+                    moveY_bola = 0
+                    sound_paletas.play()
+
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_1 + 25][0] and (
+                        tablero[pos_paletaDual1_1][1] + seccion * 2) <= tablero[pos_bola][1] <= (
+                        tablero[pos_paletaDual1_1][1] + seccion * 3):
+                    moveY_bola = 1
+                    moveX_bola = 25
+                    sound_paletas.play()
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and (
+                        tablero[pos_paletaDual1_2][1] + seccion * 2) <= tablero[pos_bola][1] <= (
+                        tablero[pos_paletaDual1_2][1] + seccion * 3):
+                    moveY_bola = 1
+                    moveX_bola = 25
+                    sound_paletas.play()
+
+
+
+
 
 
             pos_bola += moveY_bola + moveX_bola
