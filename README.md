@@ -45,4 +45,4 @@ Día 11 3h 19/05/18
 Se definió una pantalla de inicio de juego. Se trabajó más la interfaz y se agregaron los botonees para las pantallas de jugar de nuevo. 
 
 Día 12 20/05/18
-Se le agregó música al juego, además de añadir el archivo .mp3, se finaliza con la documentacion externa e interna.
+Se le agregó música al juego, además de añadir el archivo .mp3, se finaliza con la documentacion externa e interna.  
