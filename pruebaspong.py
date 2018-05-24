@@ -141,7 +141,10 @@ def boton_texto(mensaje,pos_x,pos_y,ancho,alto,color_activo, color_inactivo, opc
             GameLoop()  
         if click[0] == 1 and opcion == "Cerrar":
             pygame.quit()
-            quit()     
+            quit()
+        if click[0] == 1 and opcion == "Inspector":
+
+
     
     else:
         pygame.draw.rect(pantalla, color_inactivo, [pos_x,pos_y, ancho, alto])
@@ -183,7 +186,7 @@ Paleta2Dual_player2 = Cuadrilateros(largo_paletas,ancho_paletas,tablero[pos_pale
 
 class Juego:
 
-    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores, practica):
+    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores, practica, inspector):
         self.marcador_1 = marcador_1
         self.marcador_2 = marcador_2
         self.tablero = tablero
@@ -191,6 +194,7 @@ class Juego:
         self.modo_juego = modo_juego
         self.jugadores = jugadores
         self.practica = practica
+        self.inspector = inspector
     def gettablero(self):
         return self.tablero
     
@@ -210,7 +214,8 @@ class Juego:
         return self.jugadores
     def getpractica(self):
         return self.practica
-
+    def getInspector(self):
+        return self.inspector
     def aceptar(self): #Esta funcion esta ligada al boton aceptar y llama el ciclo del juego con las variables definidas por el usuario
         print(Game.getmodo())
         print(Game.getjugadores())
@@ -228,7 +233,7 @@ class Juego:
     def setPractica(self, nuevaPractica):
         self.practica = nuevaPractica
 
-Game = Juego(0,0,tablero,1,True, False, True) #Instancia de la clase Juego, define los argumentos de Pong.
+Game = Juego(0,0,tablero,1,True, False, False, False) #Instancia de la clase Juego, define los argumentos de Pong.
 
 
 def Menu(): #Este es el ciclo de inicio para que el usuario defina las variables.
@@ -492,6 +497,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             pantalla.blit(marcador_2, Marc2_rect)
 
             boton_texto("INICIO",740,2,100,35,verde, verde_oscuro, "Inicio")
+            boton_texto("INSPECTOR", 630, 2, 100, 35, verde, verde_oscuro, "Inspector")
 
 
 
