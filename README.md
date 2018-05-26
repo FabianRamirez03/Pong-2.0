@@ -51,3 +51,9 @@ ________________________________________________________________________________
                                                     Segunda parte del proyecto
 Día 1 23/05/18 F/4h
 Agregado modo práctica para una y dos paletas, tomando en cuenta la dificultad. Falta por arreglar bug donde después de ingresar al modo práctica individual, sale e ingresa a la pantalla practica dual, solo aparece una paleta, además se deben agregar colisiones en modo práctica dual.  
+
+Día 2 24/05/18 F/2h T/2h
+Nos reunimos en la biblioteca, definimos el diseño del menú, perfeccionamos modo practica en modo dual,
+
+Día 3 25/05/18 F/4:30
+Se creó la función para el modo practica, donde en una ventana de tkinter dibuja una tabla con las posiciones inactivas en negro y donde haya un elemento en color verde, debe implementarse en los demás modos de juegos. Además se acopló el código del modo práctica 
