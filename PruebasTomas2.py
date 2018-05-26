@@ -1,6 +1,7 @@
 import pygame
 import time
 import random
+import tkinter
 
 pygame.init()
 # Globales
@@ -190,14 +191,15 @@ Paleta2Dual_player2 = Cuadrilateros(largo_paletas, ancho_paletas, tablero[pos_pa
 
 class Juego:
 
-    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores):
+    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores,practica, inspector):
         self.marcador_1 = marcador_1
         self.marcador_2 = marcador_2
         self.tablero = tablero
         self.dificultad = dificultad
         self.modo_juego = modo_juego
         self.jugadores = jugadores
-
+        self.practica = practica
+        self.inspector = inspector
     def gettablero(self):
         return self.tablero
 
@@ -216,6 +218,12 @@ class Juego:
     def getjugadores(self):
         return self.jugadores
 
+    def getpractica(self):
+        return self.practica
+
+    def getInspector(self):
+        return self.inspector
+
     def aceptar(
             self):  # Esta funcion esta ligada al boton aceptar y llama el ciclo del juego con las variables definidas por el usuario
         print(Game.getmodo())
@@ -232,8 +240,15 @@ class Juego:
     def setModo(self, nuevoModo):
         self.modo_juego = nuevoModo
 
+    def setPractica(self, nuevaPractica):
+        self.practica = nuevaPractica
 
-Game = Juego(0, 0, tablero, 1, True, False)  # Instancia de la clase Juego, define los argumentos de Pong.
+    def setInspector(self, nuevoInspector):
+        self.inspector = nuevoInspector
+
+
+
+Game = Juego(0, 0, tablero, 1, True, False, True, False)  # Instancia de la clase Juego, define los argumentos de Pong.
 
 
 def PantallaInicio():  # Ciclo para la pantalla de inicio
@@ -360,12 +375,13 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
     distancia_paletas = 0
     sound_paletas = pygame.mixer.Sound('sonido_paletas.wav')
     sound_bordes = pygame.mixer.Sound('sonido_bordes.wav')
+    practica = Game.getpractica()
 
     while not salir_juego:  # si no se cumple salir juego, sale y cierra la ventana
         pygame.mixer.music.load('RaymanTheme.mp3')
         pygame.mixer.music.play(-1)
         pygame.display.update()
-        while not salir_juego and modo == True and jugador == True:  # modo con solo una paleta y persona vs persona
+        while not salir_juego and modo == True and jugador == True and practica == False:  # modo con solo una paleta y persona vs persona
 
             pygame.display.update()
 
@@ -518,7 +534,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
         # _____________________________________________________________________________________________________________________________________________________________________________________
 
-        while not salir_juego and modo == False and jugador == True:  # modo dual, PvP
+        while not salir_juego and modo == False and jugador == True and practica == False:  # modo dual, PvP
             pygame.display.update()
 
             if punto == True:
@@ -735,9 +751,9 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pygame.display.update()
             reloj.tick(FPS)
 
-        # ___________________________________________________________________________________________________________________________________________________________________________________        
+        # ___________________________________________________________________________________________________________________________________________________________________________________
 
-        while not salir_juego and modo == True and jugador == False:  # modo con solo una paleta y persona vs computador
+        while not salir_juego and modo == True and jugador == False and practica == False:  # modo con solo una paleta y persona vs computador
 
             pygame.display.update()
 
@@ -903,7 +919,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pygame.display.update()
             reloj.tick(FPS)
         # _____________________________________________________________________________________________________________________________________________________________________________________________
-        while not salir_juego and modo == False and jugador == False:  # modo dual, Persona contra computador
+        while not salir_juego and modo == False and jugador == False and practica == False:  # modo dual, Persona contra computador
             pygame.display.update()
 
             if punto == True:
@@ -1130,6 +1146,190 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             reloj.tick(FPS)
 
         # _____________________________________________________________________________________________________________________________________________________________________________________________
+        while practica == True and not salir_juego: #modo practica
+
+            if punto == True:
+                time.sleep(1)
+                moveX_bola = 25
+
+                punto = False
+
+            if dificultad == 1:
+                FPS = 10
+                largo_paletas = 180
+                borde_inferior1 = 15
+                borde_inferior2 = 990
+                seccion = 60
+                distancia_paletas = 11
+                reacciona = 640
+
+            if dificultad == 2:
+                FPS = 15
+                largo_paletas = 120
+                borde_inferior1 = 18
+                borde_inferior2 = 993
+                seccion = 40
+                distancia_paletas = 8
+                reacciona = 540
+
+            if dificultad == 3:
+                FPS = 20
+                largo_paletas = 60
+                borde_inferior1 = 21
+                borde_inferior2 = 996
+                seccion = 20
+                distancia_paletas = 6
+                reacciona = 420
+
+            if modo == True:
+                pos_paletaDual1_2 = 978
+
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_s:
+                        move_p1 = 1
+                    if event.key == pygame.K_w:
+                        move_p1 = -1
+
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_s:
+                        move_p1 = 0
+                    if event.key == pygame.K_w:
+                        move_p1 = 0
+
+                if event.type == pygame.QUIT:
+                    salir_juego = True
+
+            if pos_paletaDual1_1 == 0:
+                pos_paletaDual1_1 = 1
+
+                move_p1 = 0
+
+            if modo == False: #colisiones de paletas con los bordes
+                if pos_paletaDual1_2 == borde_inferior1:
+                    pos_paletaDual1_2 = borde_inferior1 - 1
+                    pos_paletaDual1_1 = pos_paletaDual1_2 - distancia_paletas
+                    move_p1 = 0
+
+            if modo == True:
+                if pos_paletaDual1_1 == borde_inferior1:
+                    pos_paletaDual1_1 = borde_inferior1 - 1
+                    move_p1 = 0
+
+
+
+
+
+            pos_paletaDual1_1 += move_p1
+
+            if pos_paletaDual1_2 != 978:
+                pos_paletaDual1_2 = pos_paletaDual1_1 + distancia_paletas
+
+
+
+            if tablero[pos_bola][1] == 60:
+                moveY_bola = 1
+                sound_bordes.play()
+            if tablero[pos_bola][1] == 500:
+                moveY_bola = -1
+                sound_bordes.play()
+            if tablero[pos_bola][0] == 40:
+                pos_bola = 461
+                punto = True
+
+
+            if tablero[pos_bola][0] == 800:
+                moveX_bola = -25
+
+
+
+            if modo == True:
+                if tablero[pos_bola][0]==tablero[pos_paletaDual1_1+25][0] and tablero[pos_paletaDual1_1][1] <=tablero[pos_bola][1]<(tablero[pos_paletaDual1_1][1]+seccion):
+                    moveX_bola = 25
+                    moveY_bola = -1
+                    sound_paletas.play()
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_1+25][0] and (tablero[pos_paletaDual1_1][1] + seccion) <= tablero[pos_bola][1]<(tablero[pos_paletaDual1_1][1]+seccion*2):
+                    moveX_bola = 25
+                    moveY_bola = 0
+                    sound_paletas.play()
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_1+25][0] and (tablero[pos_paletaDual1_1][1]+seccion*2)<=tablero[pos_bola][1]<=(tablero[pos_paletaDual1_1][1]+seccion*3):
+                    moveY_bola = 1
+                    moveX_bola = 25
+                    sound_paletas.play()
+
+            if modo == False:
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_1 + 25][0] and tablero[pos_paletaDual1_1][1] <= \
+                        tablero[pos_bola][1] < (tablero[pos_paletaDual1_1][1] + seccion):
+                    moveX_bola = 25
+                    moveY_bola = -1
+                    sound_paletas.play()
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and tablero[pos_paletaDual1_2][1] <= \
+                        tablero[pos_bola][1] < (tablero[pos_paletaDual1_2][1] + seccion):
+                    moveX_bola = 25
+                    moveY_bola = -1
+                    sound_paletas.play()
+
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_1 + 25][0] and (
+                        tablero[pos_paletaDual1_1][1] + seccion) <= tablero[pos_bola][1] < (
+                        tablero[pos_paletaDual1_1][1] + seccion * 2):
+                    moveX_bola = 25
+                    moveY_bola = 0
+                    sound_paletas.play()
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and (
+                        tablero[pos_paletaDual1_2][1] + seccion) <= tablero[pos_bola][1] < (
+                        tablero[pos_paletaDual1_2][1] + seccion * 2):
+                    moveX_bola = 25
+                    moveY_bola = 0
+                    sound_paletas.play()
+
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_1 + 25][0] and (
+                        tablero[pos_paletaDual1_1][1] + seccion * 2) <= tablero[pos_bola][1] <= (
+                        tablero[pos_paletaDual1_1][1] + seccion * 3):
+                    moveY_bola = 1
+                    moveX_bola = 25
+                    sound_paletas.play()
+                if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and (
+                        tablero[pos_paletaDual1_2][1] + seccion * 2) <= tablero[pos_bola][1] <= (
+                        tablero[pos_paletaDual1_2][1] + seccion * 3):
+                    moveY_bola = 1
+                    moveX_bola = 25
+                    sound_paletas.play()
+
+
+
+
+
+
+            pos_bola += moveY_bola + moveX_bola
+
+
+
+
+            pantalla.fill(negro)
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual1_1][0],tablero[pos_paletaDual1_1][1],ancho_paletas,largo_paletas])#paleta1.1
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual1_2][0],tablero[pos_paletaDual1_2][1],ancho_paletas,largo_paletas])#paleta1.2
+
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual2_1][0],tablero[pos_paletaDual2_1][1],ancho_paletas,480])#pared
+
+            pygame.draw.rect(pantalla,blanco,[tablero[pos_bola][0],tablero[pos_bola][1],grueso,grueso])  # Bola
+            pygame.draw.rect(pantalla,blanco,[tablero[0][0],tablero[0][1],ancho_bordes,grueso])  # Borde superior
+            pygame.draw.rect(pantalla,blanco,[tablero[24][0],tablero[24][1],ancho_bordes,grueso])  # borde inferior
+
+
+
+
+
+            title = tipografia_juego.render("PONG",True, blanco,negro)#funciones que generan los textos dentro de la ventana del juego
+            title_rect = title.get_rect()
+            title_rect.center = (420, 20)
+            pantalla.blit(title, title_rect)
+
+            boton_texto("INICIO", 740, 2, 100, 35, verde, verde_oscuro, "Inicio")
+
+            pygame.display.update()
+            reloj.tick(FPS)
+        # ____________________________________________________________________________________________________________________________________________________________________________________________
     exit()
 
 

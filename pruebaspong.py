@@ -1,6 +1,8 @@
 import pygame
 import time
 import random
+import tkinter
+
 
 
 pygame.init()
@@ -158,7 +160,7 @@ def boton_texto(mensaje,pos_x,pos_y,ancho,alto,color_activo, color_inactivo, opc
 
 tablero = matriz([],[],40,40) #define la matriz del tablero
 
-class Cuadrilateros: #clase cuadrilateros, donde se definen las paletas, la bola y los bordes
+class Cuadrilateros: #clase cuadrilateros, donde se dFabianRamirez03efinen las paletas, la bola y los bordes
     def __init__(self, largo, ancho, posicion):
         self.largo = largo
         self.ancho = ancho
@@ -196,6 +198,7 @@ class Juego:
         self.jugadores = jugadores
         self.practica = practica
         self.inspector = inspector
+
     def gettablero(self):
         return self.tablero
     
@@ -231,8 +234,12 @@ class Juego:
 
     def setModo(self, nuevoModo):
         self.modo_juego = nuevoModo
+
     def setPractica(self, nuevaPractica):
         self.practica = nuevaPractica
+
+    def setInspector(self, nuevoInspector):
+        self.inspector = nuevoInspector
 
 Game = Juego(0,0,tablero,1,True, False, False, False) #Instancia de la clase Juego, define los argumentos de Pong.
 
@@ -1297,7 +1304,7 @@ def GameLoop(): #ciclo principal del juego que corra mientras el usuario quiera 
             pygame.display.update()
             reloj.tick(FPS)
 
-
+        #____________________________________________________________________________________________________________________________________________________________________________________________
         exit()
 
 Menu()
