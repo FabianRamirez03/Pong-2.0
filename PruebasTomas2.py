@@ -255,16 +255,41 @@ def modoInspector(lista ):
     matriz = tablero
     ventana = Tk()
     ventana.title("Modo Inspector")
-    ventana.minsize(ancho_display, largo_display)
+    ventana.minsize(ancho_display+500, largo_display)
     ventana.resizable(width= NO, height= NO)
-    ventana.geometry("880x850+500+100")
-    canvas = Canvas(ventana, width=ancho_display, height=largo_display, bg="white")
+    #ventana.geometry("880x850+500+100")
+    canvas = Canvas(ventana, width=ancho_display+500, height=largo_display, bg="white")
     canvas.place(x=-1, y=-1)
 
     def verificar(lista, matriz):
-        columnas = 40
-        filas = 25
+        columnas = 550
         cont = 0
+        xpos = 50
+        ypos = 50
+
+        for i in matriz:
+            pivot = esta_aux(cont, lista)
+            if pivot == True:
+                item = Entry(canvas, text="", justify=CENTER, width=2,  bg = "Green", font = ("arial", 8), fg = "Green")
+                item.place(x=xpos, y = ypos)
+            if pivot == False:
+                item = Entry(canvas, text="", justify=CENTER, width=2, bg = "Black", font = ("arial", 8), fg = "Black")
+                item.place(x=xpos, y=ypos)
+            if ypos != columnas:
+                ypos += 20
+            if ypos == columnas:
+                ypos = 50
+                xpos += 20
+
+            cont += 1
+
+    def esta_aux(indice, lista):
+        result = False
+        for i in lista:
+            if indice == i:
+                result = True
+                break
+        return result
 
 
     verificar(lista, matriz)
@@ -1216,7 +1241,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     if event.key == pygame.K_w:
                         move_p1 = -1
                     if event.key == pygame.K_SPACE:
-                        lista = [pos_paletaDual1_2, pos_paletaDual1_1, pos_bola, pos_paleta1, 0, 24]
+                        lista = [pos_paletaDual1_2, pos_paletaDual1_1, pos_bola, pos_paletaDual2_1,0,24]
                         modoInspector(lista)
 
                 if event.type == pygame.KEYUP:
