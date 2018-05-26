@@ -1,7 +1,7 @@
 import pygame
 import time
-import random
 import tkinter
+from tkinter import *
 
 pygame.init()
 # Globales
@@ -250,6 +250,28 @@ class Juego:
 
 Game = Juego(0, 0, tablero, 1, True, False, True, False)  # Instancia de la clase Juego, define los argumentos de Pong.
 
+def modoInspector(lista ):
+    global tablero
+    matriz = tablero
+    ventana = Tk()
+    ventana.title("Modo Inspector")
+    ventana.minsize(ancho_display, largo_display)
+    ventana.resizable(width= NO, height= NO)
+    ventana.geometry("880x850+500+100")
+    canvas = Canvas(ventana, width=ancho_display, height=largo_display, bg="white")
+    canvas.place(x=-1, y=-1)
+
+    def verificar(lista, matriz):
+        columnas = 40
+        filas = 25
+        cont = 0
+
+
+    verificar(lista, matriz)
+
+
+
+    ventana.mainloop()
 
 def PantallaInicio():  # Ciclo para la pantalla de inicio
     global tipografia
@@ -420,10 +442,12 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                         move_p1 = 1
                     if event.key == pygame.K_w:
                         move_p1 = -1
+
                     if event.key == pygame.K_UP:
                         move_p2 = -1
                     if event.key == pygame.K_DOWN:
                         move_p2 = 1
+
                 if event.type == pygame.KEYUP:  # debe mantenerse presionado el boton para que el movimiento se de
                     if event.key == pygame.K_s:
                         move_p1 = 0
@@ -1191,6 +1215,9 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                         move_p1 = 1
                     if event.key == pygame.K_w:
                         move_p1 = -1
+                    if event.key == pygame.K_SPACE:
+                        lista = [pos_paletaDual1_2, pos_paletaDual1_1, pos_bola, pos_paleta1, 0, 24]
+                        modoInspector(lista)
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_s:
