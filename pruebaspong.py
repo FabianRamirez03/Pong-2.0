@@ -143,6 +143,7 @@ def boton_texto(mensaje,pos_x,pos_y,ancho,alto,color_activo, color_inactivo, opc
             pygame.quit()
             quit()
         if click[0] == 1 and opcion == "Inspector":
+            ventana_inspector()
 
 
     
