@@ -32,6 +32,8 @@ tipografia_menor = pygame.font.Font("Comfortaa-Bold.ttf", 30)
 tipografia = pygame.font.Font("Comfortaa-Bold.ttf", 60)  # tipografias para texto titulo
 tipografia_enana = pygame.font.Font("Comfortaa-Bold.ttf", 15)
 
+lista = []
+
 pantalla = pygame.display.set_mode((ancho_display, largo_display))  # pantalla del juego
 pygame.display.set_caption("Pong")  # titulo de la ventana
 
@@ -248,29 +250,29 @@ class Juego:
 
 
 
-Game = Juego(0, 0, tablero, 1, True, False, True, False)  # Instancia de la clase Juego, define los argumentos de Pong.
+Game = Juego(0, 0, tablero, 1, True, False, False, False)  # Instancia de la clase Juego, define los argumentos de Pong.
 
 def modoInspector(lista ):
     global tablero
     matriz = tablero
     ventana = Tk()
     ventana.title("Modo Inspector")
-    ventana.minsize(ancho_display+500, largo_display)
+    ventana.minsize(ancho_display-70, largo_display-28)
     ventana.resizable(width= NO, height= NO)
     #ventana.geometry("880x850+500+100")
-    canvas = Canvas(ventana, width=ancho_display+500, height=largo_display, bg="white")
+    canvas = Canvas(ventana, width=ancho_display-70, height=largo_display-28, bg="white")
     canvas.place(x=-1, y=-1)
 
     def verificar(lista, matriz):
         columnas = 550
         cont = 0
-        xpos = 50
+        xpos = 10
         ypos = 50
 
         for i in matriz:
             pivot = esta_aux(cont, lista)
             if pivot == True:
-                item = Entry(canvas, text="", justify=CENTER, width=2,  bg = "Green", font = ("arial", 8), fg = "Green")
+                item = Entry(canvas, text="", justify=CENTER, width=2,  bg = "#000fff000", font = ("arial", 8), fg = "Green")
                 item.place(x=xpos, y = ypos)
             if pivot == False:
                 item = Entry(canvas, text="", justify=CENTER, width=2, bg = "Black", font = ("arial", 8), fg = "Black")
@@ -291,10 +293,16 @@ def modoInspector(lista ):
                 break
         return result
 
+    def volver():
+        ventana.destroy()
 
     verificar(lista, matriz)
 
+    lb_inspector = Label(canvas, font = ("Arial",24), text = "Modo Inpector", bg = "White", fg = "Black")
+    lb_inspector.place(x=310, y=5)
 
+    bt_volver = Button(canvas, bd = 1, bg = "white", fg = "Black", font = ("Arial",12), text = "Volver", command = volver)
+    bt_volver.place(x=10, y=10)
 
     ventana.mainloop()
 
@@ -432,6 +440,8 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
             pygame.display.update()
 
+            lista = [pos_paleta1, pos_paleta2, pos_bola, 0, 24]
+
             if dificultad == 1:  # define las velocidades y los tamaños de las paletas segùn la dificultad
                 FPS = 10
                 largo_paletas = 180
@@ -472,6 +482,9 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                         move_p2 = -1
                     if event.key == pygame.K_DOWN:
                         move_p2 = 1
+
+                    if event.key == pygame.K_SPACE:
+                        modoInspector(lista)
 
                 if event.type == pygame.KEYUP:  # debe mantenerse presionado el boton para que el movimiento se de
                     if event.key == pygame.K_s:
@@ -586,6 +599,8 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
         while not salir_juego and modo == False and jugador == True and practica == False:  # modo dual, PvP
             pygame.display.update()
 
+            lista = [pos_paletaDual1_1, pos_paletaDual1_2, pos_paletaDual2_1, pos_paletaDual2_2, pos_bola, 0, 24]
+
             if punto == True:
                 if score1 == 10 or score2 == 10:
                     if score1 > score2:
@@ -629,6 +644,8 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                         move_p2 = -1
                     if event.key == pygame.K_DOWN:
                         move_p2 = 1
+                    if event.key == pygame.K_SPACE:
+                        modoInspector(lista)
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_s:
                         move_p1 = 0
@@ -806,6 +823,8 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
             pygame.display.update()
 
+            lista = [pos_paleta1, pos_bola, pos_paleta2, 0, 24]
+
             if dificultad == 1:  # define las velocidades y los tamaños de las paletas segùn la dificultad
                 FPS = 10
                 largo_paletas = 180
@@ -846,6 +865,9 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
                     if event.key == pygame.K_w:
                         move_p1 = -1
+
+                    if event.key == pygame.K_SPACE:
+                        modoInspector(lista)
 
                 if event.type == pygame.KEYUP:  # debe mantenerse presionado el boton para que el movimiento se de
                     if event.key == pygame.K_s:
@@ -967,10 +989,13 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
             pygame.display.update()
             reloj.tick(FPS)
+
         # _____________________________________________________________________________________________________________________________________________________________________________________________
+
         while not salir_juego and modo == False and jugador == False and practica == False:  # modo dual, Persona contra computador
             pygame.display.update()
 
+            lista = [pos_paletaDual1_1, pos_paletaDual1_2, pos_paletaDual2_1, pos_paletaDual2_2, pos_bola,0,24]
             if punto == True:
                 if score1 == 10 or score2 == 10:
                     if score1 > score2:
@@ -1013,6 +1038,8 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                         move_p1 = 1
                     if event.key == pygame.K_w:
                         move_p1 = -1
+                    if event.key == pygame.K_SPACE:
+                        modoInspector(lista)
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_s:
@@ -1195,7 +1222,10 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             reloj.tick(FPS)
 
         # _____________________________________________________________________________________________________________________________________________________________________________________________
+
         while practica == True and not salir_juego: #modo practica
+
+            lista = [pos_paletaDual1_2, pos_paletaDual1_1, pos_bola, pos_paletaDual2_1, 0, 24]
 
             if punto == True:
                 time.sleep(1)
@@ -1241,7 +1271,6 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     if event.key == pygame.K_w:
                         move_p1 = -1
                     if event.key == pygame.K_SPACE:
-                        lista = [pos_paletaDual1_2, pos_paletaDual1_1, pos_bola, pos_paletaDual2_1,0,24]
                         modoInspector(lista)
 
                 if event.type == pygame.KEYUP:
