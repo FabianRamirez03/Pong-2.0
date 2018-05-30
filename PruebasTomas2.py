@@ -1,7 +1,9 @@
 import pygame
 import time
+from time import time
 import tkinter
 from tkinter import *
+import os
 
 pygame.init()
 # Globales
@@ -48,6 +50,8 @@ pos_paletaDual2_2 = 987
 
 # Textos
 tipografia_juego = pygame.font.Font("Comfortaa-Bold.ttf", 30)  # fuente de texto para el juego
+
+
 
 
 def matriz(A, B, a, b):  # funcion generadora de la matriz
@@ -252,6 +256,74 @@ class Juego:
 
 Game = Juego(0, 0, tablero, 1, True, False, False, False)  # Instancia de la clase Juego, define los argumentos de Pong.
 
+def ingresar_marcador(tiempo):
+    tiempo //= 1
+    ventana = Tk()
+    ventana.title("Modo Inspector")
+    ventana.minsize(ancho_display - 70, largo_display - 28)
+    ventana.resizable(width=NO, height=NO)
+    # ventana.geometry("880x850+500+100")
+    canvas = Canvas(ventana, width=ancho_display - 70, height=largo_display - 28, bg="black")
+    canvas.place(x=-1, y=-1)
+
+    def open_file(path, mode):
+        file = open(path, mode)  # Funciòn para abrir los archivos txt
+        return file
+
+    def separa_ganadores(i):
+        if i == len(ganadores):  # Hace una matriz con los datos del txt de vendedores
+            return  # Cada elemento de esta matriz es una sublista con todos los datos de cada vendedor
+        ganadores[i] = ganadores[i].replace("\n", "").split("|")  # Elimina los saltos de linea y hace que cada elemento entre | sea un elemento de cada sublista
+        separa_ganadores(i + 1)
+
+    listaGan = open_file("marcadores.txt", "r")
+    ganadores = listaGan.readlines()
+    separa_ganadores(0)
+
+    def verificar_ganadores(dato):
+        print("hacer la sobreescritura del txt")
+
+    if tiempo < ganadores[2][0]:
+        return vefificar_ganadores(tiempo)
+
+
+
+
+
+
+
+
+    lb_titulo = Label(canvas, text = "GAME OVER", bg = "black", font = ("Arial", 32), fg = "white")
+    lb_titulo.place(x = 200, y = 10)
+
+    lb_ingresar = Label(canvas, text = "Ingrese su nombre: ", bg = "black", font = ("Arial", 18), fg = "white")
+    lb_ingresar.place(x = 50, y = 100)
+
+    entrada_nombre = Entry(canvas, fg = "black", font = ("Arial", 18), width = 15)
+    entrada_nombre.place(x=280, y=100)
+
+    lb_highscore = Label(canvas, fg = "white", font = ("Arial", 25), bg = "black", text = "HIGHSCORES")
+    lb_highscore.place(x = 160, y = 170)
+
+   # lb_primero = Label(canvas, fg = "White", font = ("Arial", 20), bg = "Black", text = primero[0] + "        " + str(primero[1]))
+  #  lb_primero.place(x = 130, y = 220)
+
+ #   lb_segundo = Label(canvas, fg="White", font=("Arial",20), bg="Black", text=segundo[0] + "        " + str(segundo[1]))
+#    lb_segundo.place(x=130, y=260)
+
+ #   lb_tercero = Label(canvas, fg="White", font=("Arial",20), bg="Black", text= tercero[0] + "        " + str(tercero[1]))
+#    lb_tercero.place(x=130, y=300)
+
+    def volver():
+        ventana.destroy()
+
+
+    bt_volver = Button(canvas, bd=4, bg="black", fg="white", font=("Arial", 12), text="Volver", command= volver)
+    bt_volver.place(x=10, y=10)
+
+    ventana.mainloop()
+
+
 def modoInspector(lista ):
     global tablero
     matriz = tablero
@@ -260,8 +332,9 @@ def modoInspector(lista ):
     ventana.minsize(ancho_display-70, largo_display-28)
     ventana.resizable(width= NO, height= NO)
     #ventana.geometry("880x850+500+100")
-    canvas = Canvas(ventana, width=ancho_display-70, height=largo_display-28, bg="white")
+    canvas = Canvas(ventana, width=ancho_display-70, height=largo_display-28, bg="black")
     canvas.place(x=-1, y=-1)
+
 
     def verificar(lista, matriz):
         columnas = 550
@@ -275,7 +348,7 @@ def modoInspector(lista ):
                 item = Entry(canvas, text="", justify=CENTER, width=2,  bg = "#000fff000", font = ("arial", 8), fg = "Green")
                 item.place(x=xpos, y = ypos)
             if pivot == False:
-                item = Entry(canvas, text="", justify=CENTER, width=2, bg = "Black", font = ("arial", 8), fg = "Black")
+                item = Entry(canvas, text="", justify=CENTER, width=2, bg = "white", font = ("arial", 8), fg = "White")
                 item.place(x=xpos, y=ypos)
             if ypos != columnas:
                 ypos += 20
@@ -298,10 +371,10 @@ def modoInspector(lista ):
 
     verificar(lista, matriz)
 
-    lb_inspector = Label(canvas, font = ("Arial",24), text = "Modo Inpector", bg = "White", fg = "Black")
+    lb_inspector = Label(canvas, font = ("Arial",24), text = "Modo Inpector", bg = "black", fg = "White")
     lb_inspector.place(x=310, y=5)
 
-    bt_volver = Button(canvas, bd = 1, bg = "white", fg = "Black", font = ("Arial",12), text = "Volver", command = volver)
+    bt_volver = Button(canvas, bd = 1, bg = "black", fg = "white", font = ("Arial",12), text = "Volver", command = volver)
     bt_volver.place(x=10, y=10)
 
     ventana.mainloop()
@@ -436,6 +509,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
         pygame.mixer.music.load('RaymanTheme.mp3')
         pygame.mixer.music.play(-1)
         pygame.display.update()
+        tiempo1 = time()
         while not salir_juego and modo == True and jugador == True and practica == False:  # modo con solo una paleta y persona vs persona
 
             pygame.display.update()
@@ -463,12 +537,15 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 seccion = 20
 
             if punto == True:  # le da una pausa al movimiento de la bola cada vez que se genera un punto
-                if score1 == 10 or score2 == 10:
+                if score1 == 2 or score2 == 2:
+                    tiempo2  = time()
+                    tiempo = tiempo2 - tiempo1
                     if score1 > score2:
-                        return playAgain("¡Felicidades jugador 1!")
+                        ingresar_marcador(tiempo)
+                        return Menu()
                     else:
                         return playAgain("¡Felicidades jugador 2!")
-                time.sleep(1)
+                #time.sleep(1)
                 punto = False
 
             for event in pygame.event.get():  # movimiento de los jugadores.
