@@ -57,3 +57,6 @@ Nos reunimos en la biblioteca, definimos el diseño del menú, perfeccionamos mo
 
 Día 3 25/05/18 F/4:30
 Se creó la función para el modo practica, donde en una ventana de tkinter dibuja una tabla con las posiciones inactivas en negro y donde haya un elemento en color verde, debe implementarse en los demás modos de juegos. Además se acopló el código del modo práctica 
+
+Día 4 27/05/18 F/2:00h
+Se implementó el modo inspector para todas las modalidades. Se mejoró la ventana del mismo para que visualmente sea más agradable, modificando colores y bordes, además de un botón para regresar al juego. Modo inspector completado, solo falta agregar un botón físio en la pantalla del juego para lograr accesar a él. 
