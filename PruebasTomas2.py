@@ -258,6 +258,7 @@ Game = Juego(0, 0, tablero, 1, True, False, False, False)  # Instancia de la cla
 
 def ingresar_marcador(tiempo):
     tiempo //= 1
+    nombre = ""
     ventana = Tk()
     ventana.title("Modo Inspector")
     ventana.minsize(ancho_display - 70, largo_display - 28)
@@ -265,6 +266,12 @@ def ingresar_marcador(tiempo):
     # ventana.geometry("880x850+500+100")
     canvas = Canvas(ventana, width=ancho_display - 70, height=largo_display - 28, bg="black")
     canvas.place(x=-1, y=-1)
+
+    def invertir_separar(matriz):  # Invierte las funciones de separar para la modificación del archivo txt
+        if matriz == []:
+            return []
+        else:
+            return ["|".join(matriz[0])] + invertir_separar(matriz[1:])
 
     def open_file(path, mode):
         file = open(path, mode)  # Funciòn para abrir los archivos txt
@@ -280,17 +287,53 @@ def ingresar_marcador(tiempo):
     ganadores = listaGan.readlines()
     separa_ganadores(0)
 
-    def verificar_ganadores(dato):
-        print("hacer la sobreescritura del txt")
-
-    if tiempo < ganadores[2][0]:
-        return vefificar_ganadores(tiempo)
 
 
 
 
+    def invertir_separar(matriz):  # Invierte las funciones de separar para la modificación del archivo txt
+        if matriz == []:
+            return []
+        else:
+            return ["|".join(matriz[0])] + invertir_separar(matriz[1:])
+
+    def verificar_aux():
+        nombre = entrada_nombre.get()
+        return verificar_ganadores(tiempo, nombre)
+
+    def verificar_ganadores(dato, nombre):
+        if dato < int(ganadores[2][1]):
+            print(nombre)
+            if nombre != "":
+                if dato <= int(ganadores[0][1]):
+                    ganadores[0][0] = nombre
+                    ganadores[0][1] = str(dato)
+                if dato <= int(ganadores[1][1]) and dato > int(ganadores[0][1]):
+                    ganadores[1][0] = nombre
+                    ganadores[1][1] = str(dato)
+                if dato < int(ganadores[2][1] and dato > int(ganadores[1][1])):
+                    ganadores[2][0] = nombre
+                    ganadores[2][1] = str(dato)
+
+        nuevo_texto = "\n".join(invertir_separar(ganadores))
+        archivo_ganadores = open_file("marcadores.txt", "w")
+        archivo_ganadores.write((str(nuevo_texto)))
+        #listaGan = open_file("marcadores.txt", "r")
+        #ganadores = listaGan.readlines()
+        #separa_ganadores(0)
+        lb_primero.config(text = ganadores[0][0] + "        " + str(ganadores[0][1]))
+        lb_segundo.config(text=ganadores[1][0] + "        " + str(ganadores[1][1]))
+        lb_tercero.config(text= ganadores[2][0] + "        " + str(ganadores[2][1]))
 
 
+
+    entrada_nombre = Entry(canvas, fg="black", font=("Arial", 18), width=15)
+    entrada_nombre.place(x=280, y=100)
+
+
+
+    bt_ingresar = Button(canvas, bg = "black", fg = "white", text = "Ingresar", command = verificar_aux, font = ("Arial", 18))
+    bt_ingresar.place(x = 450, y = 100)
 
 
     lb_titulo = Label(canvas, text = "GAME OVER", bg = "black", font = ("Arial", 32), fg = "white")
@@ -299,20 +342,19 @@ def ingresar_marcador(tiempo):
     lb_ingresar = Label(canvas, text = "Ingrese su nombre: ", bg = "black", font = ("Arial", 18), fg = "white")
     lb_ingresar.place(x = 50, y = 100)
 
-    entrada_nombre = Entry(canvas, fg = "black", font = ("Arial", 18), width = 15)
-    entrada_nombre.place(x=280, y=100)
+
 
     lb_highscore = Label(canvas, fg = "white", font = ("Arial", 25), bg = "black", text = "HIGHSCORES")
     lb_highscore.place(x = 160, y = 170)
 
-   # lb_primero = Label(canvas, fg = "White", font = ("Arial", 20), bg = "Black", text = primero[0] + "        " + str(primero[1]))
-  #  lb_primero.place(x = 130, y = 220)
+    lb_primero = Label(canvas, fg = "White", font = ("Arial", 20), bg = "Black", text = ganadores[0][0] + "        " + str(ganadores[0][1]))
+    lb_primero.place(x = 130, y = 220)
 
- #   lb_segundo = Label(canvas, fg="White", font=("Arial",20), bg="Black", text=segundo[0] + "        " + str(segundo[1]))
-#    lb_segundo.place(x=130, y=260)
+    lb_segundo = Label(canvas, fg="White", font=("Arial",20), bg="Black", text=ganadores[1][0] + "        " + str(ganadores[1][1]))
+    lb_segundo.place(x=130, y=260)
 
- #   lb_tercero = Label(canvas, fg="White", font=("Arial",20), bg="Black", text= tercero[0] + "        " + str(tercero[1]))
-#    lb_tercero.place(x=130, y=300)
+    lb_tercero = Label(canvas, fg="White", font=("Arial",20), bg="Black", text= ganadores[2][0] + "        " + str(ganadores[2][1]))
+    lb_tercero.place(x=130, y=300)
 
     def volver():
         ventana.destroy()
@@ -541,6 +583,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     tiempo2  = time()
                     tiempo = tiempo2 - tiempo1
                     if score1 > score2:
+                        tiempo = int(tiempo)
                         ingresar_marcador(tiempo)
                         return Menu()
                     else:
