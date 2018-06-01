@@ -1,6 +1,6 @@
 import pygame
 import time
-from time import time
+#from time import time
 import tkinter
 from tkinter import *
 import os
@@ -299,21 +299,35 @@ def ingresar_marcador(tiempo):
 
     def verificar_aux():
         nombre = entrada_nombre.get()
-        return verificar_ganadores(tiempo, nombre)
+        if nombre != ganadores[0][0] and tiempo != ganadores[0][1]:
+            if nombre != ganadores[1][0] and tiempo != ganadores[1][1]:
+                if nombre != ganadores[2][0] and tiempo != ganadores[2][1]:
+                    return verificar_ganadores(tiempo, nombre)
+        else:
+            return "repetido"
 
     def verificar_ganadores(dato, nombre):
         if dato < int(ganadores[2][1]):
-            print(nombre)
+            hacer =True
             if nombre != "":
-                if dato <= int(ganadores[0][1]):
+                if dato <= int(ganadores[0][1]) and hacer:
+                    ganadores[2][0] = ganadores[1][0]
+                    ganadores[2][1] = ganadores[1][1]
+                    ganadores[1][0] = ganadores[0][0]
+                    ganadores[1][1] = ganadores[0][1]
                     ganadores[0][0] = nombre
                     ganadores[0][1] = str(dato)
-                if dato <= int(ganadores[1][1]) and dato > int(ganadores[0][1]):
+                    hacer = False
+                if dato <= int(ganadores[1][1]) and dato > int(ganadores[0][1]) and hacer:
+                    ganadores[2][0] = ganadores[1][0]
+                    ganadores[2][1] = ganadores[1][1]
                     ganadores[1][0] = nombre
                     ganadores[1][1] = str(dato)
-                if dato < int(ganadores[2][1] and dato > int(ganadores[1][1])):
+                    hacer = False
+                if dato < int(ganadores[2][1] and dato > int(ganadores[1][1])) and hacer:
                     ganadores[2][0] = nombre
                     ganadores[2][1] = str(dato)
+
 
         nuevo_texto = "\n".join(invertir_separar(ganadores))
         archivo_ganadores = open_file("marcadores.txt", "w")
@@ -551,7 +565,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
         pygame.mixer.music.load('RaymanTheme.mp3')
         pygame.mixer.music.play(-1)
         pygame.display.update()
-        tiempo1 = time()
+        tiempo1 = time.time()
         while not salir_juego and modo == True and jugador == True and practica == False:  # modo con solo una paleta y persona vs persona
 
             pygame.display.update()
@@ -579,16 +593,18 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 seccion = 20
 
             if punto == True:  # le da una pausa al movimiento de la bola cada vez que se genera un punto
-                if score1 == 2 or score2 == 2:
-                    tiempo2  = time()
+                if score1 == 9 or score2 == 9:
+                    tiempo2  = time.time()
                     tiempo = tiempo2 - tiempo1
                     if score1 > score2:
                         tiempo = int(tiempo)
                         ingresar_marcador(tiempo)
                         return Menu()
                     else:
-                        return playAgain("¡Felicidades jugador 2!")
-                #time.sleep(1)
+                        tiempo = int(tiempo)
+                        ingresar_marcador(tiempo)
+                        return Menu()
+                time.sleep(1)
                 punto = False
 
             for event in pygame.event.get():  # movimiento de los jugadores.
@@ -723,10 +739,16 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
             if punto == True:
                 if score1 == 10 or score2 == 10:
+                    tiempo2 = time.time()
+                    tiempo = tiempo2 - tiempo1
                     if score1 > score2:
-                        return playAgain("¡Felicidades jugador 1!")
+                        tiempo = int(tiempo)
+                        ingresar_marcador(tiempo)
+                        return Menu()
                     else:
-                        return playAgain("¡Felicidades jugador 2!")
+                        tiempo = int(tiempo)
+                        ingresar_marcador(tiempo)
+                        return Menu()
                 time.sleep(1)
                 punto = False
 
@@ -970,10 +992,16 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
             if punto == True:  # le da una pausa al movimiento de la bola cada vez que se genera un punto
                 if score1 == 10 or score2 == 10:
+                    tiempo2 = time.time()
+                    tiempo = tiempo2 - tiempo1
                     if score1 > score2:
-                        return playAgain("¡Felicidades jugador 1!")
+                        tiempo = int(tiempo)
+                        ingresar_marcador(tiempo)
+                        return Menu()
                     else:
-                        return playAgain("¡Has perdido!")
+                        tiempo = int(tiempo)
+                        ingresar_marcador(tiempo)
+                        return Menu()
 
                 time.sleep(1)
                 punto = False
@@ -1118,10 +1146,16 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             lista = [pos_paletaDual1_1, pos_paletaDual1_2, pos_paletaDual2_1, pos_paletaDual2_2, pos_bola,0,24]
             if punto == True:
                 if score1 == 10 or score2 == 10:
+                    tiempo2 = time.time()
+                    tiempo = tiempo2 - tiempo1
                     if score1 > score2:
-                        return playAgain("¡Felicidades jugador 1!")
+                        tiempo = int(tiempo)
+                        ingresar_marcador(tiempo)
+                        return Menu()
                     else:
-                        return playAgain("¡Has perdido!")
+                        tiempo = int(tiempo)
+                        ingresar_marcador(tiempo)
+                        return Menu()
                 time.sleep(1)
                 punto = False
 
