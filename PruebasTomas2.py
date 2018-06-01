@@ -4,6 +4,7 @@ import time
 import tkinter
 from tkinter import *
 import os
+import random
 
 pygame.init()
 # Globales
@@ -197,7 +198,7 @@ Paleta2Dual_player2 = Cuadrilateros(largo_paletas, ancho_paletas, tablero[pos_pa
 
 class Juego:
 
-    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores,practica, inspector):
+    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores,practica, inspector, fondo):
         self.marcador_1 = marcador_1
         self.marcador_2 = marcador_2
         self.tablero = tablero
@@ -206,6 +207,7 @@ class Juego:
         self.jugadores = jugadores
         self.practica = practica
         self.inspector = inspector
+        self.fondo = fondo
     def gettablero(self):
         return self.tablero
 
@@ -230,8 +232,10 @@ class Juego:
     def getInspector(self):
         return self.inspector
 
-    def aceptar(
-            self):  # Esta funcion esta ligada al boton aceptar y llama el ciclo del juego con las variables definidas por el usuario
+    def getFondo(self):
+        return self.fondo
+
+    def aceptar(self):  # Esta funcion esta ligada al boton aceptar y llama el ciclo del juego con las variables definidas por el usuario
         print(Game.getmodo())
         print(Game.getjugadores())
         print(Game.getDificultad())
@@ -252,9 +256,18 @@ class Juego:
     def setInspector(self, nuevoInspector):
         self.inspector = nuevoInspector
 
+    def setFondo(self, nuevoFondo):
+        self.fondo = nuevoFondo
+
+    def fondo_random(self):
+        lista = [(0,0,0),(235,0,0),(0,235,0),(0,0,235),(253,100,0)]
+        color = random.choice(lista)
+        return self.setFondo(color)
 
 
-Game = Juego(0, 0, tablero, 1, True, False, False, False)  # Instancia de la clase Juego, define los argumentos de Pong.
+
+
+Game = Juego(0, 0, tablero, 1, True, False, False, False, (0,0,0)) # Instancia de la clase Juego, define los argumentos de Pong.
 
 def ingresar_marcador(tiempo):
     tiempo //= 1
@@ -521,7 +534,7 @@ def playAgain(ganador):  # Ciclo para las pantallas cuando algun marcador indica
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-        pantalla.fill(negro)
+        pantalla.fill(colorFondo)
         volver_font = pygame.font.Font("Comfortaa-Bold.ttf", 75)
 
         titulo = volver_font.render(ganador, True, blanco, negro)  # bloques de definicion de texto
@@ -566,6 +579,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
         pygame.mixer.music.play(-1)
         pygame.display.update()
         tiempo1 = time.time()
+        colorFondo = Game.getFondo()
         while not salir_juego and modo == True and jugador == True and practica == False:  # modo con solo una paleta y persona vs persona
 
             pygame.display.update()
@@ -621,6 +635,9 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
                     if event.key == pygame.K_SPACE:
                         modoInspector(lista)
+                    if event.key == pygame.K_ESCAPE:
+                        Game.fondo_random()
+                        colorFondo = Game.getFondo()
 
                 if event.type == pygame.KEYUP:  # debe mantenerse presionado el boton para que el movimiento se de
                     if event.key == pygame.K_s:
@@ -701,7 +718,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pos_bola += moveY_bola + moveX_bola
             pos_paleta1 += move_p1
             pos_paleta2 += move_p2
-            pantalla.fill(negro)
+            pantalla.fill(colorFondo)
             pygame.draw.rect(pantalla, blanco, [tablero[pos_paleta1][0], tablero[pos_paleta1][1], ancho_paletas,
                                                 largo_paletas])  # paleta 1
             pygame.draw.rect(pantalla, blanco, [tablero[pos_paleta2][0], tablero[pos_paleta2][1], ancho_paletas,
@@ -710,17 +727,17 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pygame.draw.rect(pantalla, blanco, [tablero[0][0], tablero[0][1], ancho_bordes, grueso])  # Borde superior
             pygame.draw.rect(pantalla, blanco, [tablero[24][0], tablero[24][1], ancho_bordes, grueso])  # borde inferior
 
-            title = tipografia_juego.render("PONG", True, blanco, negro)
+            title = tipografia_juego.render("PONG", True, blanco, colorFondo)
             title_rect = title.get_rect()
             title_rect.center = (420, 20)
             pantalla.blit(title, title_rect)
 
-            marcador_1 = tipografia_juego.render(str(score1), True, blanco, negro)
+            marcador_1 = tipografia_juego.render(str(score1), True, blanco, colorFondo)
             Marc1_rect = marcador_1.get_rect()
             Marc1_rect.center = (150, 20)
             pantalla.blit(marcador_1, Marc1_rect)
 
-            marcador_2 = tipografia_juego.render(str(score2), True, blanco, negro)
+            marcador_2 = tipografia_juego.render(str(score2), True, blanco, colorFondo)
             Marc2_rect = marcador_2.get_rect()
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
@@ -788,6 +805,10 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                         move_p2 = 1
                     if event.key == pygame.K_SPACE:
                         modoInspector(lista)
+                    if event.key == pygame.K_ESCAPE:
+                        Game.fondo_random()
+                        colorFondo = Game.getFondo()
+
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_s:
                         move_p1 = 0
@@ -919,7 +940,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pos_paletaDual2_1 += move_p2
             pos_paletaDual2_2 = pos_paletaDual2_1 + distancia_paletas
 
-            pantalla.fill(negro)
+            pantalla.fill(colorFondo)
             pygame.draw.rect(pantalla, blanco,
                              [tablero[pos_paletaDual1_1][0], tablero[pos_paletaDual1_1][1], ancho_paletas,
                               largo_paletas])  # paleta 1.1
@@ -938,18 +959,17 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pygame.draw.rect(pantalla, blanco, [tablero[0][0], tablero[0][1], ancho_bordes, grueso])  # Borde superior
             pygame.draw.rect(pantalla, blanco, [tablero[24][0], tablero[24][1], ancho_bordes, grueso])  # borde inferior
 
-            title = tipografia_juego.render("PONG", True, blanco,
-                                            negro)  # funciones que generan los textos dentro de la ventana del juego
+            title = tipografia_juego.render("PONG", True, blanco,colorFondo)  # funciones que generan los textos dentro de la ventana del juego
             title_rect = title.get_rect()
             title_rect.center = (420, 20)
             pantalla.blit(title, title_rect)
 
-            marcador_1 = tipografia_juego.render(str(score1), True, blanco, negro)
+            marcador_1 = tipografia_juego.render(str(score1), True, blanco, colorFondo)
             Marc1_rect = marcador_1.get_rect()
             Marc1_rect.center = (150, 20)
             pantalla.blit(marcador_1, Marc1_rect)
 
-            marcador_2 = tipografia_juego.render(str(score2), True, blanco, negro)
+            marcador_2 = tipografia_juego.render(str(score2), True, blanco, colorFondo)
             Marc2_rect = marcador_2.get_rect()
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
@@ -1016,6 +1036,9 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
                     if event.key == pygame.K_SPACE:
                         modoInspector(lista)
+                    if event.key == pygame.K_ESCAPE:
+                        Game.fondo_random()
+                        colorFondo = Game.getFondo()
 
                 if event.type == pygame.KEYUP:  # debe mantenerse presionado el boton para que el movimiento se de
                     if event.key == pygame.K_s:
@@ -1061,19 +1084,19 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 moveX_bola = 25
                 moveY_bola = -1
                 sound_paletas.play()
-                print("rebota1")
+
             if tablero[pos_bola][0] == tablero[pos_paleta1 + 25][0] and (tablero[pos_paleta1][1] + seccion) <= \
                     tablero[pos_bola][1] < (tablero[pos_paleta1][1] + seccion * 2):
                 moveX_bola = 25
                 moveY_bola = 0
                 sound_paletas.play()
-                print("rebota2")
+
             if tablero[pos_bola][0] == tablero[pos_paleta1 + 25][0] and (tablero[pos_paleta1][1] + seccion * 2) <= \
                     tablero[pos_bola][1] <= (tablero[pos_paleta1][1] + seccion * 3):
                 moveY_bola = 1
                 moveX_bola = 25
                 sound_paletas.play()
-                print("rebota3")
+
 
             if tablero[pos_bola + 25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1] <= tablero[pos_bola][
                 1] < (tablero[pos_paleta2][1] + seccion):
@@ -1109,7 +1132,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 if pos_paleta2 < 983:
                     pos_paleta2 += 1
 
-            pantalla.fill(negro)
+            pantalla.fill(colorFondo)
             pygame.draw.rect(pantalla, blanco, [tablero[pos_paleta1][0], tablero[pos_paleta1][1], ancho_paletas,
                                                 largo_paletas])  # paleta 1
             pygame.draw.rect(pantalla, blanco, [tablero[pos_paleta2][0], tablero[pos_paleta2][1], ancho_paletas,
@@ -1118,17 +1141,17 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pygame.draw.rect(pantalla, blanco, [tablero[0][0], tablero[0][1], ancho_bordes, grueso])  # Borde superior
             pygame.draw.rect(pantalla, blanco, [tablero[24][0], tablero[24][1], ancho_bordes, grueso])  # borde inferior
 
-            title = tipografia_juego.render("PONG", True, blanco, negro)
+            title = tipografia_juego.render("PONG", True, blanco, colorFondo)
             title_rect = title.get_rect()
             title_rect.center = (420, 20)
             pantalla.blit(title, title_rect)
 
-            marcador_1 = tipografia_juego.render(str(score1), True, blanco, negro)
+            marcador_1 = tipografia_juego.render(str(score1), True, blanco, colorFondo)
             Marc1_rect = marcador_1.get_rect()
             Marc1_rect.center = (150, 20)
             pantalla.blit(marcador_1, Marc1_rect)
 
-            marcador_2 = tipografia_juego.render(str(score2), True, blanco, negro)
+            marcador_2 = tipografia_juego.render(str(score2), True, blanco, colorFondo)
             Marc2_rect = marcador_2.get_rect()
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
@@ -1194,6 +1217,9 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                         move_p1 = -1
                     if event.key == pygame.K_SPACE:
                         modoInspector(lista)
+                    if event.key == pygame.K_ESCAPE:
+                        Game.fondo_random()
+                        colorFondo = Game.getFondo()
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_s:
@@ -1335,7 +1361,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
             pos_paletaDual2_2 = pos_paletaDual2_1 + distancia_paletas
 
-            pantalla.fill(negro)
+            pantalla.fill(colorFondo)
             pygame.draw.rect(pantalla, blanco,
                              [tablero[pos_paletaDual1_1][0], tablero[pos_paletaDual1_1][1], ancho_paletas,
                               largo_paletas])  # paleta 1.1
@@ -1354,18 +1380,17 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pygame.draw.rect(pantalla, blanco, [tablero[0][0], tablero[0][1], ancho_bordes, grueso])  # Borde superior
             pygame.draw.rect(pantalla, blanco, [tablero[24][0], tablero[24][1], ancho_bordes, grueso])  # borde inferior
 
-            title = tipografia_juego.render("PONG", True, blanco,
-                                            negro)  # funciones que generan los textos dentro de la ventana del juego
+            title = tipografia_juego.render("PONG", True, blanco,colorFondo)  # funciones que generan los textos dentro de la ventana del juego
             title_rect = title.get_rect()
             title_rect.center = (420, 20)
             pantalla.blit(title, title_rect)
 
-            marcador_1 = tipografia_juego.render(str(score1), True, blanco, negro)
+            marcador_1 = tipografia_juego.render(str(score1), True, blanco, colorFondo)
             Marc1_rect = marcador_1.get_rect()
             Marc1_rect.center = (150, 20)
             pantalla.blit(marcador_1, Marc1_rect)
 
-            marcador_2 = tipografia_juego.render(str(score2), True, blanco, negro)
+            marcador_2 = tipografia_juego.render(str(score2), True, blanco, colorFondo)
             Marc2_rect = marcador_2.get_rect()
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
@@ -1426,6 +1451,9 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                         move_p1 = -1
                     if event.key == pygame.K_SPACE:
                         modoInspector(lista)
+                    if event.key == pygame.K_ESCAPE:
+                        Game.fondo_random()
+                        colorFondo = Game.getFondo()
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_s:
@@ -1541,7 +1569,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
 
 
-            pantalla.fill(negro)
+            pantalla.fill(colorFondo)
             pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual1_1][0],tablero[pos_paletaDual1_1][1],ancho_paletas,largo_paletas])#paleta1.1
             pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual1_2][0],tablero[pos_paletaDual1_2][1],ancho_paletas,largo_paletas])#paleta1.2
 
@@ -1555,7 +1583,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
 
 
-            title = tipografia_juego.render("PONG",True, blanco,negro)#funciones que generan los textos dentro de la ventana del juego
+            title = tipografia_juego.render("PONG",True, blanco, colorFondo)#funciones que generan los textos dentro de la ventana del juego
             title_rect = title.get_rect()
             title_rect.center = (420, 20)
             pantalla.blit(title, title_rect)
