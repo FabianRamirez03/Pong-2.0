@@ -260,7 +260,7 @@ class Juego:
         self.fondo = nuevoFondo
 
     def fondo_random(self):
-        lista = [(0,0,0),(235,0,0),(0,235,0),(0,0,235),(253,100,0)]
+        lista = [(0,0,0),(235,0,0),(0,235,0),(0,0,235),(253,100,0), (124, 0, 59), (124, 125, 154), (252, 0, 254), (0, 121, 122), (70, 0, 27), (0, 59, 82)]
         color = random.choice(lista)
         return self.setFondo(color)
 
@@ -270,8 +270,6 @@ class Juego:
 Game = Juego(0, 0, tablero, 1, True, False, False, False, (0,0,0)) # Instancia de la clase Juego, define los argumentos de Pong.
 
 def ingresar_marcador(tiempo):
-    tiempo //= 1
-    nombre = ""
     ventana = Tk()
     ventana.title("Modo Inspector")
     ventana.minsize(ancho_display - 70, largo_display - 28)
@@ -299,6 +297,7 @@ def ingresar_marcador(tiempo):
     listaGan = open_file("marcadores.txt", "r")
     ganadores = listaGan.readlines()
     separa_ganadores(0)
+    listaGan.close()
 
 
 
@@ -312,16 +311,18 @@ def ingresar_marcador(tiempo):
 
     def verificar_aux():
         nombre = entrada_nombre.get()
-        if nombre != ganadores[0][0] and tiempo != ganadores[0][1]:
-            if nombre != ganadores[1][0] and tiempo != ganadores[1][1]:
-                if nombre != ganadores[2][0] and tiempo != ganadores[2][1]:
-                    return verificar_ganadores(tiempo, nombre)
+        if nombre != "":
+            if nombre != ganadores[0][0] and tiempo != ganadores[0][1]:
+                if nombre != ganadores[1][0] and tiempo != ganadores[1][1]:
+                    if nombre != ganadores[2][0] and tiempo != ganadores[2][1]:
+                        return verificar_ganadores(tiempo, nombre)
+            else:
+                return "repetido"
         else:
-            return "repetido"
-
+            return "Ingrese su nombre"
     def verificar_ganadores(dato, nombre):
         if dato < int(ganadores[2][1]):
-            hacer =True
+            hacer = True
             if nombre != "":
                 if dato <= int(ganadores[0][1]) and hacer:
                     ganadores[2][0] = ganadores[1][0]
@@ -351,7 +352,7 @@ def ingresar_marcador(tiempo):
         lb_primero.config(text = ganadores[0][0] + "        " + str(ganadores[0][1]))
         lb_segundo.config(text=ganadores[1][0] + "        " + str(ganadores[1][1]))
         lb_tercero.config(text= ganadores[2][0] + "        " + str(ganadores[2][1]))
-
+        archivo_ganadores.close()
 
 
     entrada_nombre = Entry(canvas, fg="black", font=("Arial", 18), width=15)
