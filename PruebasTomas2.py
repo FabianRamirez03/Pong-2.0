@@ -34,6 +34,8 @@ setclor = 1
 tipografia_menor = pygame.font.Font("Comfortaa-Bold.ttf", 30)
 tipografia = pygame.font.Font("Comfortaa-Bold.ttf", 60)  # tipografias para texto titulo
 tipografia_enana = pygame.font.Font("Comfortaa-Bold.ttf", 15)
+largo_trampolin = 60
+ancho_trampolin = 40
 
 lista = []
 
@@ -84,9 +86,14 @@ del modo de juego. Al final llama al ciclo para correr el juego.'''
 
 
 def boton(pos_x, pos_y, ancho, alto, opcion):
+
     P1_P2 = Game.getjugadores()
     modo_juego = Game.getmodo()
     dificultad = Game.getDificultad()
+    trampolin1 = Game.getTrampolin1()
+    trampolin2 = Game.getTrampolin2()
+    trampolin3 = Game.getTrampolin3()
+
     click = pygame.mouse.get_pressed()
     mouse = pygame.mouse.get_pos()
 
@@ -106,67 +113,108 @@ def boton(pos_x, pos_y, ancho, alto, opcion):
                 Game.setDificultad(2)
             if opcion == "3":
                 Game.setDificultad(3)
+            if opcion == "Si":
+            	if dificultad == 1:
+            		Game.setTrampolin1(True)
+            		Game.setTrampolin2(False)
+            		Game.setTrampolin3(False)
+            	if dificultad == 2:
+            		Game.setTrampolin1(True)
+            		Game.setTrampolin2(True)
+            		Game.setTrampolin3(False)
+            	if dificultad == 3:
+            		Game.setTrampolin1(True)
+            		Game.setTrampolin2(True)
+            		Game.setTrampolin3(True)
+            if opcion == "No":
+            	if dificultad == 1:
+            		Game.setTrampolin1(False)
+            		Game.setTrampolin2(False)
+            		Game.setTrampolin3(False)
+            	if dificultad == 2:
+            		Game.setTrampolin1(False)
+            		Game.setTrampolin2(False)
+            		Game.setTrampolin3(False)
+            	if dificultad == 3:
+            		Game.setTrampolin1(False)
+            		Game.setTrampolin2(False)
+            		Game.setTrampolin3(False)
 
     if dificultad == 1:
-        pygame.draw.rect(pantalla, negro, [tablero[538][0], tablero[538][1], 30, 30])
-        pygame.draw.rect(pantalla, blanco, [tablero[688][0], tablero[688][1], 30, 30])
-        pygame.draw.rect(pantalla, blanco, [tablero[863][0], tablero[863][1], 30, 30])
-    if dificultad == 2:
-        pygame.draw.rect(pantalla, blanco, [tablero[538][0], tablero[538][1], 30, 30])
-        pygame.draw.rect(pantalla, negro, [tablero[688][0], tablero[688][1], 30, 30])
-        pygame.draw.rect(pantalla, blanco, [tablero[863][0], tablero[863][1], 30, 30])
-    if dificultad == 3:
-        pygame.draw.rect(pantalla, blanco, [tablero[538][0], tablero[538][1], 30, 30])
-        pygame.draw.rect(pantalla, blanco, [tablero[688][0], tablero[688][1], 30, 30])
-        pygame.draw.rect(pantalla, negro, [tablero[863][0], tablero[863][1], 30, 30])
-    if P1_P2 == True:
-        pygame.draw.rect(pantalla, negro, [tablero[632][0], tablero[632][1], 30, 30])
-        pygame.draw.rect(pantalla, blanco, [tablero[932][0], tablero[932][1], 30, 30])
-    if P1_P2 == False:
-        pygame.draw.rect(pantalla, blanco, [tablero[632][0], tablero[632][1], 30, 30])
-        pygame.draw.rect(pantalla, negro, [tablero[932][0], tablero[932][1], 30, 30])
-    if modo_juego == False:
-        pygame.draw.rect(pantalla, blanco, [tablero[535][0], tablero[535][1], 30, 30])
-        pygame.draw.rect(pantalla, negro, [tablero[685][0], tablero[685][1], 30, 30])
-    if modo_juego == True:
         pygame.draw.rect(pantalla, negro, [tablero[535][0], tablero[535][1], 30, 30])
         pygame.draw.rect(pantalla, blanco, [tablero[685][0], tablero[685][1], 30, 30])
+        pygame.draw.rect(pantalla, blanco, [tablero[860][0], tablero[860][1], 30, 30])
+    if dificultad == 2:
+        pygame.draw.rect(pantalla, blanco, [tablero[535][0], tablero[535][1], 30, 30])
+        pygame.draw.rect(pantalla, negro, [tablero[685][0], tablero[685][1], 30, 30])
+        pygame.draw.rect(pantalla, blanco, [tablero[860][0], tablero[860][1], 30, 30])
+    if dificultad == 3:
+        pygame.draw.rect(pantalla, blanco, [tablero[535][0], tablero[535][1], 30, 30])
+        pygame.draw.rect(pantalla, blanco, [tablero[685][0], tablero[685][1], 30, 30])
+        pygame.draw.rect(pantalla, negro, [tablero[860][0], tablero[860][1], 30, 30])
+    if P1_P2 == True:
+        pygame.draw.rect(pantalla, negro, [tablero[629][0], tablero[629][1], 30, 30])
+        pygame.draw.rect(pantalla, blanco, [tablero[929][0], tablero[929][1], 30, 30])
+    if P1_P2 == False:
+        pygame.draw.rect(pantalla, blanco, [tablero[629][0], tablero[629][1], 30, 30])
+        pygame.draw.rect(pantalla, negro, [tablero[929][0], tablero[929][1], 30, 30])
+    if modo_juego == False:
+        pygame.draw.rect(pantalla, blanco, [tablero[532][0], tablero[532][1], 30, 30])
+        pygame.draw.rect(pantalla, negro, [tablero[682][0], tablero[682][1], 30, 30])
+    if modo_juego == True:
+        pygame.draw.rect(pantalla, negro, [tablero[532][0], tablero[532][1], 30, 30])
+        pygame.draw.rect(pantalla, blanco, [tablero[682][0], tablero[682][1], 30, 30])
+
+    if trampolin1 == True or trampolin2 == True or trampolin3 == True:
+    	pygame.draw.rect(pantalla, negro, [tablero[538][0], tablero[538][1], 30, 30])
+    	pygame.draw.rect(pantalla, blanco, [tablero[688][0], tablero[688][1], 30, 30])
+
+    if trampolin1 == False:
+    	pygame.draw.rect(pantalla, blanco, [tablero[538][0], tablero[538][1], 30, 30])
+    	pygame.draw.rect(pantalla, negro, [tablero[688][0], tablero[688][1], 30, 30])
 
 
 ''' boton_texto crea botonoes con una funcion y un texto escrito. El color activo aparece cuando
 el boton tiene el mouse encima y el inactivo cuando no. La opcion indica la funcion que llama.'''
 
 
-def boton_texto(mensaje, pos_x, pos_y, ancho, alto, color_activo, color_inactivo, opcion):
+def boton_texto(mensaje,pos_x,pos_y,ancho,alto,color_activo, color_inactivo, opcion):
     global tipografia_menor
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     if pos_x + ancho > mouse[0] > pos_x and pos_y + alto > mouse[1] > pos_y:
-        pygame.draw.rect(pantalla, color_activo, [pos_x, pos_y, ancho, alto])
+        pygame.draw.rect(pantalla, color_activo, [pos_x,pos_y, ancho, alto])
 
         if click[0] == 1 and opcion == "Inicio":
-            Menu()
+            Game.setTrampolin1(False)
+            Game.setTrampolin2(False)
+            Game.setTrampolin3(False)
+            Menu()  
         if click[0] == 1 and opcion == "Ganador":
             GameLoop()
         if click[0] == 1 and opcion == "Aceptar":
-            Game.aceptar()
+            Game.aceptar()       
         if click[0] == 1 and opcion == "Again":
-            GameLoop()
+            GameLoop()  
         if click[0] == 1 and opcion == "Cerrar":
             pygame.mixer.music.stop()
             pygame.quit()
-            quit()
-
+            quit()   
+    
     else:
-        pygame.draw.rect(pantalla, color_inactivo, [pos_x, pos_y, ancho, alto])
+        pygame.draw.rect(pantalla, color_inactivo, [pos_x,pos_y, ancho, alto])
 
     inicio_txt = tipografia_menor.render(mensaje, True, blanco)
     inicio_rect = inicio_txt.get_rect()
-    inicio_rect.center = (pos_x + ancho / 2, pos_y + alto / 2)
+    inicio_rect.center = (pos_x + ancho/2, pos_y + alto/2)
     pantalla.blit(inicio_txt, inicio_rect)
 
 
+
 tablero = matriz([], [], 40, 40)  # define la matriz del tablero
+posx_trampolin = random.randrange(tablero[360][0], tablero[640][0]) 
+posx_trampolin2 = random.randrange(tablero[80][0], tablero[360][0])
+posx_trampolin3 = random.randrange(tablero[640][0], tablero[920][0])
 
 
 class Cuadrilateros:  # clase cuadrilateros, donde se definen las paletas, la bola y los bordes
@@ -198,7 +246,7 @@ Paleta2Dual_player2 = Cuadrilateros(largo_paletas, ancho_paletas, tablero[pos_pa
 
 class Juego:
 
-    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores,practica, inspector, fondo):
+    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores,practica, inspector, fondo, trampolin1, trampolin2, trampolin3):
         self.marcador_1 = marcador_1
         self.marcador_2 = marcador_2
         self.tablero = tablero
@@ -208,6 +256,10 @@ class Juego:
         self.practica = practica
         self.inspector = inspector
         self.fondo = fondo
+        self.trampolin1 = trampolin1
+        self.trampolin2 = trampolin2
+        self.trampolin3 = trampolin3
+    
     def gettablero(self):
         return self.tablero
 
@@ -234,6 +286,15 @@ class Juego:
 
     def getFondo(self):
         return self.fondo
+    
+    def getTrampolin1(self):
+    	return self.trampolin1
+
+    def getTrampolin2(self):
+    	return self.trampolin2
+
+    def getTrampolin3(self):
+    	return self.trampolin3
 
     def aceptar(self):  # Esta funcion esta ligada al boton aceptar y llama el ciclo del juego con las variables definidas por el usuario
         print(Game.getmodo())
@@ -258,6 +319,15 @@ class Juego:
 
     def setFondo(self, nuevoFondo):
         self.fondo = nuevoFondo
+        
+    def setTrampolin1(self, nuevaTrampolines):
+    	self.trampolin1 = nuevaTrampolines
+
+    def setTrampolin2(self, nuevaTrampolines):
+    	self.trampolin2 = nuevaTrampolines
+
+    def setTrampolin3(self, nuevaTrampolines):
+    	self.trampolin3 = nuevaTrampolines
 
     def fondo_random(self):
         lista = [(0,0,0),(235,0,0),(0,235,0),(0,0,235),(253,100,0), (124, 0, 59), (124, 125, 154), (252, 0, 254), (0, 121, 122), (70, 0, 27), (0, 59, 82)]
@@ -267,7 +337,7 @@ class Juego:
 
 
 
-Game = Juego(0, 0, tablero, 1, True, False, False, False, (0,0,0)) # Instancia de la clase Juego, define los argumentos de Pong.
+Game = Juego(0, 0, tablero, 1, True, False, False, False, (0,0,0), False, False, False) # Instancia de la clase Juego, define los argumentos de Pong.
 
 def ingresar_marcador(tiempo):
     ventana = Tk()
@@ -449,7 +519,7 @@ def modoInspector(lista ):
 
     ventana.mainloop()
 
-def PantallaInicio():  # Ciclo para la pantalla de inicio
+def PantallaInicio(): #Ciclo para la pantalla de inicio
     global tipografia
     Iniciar = True
     pantalla.blit(pygame.image.load('Fondo.png'), [0, 0])
@@ -457,17 +527,17 @@ def PantallaInicio():  # Ciclo para la pantalla de inicio
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                quit()
-        titulo = tipografia.render("PONG", True, blanco)  # bloques de definicion de texto
+                quit() 
+        titulo = tipografia.render("PONG", True, blanco) #bloques de definicion de texto
         titulo_rect = titulo.get_rect()
-        titulo_rect.center = (tablero[478][0], tablero[478][1])
+        titulo_rect.center = (tablero[478][0],tablero[478][1])
         pantalla.blit(titulo, titulo_rect)
-        boton_texto("INICIO", 300, 240, 300, 50, verde, negro, "Inicio")
-        boton_texto("CERRAR", 300, 300, 300, 50, verde, negro, "Cerrar")
+        boton_texto("INICIO",300,240,300,50, verde, negro, "Inicio")
+        boton_texto("CERRAR",300,300,300,50, verde, negro, "Cerrar")
         pygame.display.update()
 
 
-def Menu():  # Este es el ciclo de inicio para que el usuario defina las variables.
+def Menu(): #Este es el ciclo de inicio para que el usuario defina las variables.
     pantalla.blit(pygame.image.load('Fondo.png'), [0, 0])
     global tipografia_menor
     global tipografia_enana
@@ -477,52 +547,60 @@ def Menu():  # Este es el ciclo de inicio para que el usuario defina las variabl
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                quit()
+                quit()      
 
-        titulo = tipografia.render("PONG", True, blanco)  # bloques de definicion de texto
+        titulo = tipografia.render("PONG", True, blanco) #bloques de definicion de texto
         titulo_rect = titulo.get_rect()
-        titulo_rect.center = (tablero[453][0], tablero[453][1])
+        titulo_rect.center = (tablero[450][0],tablero[450][1])
         pantalla.blit(titulo, titulo_rect)
 
-        modo_txt = tipografia_menor.render("Modo de juego:" + " " * 13 + "P1 vs P2" + " " * 13 + "P1 vs PC", True,
-                                           blanco)
+
+        modo_txt = tipografia_menor.render("Modo de juego:" + " "*13 + "P1 vs P2" + " "*13 + "P1 vs PC", True, blanco)
         modo_rect = modo_txt.get_rect()
-        modo_rect.center = (tablero[458][0], tablero[458][1])
+        modo_rect.center = (tablero[455][0], tablero[455][1])
         pantalla.blit(modo_txt, modo_rect)
 
-        paletas_txt = tipografia_menor.render("Paletas:" + " " * 26 + "1" + " " * 13 + "2", True, blanco)
+        paletas_txt = tipografia_menor.render("Paletas:" + " "*26 + "1" + " "*13 + "2", True, blanco)
         paletas_rect = paletas_txt.get_rect()
-        paletas_rect.center = (tablero[336][0], tablero[336][1])
+        paletas_rect.center = (tablero[333][0], tablero[333][1])
         pantalla.blit(paletas_txt, paletas_rect)
 
-        dificultad_txt = tipografia_menor.render("Dificultad:" + " " * 23 + "1" + " " * 13 + "2" + " " * 13 + "3", True,
-                                                 blanco)
+        dificultad_txt = tipografia_menor.render("Dificultad:" + " "*23 + "1" + " "*13 + "2" + " "*13 + "3", True, blanco)
         dificultad_rect = dificultad_txt.get_rect()
-        dificultad_rect.center = (tablero[414][0], tablero[414][1])
+        dificultad_rect.center = (tablero[411][0], tablero[411][1])
         pantalla.blit(dificultad_txt, dificultad_rect)
 
-        boton_texto("ACEPTAR", tablero[394][0], tablero[394][1], 200, 50, verde, negro, "Aceptar")
-        boton_texto("CERRAR", tablero[394][0], tablero[397][1], 200, 50, verde, negro, "Cerrar")
+        paletas_txt = tipografia_menor.render("Trampolines:" + " "*20 + "Si" + " "*10 + "No", True, blanco)
+        paletas_rect = paletas_txt.get_rect()
+        paletas_rect.center = (tablero[339][0], tablero[339][1])
+        pantalla.blit(paletas_txt, paletas_rect)
+ 
+        boton_texto("ACEPTAR",tablero[244][0],tablero[444][1],200,50,verde, negro, "Aceptar")
+        boton_texto("CERRAR",tablero[244][0],tablero[247][1],200,50,verde, negro, "Cerrar")
+        boton_texto("PRACTICA",tablero[544][0],tablero[544][1],200,50,verde, negro, "Aceptar")
+        boton_texto("PUNTAJES",tablero[544][0],tablero[547][1],200,50,verde, negro, "Cerrar")
 
         instrucciones_txt = tipografia_enana.render("DE CLICK EN LOS CUADRADOS BLANCOS PARA SELECCIONAR.", True, blanco)
         instrucciones_rect = instrucciones_txt.get_rect()
-        instrucciones_rect.center = (tablero[517][0], tablero[517][1])
+        instrucciones_rect.center = (tablero[517][0],tablero[517][1])
         pantalla.blit(instrucciones_txt, instrucciones_rect)
 
-        instrucciones1_txt = tipografia_enana.render("LAS PALETAS SE MUEVEN CON LAS TECLAS DE LAS FLECHAS Y w Y s.",
-                                                     True, blanco)
+        instrucciones1_txt = tipografia_enana.render("LAS PALETAS SE MUEVEN CON LAS TECLAS DE LAS FLECHAS Y w Y s.", True, blanco)
         instrucciones1_rect = instrucciones1_txt.get_rect()
-        instrucciones1_rect.center = (tablero[518][0], tablero[518][1])
+        instrucciones1_rect.center = (tablero[518][0],tablero[518][1])
         pantalla.blit(instrucciones1_txt, instrucciones1_rect)
 
         '''Botones del menu inicio para definir las variables del juego'''
-        boton(tablero[632][0], tablero[632][1], 30, 30, "P1 vs P2")
-        boton(tablero[932][0], tablero[932][1], 30, 30, "P1 vs PC")
-        boton(tablero[535][0], tablero[535][1], 30, 30, "Sencillo")
-        boton(tablero[685][0], tablero[685][1], 30, 30, "Doble")
-        boton(tablero[538][0], tablero[538][1], 30, 30, "1")
-        boton(tablero[688][0], tablero[688][1], 30, 30, "2")
-        boton(tablero[863][0], tablero[863][1], 30, 30, "3")
+        boton(tablero[629][0],tablero[629][1], 30, 30, "P1 vs P2")
+        boton(tablero[929][0],tablero[929][1], 30, 30, "P1 vs PC")
+        boton(tablero[532][0],tablero[532][1], 30, 30, "Sencillo")
+        boton(tablero[682][0],tablero[682][1], 30, 30, "Doble")
+        boton(tablero[535][0],tablero[535][1], 30, 30, "1")
+        boton(tablero[685][0],tablero[685][1], 30, 30, "2")
+        boton(tablero[860][0],tablero[860][1], 30, 30, "3")
+        boton(tablero[538][0],tablero[538][1], 30, 30, "Si")
+        boton(tablero[688][0],tablero[688][1], 30, 30, "No")
+
 
         pygame.display.update()
         reloj.tick(FPS)
@@ -558,6 +636,18 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
     global pos_paletaDual1_2
     global pos_paletaDual2_1
     global pos_paletaDual2_2
+    
+    global posx_trampolin
+    global posx_trampolin2
+    global posx_trampolin3
+    global posy_trampolin
+    global ancho_trampolin
+    global largo_trampolin
+    trampolin1 = Game.getTrampolin1()
+    trampolin2 = Game.getTrampolin2()
+    trampolin3 = Game.getTrampolin3()
+    move_trampolin = 1
+    
     score1 = Game.getmarcador_1()  # solicita el dato de los marcadores de la clase juego
     score2 = Game.getmarcador_2()
     dificultad = Game.getDificultad()
@@ -715,11 +805,104 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 moveY_bola = 1
                 moveX_bola = -25
                 sound_paletas.play()
+            
+            pantalla.fill(colorFondo)
+               
+            if trampolin1:
+            	print("hola")
+            	if tablero[posx_trampolin][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin][1] +=10
+            		if tablero[posx_trampolin][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin][1] -= 10
+            		if tablero[posx_trampolin][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin][0] and tablero[pos_bola][0] <= tablero[posx_trampolin][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin][1] and tablero[pos_bola][1] <= tablero[posx_trampolin][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin][0],tablero[posx_trampolin][1],ancho_trampolin,largo_trampolin])
+
+            if trampolin2:
+            	if tablero[posx_trampolin2][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin2][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin2][1] +=10
+            		if tablero[posx_trampolin2][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin2][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin2][1] -= 10
+            		if tablero[posx_trampolin2][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin2][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin2][0] and tablero[pos_bola][0] <= tablero[posx_trampolin2][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin2][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin2][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin2][1] and tablero[pos_bola][1] <= tablero[posx_trampolin2][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin2][0],tablero[posx_trampolin2][1],ancho_trampolin,largo_trampolin])
+
+            if trampolin3:
+            	print("hola")
+            	if tablero[posx_trampolin3][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin3][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin3][1] +=10
+            		if tablero[posx_trampolin3][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin3][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin3][1] -= 10
+            		if tablero[posx_trampolin3][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin3][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin3][0] and tablero[pos_bola][0] <= tablero[posx_trampolin3][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin3][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin3][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin3][1] and tablero[pos_bola][1] <= tablero[posx_trampolin3][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin3][0],tablero[posx_trampolin3][1],ancho_trampolin,largo_trampolin])
 
             pos_bola += moveY_bola + moveX_bola
             pos_paleta1 += move_p1
             pos_paleta2 += move_p2
-            pantalla.fill(colorFondo)
             pygame.draw.rect(pantalla, blanco, [tablero[pos_paleta1][0], tablero[pos_paleta1][1], ancho_paletas,
                                                 largo_paletas])  # paleta 1
             pygame.draw.rect(pantalla, blanco, [tablero[pos_paleta2][0], tablero[pos_paleta2][1], ancho_paletas,
@@ -942,6 +1125,98 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pos_paletaDual2_2 = pos_paletaDual2_1 + distancia_paletas
 
             pantalla.fill(colorFondo)
+            
+            if trampolin1:
+            	print("hola")
+            	if tablero[posx_trampolin][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin][1] +=10
+            		if tablero[posx_trampolin][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin][1] -= 10
+            		if tablero[posx_trampolin][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin][0] and tablero[pos_bola][0] <= tablero[posx_trampolin][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin][1] and tablero[pos_bola][1] <= tablero[posx_trampolin][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin][0],tablero[posx_trampolin][1],ancho_trampolin,largo_trampolin])
+
+            if trampolin2:
+            	if tablero[posx_trampolin2][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin2][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin2][1] +=10
+            		if tablero[posx_trampolin2][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin2][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin2][1] -= 10
+            		if tablero[posx_trampolin2][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin2][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin2][0] and tablero[pos_bola][0] <= tablero[posx_trampolin2][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin2][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin2][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin2][1] and tablero[pos_bola][1] <= tablero[posx_trampolin2][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin2][0],tablero[posx_trampolin2][1],ancho_trampolin,largo_trampolin])
+
+            if trampolin3:
+            	print("hola")
+            	if tablero[posx_trampolin3][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin3][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin3][1] +=10
+            		if tablero[posx_trampolin3][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin3][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin3][1] -= 10
+            		if tablero[posx_trampolin3][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin3][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin3][0] and tablero[pos_bola][0] <= tablero[posx_trampolin3][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin3][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin3][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin3][1] and tablero[pos_bola][1] <= tablero[posx_trampolin3][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin3][0],tablero[posx_trampolin3][1],ancho_trampolin,largo_trampolin])
             pygame.draw.rect(pantalla, blanco,
                              [tablero[pos_paletaDual1_1][0], tablero[pos_paletaDual1_1][1], ancho_paletas,
                               largo_paletas])  # paleta 1.1
@@ -1134,6 +1409,99 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     pos_paleta2 += 1
 
             pantalla.fill(colorFondo)
+            
+            if trampolin1:
+            	print("hola")
+            	if tablero[posx_trampolin][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin][1] +=10
+            		if tablero[posx_trampolin][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin][1] -= 10
+            		if tablero[posx_trampolin][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin][0] and tablero[pos_bola][0] <= tablero[posx_trampolin][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin][1] and tablero[pos_bola][1] <= tablero[posx_trampolin][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin][0],tablero[posx_trampolin][1],ancho_trampolin,largo_trampolin])
+
+            if trampolin2:
+            	if tablero[posx_trampolin2][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin2][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin2][1] +=10
+            		if tablero[posx_trampolin2][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin2][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin2][1] -= 10
+            		if tablero[posx_trampolin2][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin2][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin2][0] and tablero[pos_bola][0] <= tablero[posx_trampolin2][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin2][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin2][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin2][1] and tablero[pos_bola][1] <= tablero[posx_trampolin2][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin2][0],tablero[posx_trampolin2][1],ancho_trampolin,largo_trampolin])
+
+            if trampolin3:
+            	print("hola")
+            	if tablero[posx_trampolin3][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin3][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin3][1] +=10
+            		if tablero[posx_trampolin3][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin3][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin3][1] -= 10
+            		if tablero[posx_trampolin3][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin3][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin3][0] and tablero[pos_bola][0] <= tablero[posx_trampolin3][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin3][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin3][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin3][1] and tablero[pos_bola][1] <= tablero[posx_trampolin3][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin3][0],tablero[posx_trampolin3][1],ancho_trampolin,largo_trampolin])
+            
             pygame.draw.rect(pantalla, blanco, [tablero[pos_paleta1][0], tablero[pos_paleta1][1], ancho_paletas,
                                                 largo_paletas])  # paleta 1
             pygame.draw.rect(pantalla, blanco, [tablero[pos_paleta2][0], tablero[pos_paleta2][1], ancho_paletas,
@@ -1363,6 +1731,99 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pos_paletaDual2_2 = pos_paletaDual2_1 + distancia_paletas
 
             pantalla.fill(colorFondo)
+            
+            if trampolin1:
+            	print("hola")
+            	if tablero[posx_trampolin][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin][1] +=10
+            		if tablero[posx_trampolin][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin][1] -= 10
+            		if tablero[posx_trampolin][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin][0] and tablero[pos_bola][0] <= tablero[posx_trampolin][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin][1] and tablero[pos_bola][1] <= tablero[posx_trampolin][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin][0],tablero[posx_trampolin][1],ancho_trampolin,largo_trampolin])
+
+            if trampolin2:
+            	if tablero[posx_trampolin2][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin2][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin2][1] +=10
+            		if tablero[posx_trampolin2][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin2][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin2][1] -= 10
+            		if tablero[posx_trampolin2][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin2][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin2][0] and tablero[pos_bola][0] <= tablero[posx_trampolin2][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin2][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin2][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin2][1] and tablero[pos_bola][1] <= tablero[posx_trampolin2][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin2][0],tablero[posx_trampolin2][1],ancho_trampolin,largo_trampolin])
+
+            if trampolin3:
+            	print("hola")
+            	if tablero[posx_trampolin3][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin3][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin3][1] +=10
+            		if tablero[posx_trampolin3][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin3][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin3][1] -= 10
+            		if tablero[posx_trampolin3][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin3][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin3][0] and tablero[pos_bola][0] <= tablero[posx_trampolin3][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin3][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin3][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin3][1] and tablero[pos_bola][1] <= tablero[posx_trampolin3][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin3][0],tablero[posx_trampolin3][1],ancho_trampolin,largo_trampolin])
+            
             pygame.draw.rect(pantalla, blanco,
                              [tablero[pos_paletaDual1_1][0], tablero[pos_paletaDual1_1][1], ancho_paletas,
                               largo_paletas])  # paleta 1.1
@@ -1571,6 +2032,99 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
 
             pantalla.fill(colorFondo)
+            
+            if trampolin1:
+            	print("hola")
+            	if tablero[posx_trampolin][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin][1] +=10
+            		if tablero[posx_trampolin][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin][1] -= 10
+            		if tablero[posx_trampolin][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin][0] and tablero[pos_bola][0] <= tablero[posx_trampolin][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin][1] and tablero[pos_bola][1] <= tablero[posx_trampolin][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin][0],tablero[posx_trampolin][1],ancho_trampolin,largo_trampolin])
+
+            if trampolin2:
+            	if tablero[posx_trampolin2][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin2][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin2][1] +=10
+            		if tablero[posx_trampolin2][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin2][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin2][1] -= 10
+            		if tablero[posx_trampolin2][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin2][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin2][0] and tablero[pos_bola][0] <= tablero[posx_trampolin2][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin2][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin2][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin2][1] and tablero[pos_bola][1] <= tablero[posx_trampolin2][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin2][0],tablero[posx_trampolin2][1],ancho_trampolin,largo_trampolin])
+
+            if trampolin3:
+            	print("hola")
+            	if tablero[posx_trampolin3][1] > tablero[949][1] - largo_trampolin:
+            		tablero[posx_trampolin3][1] -= 80
+            	if move_trampolin == 1:
+            		tablero[posx_trampolin3][1] +=10
+            		if tablero[posx_trampolin3][1] == tablero[949][1] - largo_trampolin:
+            			move_trampolin = -1
+            			tablero[posx_trampolin3][1] -= 10
+            	if move_trampolin == -1:
+            		tablero[posx_trampolin3][1] -= 10
+            		if tablero[posx_trampolin3][1] <= tablero[75][1]:
+            			move_trampolin = 1
+            			tablero[posx_trampolin3][1] += 10
+            	if tablero[pos_bola][0] + grueso >= tablero[posx_trampolin3][0] and tablero[pos_bola][0] <= tablero[posx_trampolin3][0] + ancho_trampolin:
+            		if tablero[pos_bola][1] + grueso == tablero[posx_trampolin3][1]:
+            			if moveY_bola == 0:
+            				moveY_bola -= 1
+            			else:
+            				moveY_bola = -1
+            		if tablero[pos_bola][1] == tablero[posx_trampolin3][1] + largo_trampolin:
+            			if moveY_bola == 0:
+            				moveY_bola += 1
+            			else:
+            				moveY_bola = +1
+            				moveX_bola *= (-1)
+            		if tablero[pos_bola][1] + grueso >= tablero[posx_trampolin3][1] and tablero[pos_bola][1] <= tablero[posx_trampolin3][1] + largo_trampolin:
+            			moveX_bola *= -1
+
+            	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin3][0],tablero[posx_trampolin3][1],ancho_trampolin,largo_trampolin])
+            
             pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual1_1][0],tablero[pos_paletaDual1_1][1],ancho_paletas,largo_paletas])#paleta1.1
             pygame.draw.rect(pantalla,blanco,[tablero[pos_paletaDual1_2][0],tablero[pos_paletaDual1_2][1],ancho_paletas,largo_paletas])#paleta1.2
 
