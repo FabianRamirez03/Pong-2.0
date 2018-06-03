@@ -254,7 +254,7 @@ Paleta2Dual_player2 = Cuadrilateros(largo_paletas, ancho_paletas, tablero[pos_pa
 
 class Juego:
 
-    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores,practica, inspector, fondo, trampolin1, trampolin2, trampolin3):
+    def __init__(self, marcador_1, marcador_2, tablero, dificultad, modo_juego, jugadores,practica, inspector, fondo, trampolin1, trampolin2, trampolin3, sonido):
         self.marcador_1 = marcador_1
         self.marcador_2 = marcador_2
         self.tablero = tablero
@@ -267,7 +267,8 @@ class Juego:
         self.trampolin1 = trampolin1
         self.trampolin2 = trampolin2
         self.trampolin3 = trampolin3
-    
+        self.sonido = sonido
+
     def gettablero(self):
         return self.tablero
 
@@ -303,6 +304,8 @@ class Juego:
 
     def getTrampolin3(self):
     	return self.trampolin3
+    def getSonido(self):
+        return self.sonido
 
     def aceptar(self):  # Esta funcion esta ligada al boton aceptar y llama el ciclo del juego con las variables definidas por el usuario
         print(Game.getmodo())
@@ -341,11 +344,17 @@ class Juego:
         lista = [(0,0,0),(235,0,0),(0,235,0),(0,0,235),(253,100,0), (124, 0, 59), (124, 125, 154), (252, 0, 254), (0, 121, 122), (70, 0, 27), (0, 59, 82)]
         color = random.choice(lista)
         return self.setFondo(color)
+    def cambiarSonido(self):
+        if self.sonido == True:
+            self.sonido = False
+        else:
+            self.sonido = True
 
 
 
 
-Game = Juego(0, 0, tablero, 1, True, False, False, False, (0,0,0), False, False, False) # Instancia de la clase Juego, define los argumentos de Pong.
+
+Game = Juego(0, 0, tablero, 1, True, False, False, False, (0,0,0), False, False, False, True) # Instancia de la clase Juego, define los argumentos de Pong.
 
 def ingresar_marcador(tiempo):
     green = "#00ff00"    
@@ -674,6 +683,8 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
     sound_paletas = pygame.mixer.Sound('sonido_paletas.wav')
     sound_bordes = pygame.mixer.Sound('sonido_bordes.wav')
     practica = Game.getpractica()
+    mute = Game.getSonido()
+
 
     while not salir_juego:  # si no se cumple salir juego, sale y cierra la ventana
         pygame.mixer.music.load('RaymanTheme.mp3')
@@ -681,8 +692,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
         pygame.display.update()
         tiempo1 = time.time()
         colorFondo = Game.getFondo()
-        pygame.mixer.music.set_volume(0.1)
-        #pygame.mixer.music.get_volume()
+
         while not salir_juego and modo == True and jugador == True and practica == False:  # modo con solo una paleta y persona vs persona
 
             pygame.display.update()
@@ -741,7 +751,14 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     if event.key == pygame.K_ESCAPE:
                         Game.fondo_random()
                         colorFondo = Game.getFondo()
-
+                    if event.key == pygame.K_CAPSLOCK:
+                        Game.cambiarSonido()
+                        mute = Game.getSonido()
+                        if not mute:
+                            pygame.mixer.music.set_volume(1)
+                        if mute:
+                            pygame.mixer.music.set_volume(0)
+                        print(mute)
                 if event.type == pygame.KEYUP:  # debe mantenerse presionado el boton para que el movimiento se de
                     if event.key == pygame.K_s:
                         move_p1 = 0
@@ -774,10 +791,12 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
             if tablero[pos_bola][1] == 60:
                 moveY_bola = 1
-                sound_bordes.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][1] == 500:
                 moveY_bola = -1
-                sound_bordes.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][0] == 40:
                 score2 += 1
                 pos_bola = 461
@@ -791,32 +810,38 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 1] < (tablero[pos_paleta1][1] + seccion):
                 moveX_bola = 25
                 moveY_bola = -1
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][0] == tablero[pos_paleta1 + 25][0] and (tablero[pos_paleta1][1] + seccion) <= \
                     tablero[pos_bola][1] < (tablero[pos_paleta1][1] + seccion * 2):
                 moveX_bola = 25
                 moveY_bola = 0
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][0] == tablero[pos_paleta1 + 25][0] and (tablero[pos_paleta1][1] + seccion * 2) <= \
                     tablero[pos_bola][1] <= (tablero[pos_paleta1][1] + seccion * 3):
                 moveY_bola = 1
                 moveX_bola = 25
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola + 25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1] <= tablero[pos_bola][
                 1] < (tablero[pos_paleta2][1] + seccion):
                 moveX_bola = -25
                 moveY_bola = -1
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola + 25][0] == tablero[pos_paleta2][0] and (tablero[pos_paleta2][1] + seccion) <= \
                     tablero[pos_bola][1] < (tablero[pos_paleta2][1] + seccion * 2):
                 moveX_bola = -25
                 moveY_bola = 0
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola + 25][0] == tablero[pos_paleta2][0] and (tablero[pos_paleta2][1] + seccion * 2) <= \
                     tablero[pos_bola][1] <= (tablero[pos_paleta2][1] + seccion * 3):
                 moveY_bola = 1
                 moveX_bola = -25
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             
             pantalla.fill(colorFondo)
                
@@ -1004,6 +1029,13 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     if event.key == pygame.K_ESCAPE:
                         Game.fondo_random()
                         colorFondo = Game.getFondo()
+                    if event.key == pygame.K_CAPSLOCK:
+                        Game.cambiarSonido()
+                        mute = Game.getSonido()
+                        if not mute:
+                            pygame.mixer.music.set_volume(1)
+                        if mute:
+                            pygame.mixer.music.set_volume(0)
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_s:
@@ -1038,10 +1070,12 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
             if tablero[pos_bola][1] == 60:
                 moveY_bola = 1
-                sound_bordes.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][1] == 500:
                 moveY_bola = -1
-                sound_bordes.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][0] == 40:
                 #print("Punto 1")
                 pos_bola = 461
@@ -1072,63 +1106,73 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     tablero[pos_paletaDual1_1][1] + seccion * 2):
                 moveX_bola = 25
                 moveY_bola = 0
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and (
                     tablero[pos_paletaDual1_2][1] + seccion) <= tablero[pos_bola][1] < (
                     tablero[pos_paletaDual1_2][1] + seccion * 2):
                 moveX_bola = 25
                 moveY_bola = 0
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             if tablero[pos_bola][0] == tablero[pos_paletaDual1_1 + 25][0] and (
                     tablero[pos_paletaDual1_1][1] + seccion * 2) <= tablero[pos_bola][1] <= (
                     tablero[pos_paletaDual1_1][1] + seccion * 3):
                 moveY_bola = 1
                 moveX_bola = 25
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and (
                     tablero[pos_paletaDual1_2][1] + seccion * 2) <= tablero[pos_bola][1] <= (
                     tablero[pos_paletaDual1_2][1] + seccion * 3):
                 moveY_bola = 1
                 moveX_bola = 25
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             if tablero[pos_bola + 25][0] == tablero[pos_paletaDual2_1][0] and tablero[pos_paletaDual2_1][1] <= \
                     tablero[pos_bola][1] < (tablero[pos_paletaDual2_1][1] + seccion):
                 moveX_bola = -25
                 moveY_bola = -1
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola + 25][0] == tablero[pos_paletaDual2_2][0] and tablero[pos_paletaDual2_2][1] <= \
                     tablero[pos_bola][1] < (tablero[pos_paletaDual2_2][1] + seccion):
                 moveX_bola = -25
                 moveY_bola = -1
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             if tablero[pos_bola + 25][0] == tablero[pos_paletaDual2_1][0] and (
                     tablero[pos_paletaDual2_1][1] + seccion) <= tablero[pos_bola][1] < (
                     tablero[pos_paletaDual2_1][1] + seccion * 2):
                 moveX_bola = -25
                 moveY_bola = 0
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola + 25][0] == tablero[pos_paletaDual2_2][0] and (
                     tablero[pos_paletaDual2_2][1] + seccion) <= tablero[pos_bola][1] < (
                     tablero[pos_paletaDual2_2][1] + seccion * 2):
                 moveX_bola = -25
                 moveY_bola = 0
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             if tablero[pos_bola + 25][0] == tablero[pos_paletaDual2_1][0] and (
                     tablero[pos_paletaDual2_1][1] + seccion * 2) <= tablero[pos_bola][1] <= (
                     tablero[pos_paletaDual2_1][1] + seccion * 3):
                 moveY_bola = 1
                 moveX_bola = -25
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola + 25][0] == tablero[pos_paletaDual2_2][0] and (
                     tablero[pos_paletaDual2_2][1] + seccion * 2) <= tablero[pos_bola][1] <= (
                     tablero[pos_paletaDual2_2][1] + seccion * 3):
                 moveY_bola = 1
                 moveX_bola = -25
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             pos_bola += moveY_bola + moveX_bola  # Suma de indices para movimiento sobre la matriz
             pos_paletaDual1_1 += move_p1
@@ -1327,6 +1371,13 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     if event.key == pygame.K_ESCAPE:
                         Game.fondo_random()
                         colorFondo = Game.getFondo()
+                    if event.key == pygame.K_CAPSLOCK:
+                        Game.cambiarSonido()
+                        mute = Game.getSonido()
+                        if not mute:
+                            pygame.mixer.music.set_volume(1)
+                        if mute:
+                            pygame.mixer.music.set_volume(0)
 
                 if event.type == pygame.KEYUP:  # debe mantenerse presionado el boton para que el movimiento se de
                     if event.key == pygame.K_s:
@@ -1353,10 +1404,12 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
             if tablero[pos_bola][1] == 60:  # rebotes de bola en los bordes
                 moveY_bola = 1
-                sound_bordes.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][1] == 500:
                 moveY_bola = -1
-                sound_bordes.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][0] == 40:
                 score2 += 1
                 pos_bola = 461
@@ -1371,36 +1424,42 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 1] < (tablero[pos_paleta1][1] + seccion):
                 moveX_bola = 25
                 moveY_bola = -1
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             if tablero[pos_bola][0] == tablero[pos_paleta1 + 25][0] and (tablero[pos_paleta1][1] + seccion) <= \
                     tablero[pos_bola][1] < (tablero[pos_paleta1][1] + seccion * 2):
                 moveX_bola = 25
                 moveY_bola = 0
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             if tablero[pos_bola][0] == tablero[pos_paleta1 + 25][0] and (tablero[pos_paleta1][1] + seccion * 2) <= \
                     tablero[pos_bola][1] <= (tablero[pos_paleta1][1] + seccion * 3):
                 moveY_bola = 1
                 moveX_bola = 25
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
 
             if tablero[pos_bola + 25][0] == tablero[pos_paleta2][0] and tablero[pos_paleta2][1] <= tablero[pos_bola][
                 1] < (tablero[pos_paleta2][1] + seccion):
                 moveX_bola = -25
                 moveY_bola = -1
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola + 25][0] == tablero[pos_paleta2][0] and (tablero[pos_paleta2][1] + seccion) <= \
                     tablero[pos_bola][1] < (tablero[pos_paleta2][1] + seccion * 2):
                 moveX_bola = -25
                 moveY_bola = 0
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola + 25][0] == tablero[pos_paleta2][0] and (tablero[pos_paleta2][1] + seccion * 2) <= \
                     tablero[pos_bola][1] <= (tablero[pos_paleta2][1] + seccion * 3):
                 moveY_bola = 1
                 moveX_bola = -25
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             pos_bola += moveY_bola + moveX_bola
             pos_paleta1 += move_p1
@@ -1601,6 +1660,13 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     if event.key == pygame.K_ESCAPE:
                         Game.fondo_random()
                         colorFondo = Game.getFondo()
+                    if event.key == pygame.K_CAPSLOCK:
+                        Game.cambiarSonido()
+                        mute = Game.getSonido()
+                        if not mute:
+                            pygame.mixer.music.set_volume(1)
+                        if mute:
+                            pygame.mixer.music.set_volume(0)
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_s:
@@ -1631,10 +1697,12 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
             if tablero[pos_bola][1] == 60:
                 moveY_bola = 1
-                sound_bordes.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][1] == 500:
                 moveY_bola = -1
-                sound_bordes.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][0] == 40:
                 #print("Punto 1")
                 pos_bola = 461
@@ -1651,75 +1719,87 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     tablero[pos_bola][1] < (tablero[pos_paletaDual1_1][1] + seccion):
                 moveX_bola = 25
                 moveY_bola = -1
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and tablero[pos_paletaDual1_2][1] <= \
                     tablero[pos_bola][1] < (tablero[pos_paletaDual1_2][1] + seccion):
                 moveX_bola = 25
                 moveY_bola = -1
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             if tablero[pos_bola][0] == tablero[pos_paletaDual1_1 + 25][0] and (
                     tablero[pos_paletaDual1_1][1] + seccion) <= tablero[pos_bola][1] < (
                     tablero[pos_paletaDual1_1][1] + seccion * 2):
                 moveX_bola = 25
                 moveY_bola = 0
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and (
                     tablero[pos_paletaDual1_2][1] + seccion) <= tablero[pos_bola][1] < (
                     tablero[pos_paletaDual1_2][1] + seccion * 2):
                 moveX_bola = 25
                 moveY_bola = 0
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             if tablero[pos_bola][0] == tablero[pos_paletaDual1_1 + 25][0] and (
                     tablero[pos_paletaDual1_1][1] + seccion * 2) <= tablero[pos_bola][1] <= (
                     tablero[pos_paletaDual1_1][1] + seccion * 3):
                 moveY_bola = 1
                 moveX_bola = 25
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and (
                     tablero[pos_paletaDual1_2][1] + seccion * 2) <= tablero[pos_bola][1] <= (
                     tablero[pos_paletaDual1_2][1] + seccion * 3):
                 moveY_bola = 1
                 moveX_bola = 25
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             if tablero[pos_bola + 25][0] == tablero[pos_paletaDual2_1][0] and tablero[pos_paletaDual2_1][1] <= \
                     tablero[pos_bola][1] < (tablero[pos_paletaDual2_1][1] + seccion):
                 moveX_bola = -25
                 moveY_bola = -1
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola + 25][0] == tablero[pos_paletaDual2_2][0] and tablero[pos_paletaDual2_2][1] <= \
                     tablero[pos_bola][1] < (tablero[pos_paletaDual2_2][1] + seccion):
                 moveX_bola = -25
                 moveY_bola = -1
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             if tablero[pos_bola + 25][0] == tablero[pos_paletaDual2_1][0] and (
                     tablero[pos_paletaDual2_1][1] + seccion) <= tablero[pos_bola][1] < (
                     tablero[pos_paletaDual2_1][1] + seccion * 2):
                 moveX_bola = -25
                 moveY_bola = 0
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola + 25][0] == tablero[pos_paletaDual2_2][0] and (
                     tablero[pos_paletaDual2_2][1] + seccion) <= tablero[pos_bola][1] < (
                     tablero[pos_paletaDual2_2][1] + seccion * 2):
                 moveX_bola = -25
                 moveY_bola = 0
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             if tablero[pos_bola + 25][0] == tablero[pos_paletaDual2_1][0] and (
                     tablero[pos_paletaDual2_1][1] + seccion * 2) <= tablero[pos_bola][1] <= (
                     tablero[pos_paletaDual2_1][1] + seccion * 3):
                 moveY_bola = 1
                 moveX_bola = -25
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola + 25][0] == tablero[pos_paletaDual2_2][0] and (
                     tablero[pos_paletaDual2_2][1] + seccion * 2) <= tablero[pos_bola][1] <= (
                     tablero[pos_paletaDual2_2][1] + seccion * 3):
                 moveY_bola = 1
                 moveX_bola = -25
-                sound_paletas.play()
+                if not mute:
+                    sound_bordes.play()
 
             pos_bola += moveY_bola + moveX_bola  # Suma de indices para movimiento sobre la matriz
             pos_paletaDual1_1 += move_p1
@@ -1928,6 +2008,13 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     if event.key == pygame.K_ESCAPE:
                         Game.fondo_random()
                         colorFondo = Game.getFondo()
+                    if event.key == pygame.K_CAPSLOCK:
+                        Game.cambiarSonido()
+                        mute = Game.getSonido()
+                        if not mute:
+                            pygame.mixer.music.set_volume(1)
+                        if mute:
+                            pygame.mixer.music.set_volume(0)
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_s:
@@ -1967,10 +2054,12 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
 
             if tablero[pos_bola][1] == 60:
                 moveY_bola = 1
-                sound_bordes.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][1] == 500:
                 moveY_bola = -1
-                sound_bordes.play()
+                if not mute:
+                    sound_bordes.play()
             if tablero[pos_bola][0] == 40:
                 pos_bola = 461
                 punto = True
@@ -1985,53 +2074,62 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 if tablero[pos_bola][0]==tablero[pos_paletaDual1_1+25][0] and tablero[pos_paletaDual1_1][1] <=tablero[pos_bola][1]<(tablero[pos_paletaDual1_1][1]+seccion):
                     moveX_bola = 25
                     moveY_bola = -1
-                    sound_paletas.play()
+                    if not mute:
+                        sound_bordes.play()
                 if tablero[pos_bola][0] == tablero[pos_paletaDual1_1+25][0] and (tablero[pos_paletaDual1_1][1] + seccion) <= tablero[pos_bola][1]<(tablero[pos_paletaDual1_1][1]+seccion*2):
                     moveX_bola = 25
                     moveY_bola = 0
-                    sound_paletas.play()
+                    if not mute:
+                        sound_bordes.play()
                 if tablero[pos_bola][0] == tablero[pos_paletaDual1_1+25][0] and (tablero[pos_paletaDual1_1][1]+seccion*2)<=tablero[pos_bola][1]<=(tablero[pos_paletaDual1_1][1]+seccion*3):
                     moveY_bola = 1
                     moveX_bola = 25
-                    sound_paletas.play()
+                    if not mute:
+                        sound_bordes.play()
 
             if modo == False:
                 if tablero[pos_bola][0] == tablero[pos_paletaDual1_1 + 25][0] and tablero[pos_paletaDual1_1][1] <= \
                         tablero[pos_bola][1] < (tablero[pos_paletaDual1_1][1] + seccion):
                     moveX_bola = 25
                     moveY_bola = -1
-                    sound_paletas.play()
+                    if not mute:
+                        sound_bordes.play()
                 if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and tablero[pos_paletaDual1_2][1] <= \
                         tablero[pos_bola][1] < (tablero[pos_paletaDual1_2][1] + seccion):
                     moveX_bola = 25
                     moveY_bola = -1
-                    sound_paletas.play()
+                    if not mute:
+                        sound_bordes.play()
 
                 if tablero[pos_bola][0] == tablero[pos_paletaDual1_1 + 25][0] and (
                         tablero[pos_paletaDual1_1][1] + seccion) <= tablero[pos_bola][1] < (
                         tablero[pos_paletaDual1_1][1] + seccion * 2):
                     moveX_bola = 25
                     moveY_bola = 0
-                    sound_paletas.play()
+                    if not mute:
+                        sound_bordes.play()
                 if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and (
                         tablero[pos_paletaDual1_2][1] + seccion) <= tablero[pos_bola][1] < (
                         tablero[pos_paletaDual1_2][1] + seccion * 2):
                     moveX_bola = 25
                     moveY_bola = 0
-                    sound_paletas.play()
+                    if not mute:
+                        sound_bordes.play()
 
                 if tablero[pos_bola][0] == tablero[pos_paletaDual1_1 + 25][0] and (
                         tablero[pos_paletaDual1_1][1] + seccion * 2) <= tablero[pos_bola][1] <= (
                         tablero[pos_paletaDual1_1][1] + seccion * 3):
                     moveY_bola = 1
                     moveX_bola = 25
-                    sound_paletas.play()
+                    if not mute:
+                        sound_bordes.play()
                 if tablero[pos_bola][0] == tablero[pos_paletaDual1_2 + 25][0] and (
                         tablero[pos_paletaDual1_2][1] + seccion * 2) <= tablero[pos_bola][1] <= (
                         tablero[pos_paletaDual1_2][1] + seccion * 3):
                     moveY_bola = 1
                     moveX_bola = 25
-                    sound_paletas.play()
+                    if not mute:
+                        sound_bordes.play()
 
 
 
