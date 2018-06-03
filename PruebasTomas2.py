@@ -189,6 +189,7 @@ def boton_texto(mensaje,pos_x,pos_y,ancho,alto,color_activo, color_inactivo, opc
             Game.setTrampolin1(False)
             Game.setTrampolin2(False)
             Game.setTrampolin3(False)
+            Game.setPractica(False)
             Menu()  
         if click[0] == 1 and opcion == "Ganador":
             GameLoop()
@@ -200,6 +201,13 @@ def boton_texto(mensaje,pos_x,pos_y,ancho,alto,color_activo, color_inactivo, opc
             pygame.mixer.music.stop()
             pygame.quit()
             quit()   
+        if click[0] == 1 and opcion == "Practica":
+            Game.setPractica(True)
+            GameLoop()
+        if click[0] == 1 and opcion == "Puntajes":
+            ingresar_marcador(None)
+
+
     
     else:
         pygame.draw.rect(pantalla, color_inactivo, [pos_x,pos_y, ancho, alto])
@@ -340,12 +348,13 @@ class Juego:
 Game = Juego(0, 0, tablero, 1, True, False, False, False, (0,0,0), False, False, False) # Instancia de la clase Juego, define los argumentos de Pong.
 
 def ingresar_marcador(tiempo):
+    green = "#00ff00"    
     ventana = Tk()
     ventana.title("Modo Inspector")
-    ventana.minsize(ancho_display - 70, largo_display - 28)
+    ventana.minsize(ancho_display - 300, largo_display - 150)
     ventana.resizable(width=NO, height=NO)
     # ventana.geometry("880x850+500+100")
-    canvas = Canvas(ventana, width=ancho_display - 70, height=largo_display - 28, bg="black")
+    canvas = Canvas(ventana, width= ancho_display - 300, height=largo_display - 150, bg="black")
     canvas.place(x=-1, y=-1)
 
     def invertir_separar(matriz):  # Invierte las funciones de separar para la modificación del archivo txt
@@ -381,7 +390,7 @@ def ingresar_marcador(tiempo):
 
     def verificar_aux():
         nombre = entrada_nombre.get()
-        if nombre != "":
+        if nombre != "" and tiempo != None:
             if nombre != ganadores[0][0] and tiempo != ganadores[0][1]:
                 if nombre != ganadores[1][0] and tiempo != ganadores[1][1]:
                     if nombre != ganadores[2][0] and tiempo != ganadores[2][1]:
@@ -425,41 +434,42 @@ def ingresar_marcador(tiempo):
         archivo_ganadores.close()
 
 
-    entrada_nombre = Entry(canvas, fg="black", font=("Arial", 18), width=15)
-    entrada_nombre.place(x=280, y=100)
+    entrada_nombre = Entry(canvas, fg="black", font=("Comfortaa-Bold.ttf", 18), width=15)
+    entrada_nombre.place(x=150, y=270)
 
 
 
-    bt_ingresar = Button(canvas, bg = "black", fg = "white", text = "Ingresar", command = verificar_aux, font = ("Arial", 18))
-    bt_ingresar.place(x = 450, y = 100)
+    bt_ingresar = Button(canvas, bg = "black", fg = "white", text = "INGRESAR", relief = FLAT, command = verificar_aux, activebackground = green, font = ("Comfortaa-Bold.ttf", 18), width = 10)
+    bt_ingresar.place(x = 300, y = 350)
 
 
-    lb_titulo = Label(canvas, text = "GAME OVER", bg = "black", font = ("Arial", 32), fg = "white")
-    lb_titulo.place(x = 200, y = 10)
+    lb_titulo = Label(canvas, text = "GAME OVER", bg = "black", font = ("Comfortaa-Bold.ttf", 35), fg = "white")
+    lb_titulo.place(x = 120, y = 10)
 
-    lb_ingresar = Label(canvas, text = "Ingrese su nombre: ", bg = "black", font = ("Arial", 18), fg = "white")
-    lb_ingresar.place(x = 50, y = 100)
+    lb_ingresar = Label(canvas, text = "NOMBRE:", bg = "black", font = ("Comfortaa-Bold.ttf", 18), fg = "white")
+    lb_ingresar.place(x = 20, y = 270)
 
 
 
-    lb_highscore = Label(canvas, fg = "white", font = ("Arial", 25), bg = "black", text = "HIGHSCORES")
-    lb_highscore.place(x = 160, y = 170)
+    lb_highscore = Label(canvas, fg = "white", font = ("Comfortaa-Bold.ttf", 18), bg = "black", text = "HIGHSCORES:")
+    lb_highscore.place(x = 20, y = 100)
 
-    lb_primero = Label(canvas, fg = "White", font = ("Arial", 20), bg = "Black", text = ganadores[0][0] + "        " + str(ganadores[0][1]))
-    lb_primero.place(x = 130, y = 220)
+    lb_primero = Label(canvas, fg = "White", font = ("Comfortaa-Bold.ttf", 18), bg = "Black", text = ganadores[0][0] + "        " + str(ganadores[0][1]))
+    lb_primero.place(x = 130, y = 150)
 
-    lb_segundo = Label(canvas, fg="White", font=("Arial",20), bg="Black", text=ganadores[1][0] + "        " + str(ganadores[1][1]))
-    lb_segundo.place(x=130, y=260)
+    lb_segundo = Label(canvas, fg="White", font=("Comfortaa-Bold.ttf",18), bg="Black", text=ganadores[1][0] + "        " + str(ganadores[1][1]))
+    lb_segundo.place(x=130, y=180)
 
-    lb_tercero = Label(canvas, fg="White", font=("Arial",20), bg="Black", text= ganadores[2][0] + "        " + str(ganadores[2][1]))
-    lb_tercero.place(x=130, y=300)
+    lb_tercero = Label(canvas, fg="White", font=("Comfortaa-Bold.ttf",18), bg="Black", text= ganadores[2][0] + "        " + str(ganadores[2][1]))
+    lb_tercero.place(x=130, y=210)
 
     def volver():
+        Game.setPractica(False)
         ventana.destroy()
 
 
-    bt_volver = Button(canvas, bd=4, bg="black", fg="white", font=("Arial", 12), text="Volver", command= volver)
-    bt_volver.place(x=10, y=10)
+    bt_volver = Button(canvas, bg="black", fg="white", font=("Comfortaa-Bold.ttf", 18), text="VOLVER", activebackground = green, relief = FLAT, command= volver, width = 10)
+    bt_volver.place(x=75, y=350)
 
     ventana.mainloop()
 
@@ -577,8 +587,8 @@ def Menu(): #Este es el ciclo de inicio para que el usuario defina las variables
  
         boton_texto("ACEPTAR",tablero[244][0],tablero[444][1],200,50,verde, negro, "Aceptar")
         boton_texto("CERRAR",tablero[244][0],tablero[247][1],200,50,verde, negro, "Cerrar")
-        boton_texto("PRACTICA",tablero[544][0],tablero[544][1],200,50,verde, negro, "Aceptar")
-        boton_texto("PUNTAJES",tablero[544][0],tablero[547][1],200,50,verde, negro, "Cerrar")
+        boton_texto("PRACTICA",tablero[544][0],tablero[544][1],200,50,verde, negro, "Practica")
+        boton_texto("PUNTAJES",tablero[544][0],tablero[547][1],200,50,verde, negro, "Puntajes")
 
         instrucciones_txt = tipografia_enana.render("DE CLICK EN LOS CUADRADOS BLANCOS PARA SELECCIONAR.", True, blanco)
         instrucciones_rect = instrucciones_txt.get_rect()
