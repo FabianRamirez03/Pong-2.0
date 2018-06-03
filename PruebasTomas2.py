@@ -681,6 +681,8 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
         pygame.display.update()
         tiempo1 = time.time()
         colorFondo = Game.getFondo()
+        pygame.mixer.music.set_volume(0.1)
+        #pygame.mixer.music.get_volume()
         while not salir_juego and modo == True and jugador == True and practica == False:  # modo con solo una paleta y persona vs persona
 
             pygame.display.update()
@@ -819,7 +821,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pantalla.fill(colorFondo)
                
             if trampolin1:
-            	print("hola")
+            	#print("hola")
             	if tablero[posx_trampolin][1] > tablero[949][1] - largo_trampolin:
             		tablero[posx_trampolin][1] -= 80
             	if move_trampolin == 1:
@@ -880,7 +882,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin2][0],tablero[posx_trampolin2][1],ancho_trampolin,largo_trampolin])
 
             if trampolin3:
-            	print("hola")
+            	#print("hola")
             	if tablero[posx_trampolin3][1] > tablero[949][1] - largo_trampolin:
             		tablero[posx_trampolin3][1] -= 80
             	if move_trampolin == 1:
@@ -1041,13 +1043,13 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 moveY_bola = -1
                 sound_bordes.play()
             if tablero[pos_bola][0] == 40:
-                print("Punto 1")
+                #print("Punto 1")
                 pos_bola = 461
                 punto = True
                 score2 += 1
 
             if tablero[pos_bola][0] == 820:
-                print("Punto 2")
+                #print("Punto 2")
                 pos_bola = 461
                 punto = True
                 score1 += 1
@@ -1137,7 +1139,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pantalla.fill(colorFondo)
             
             if trampolin1:
-            	print("hola")
+            	#print("hola")
             	if tablero[posx_trampolin][1] > tablero[949][1] - largo_trampolin:
             		tablero[posx_trampolin][1] -= 80
             	if move_trampolin == 1:
@@ -1198,7 +1200,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin2][0],tablero[posx_trampolin2][1],ancho_trampolin,largo_trampolin])
 
             if trampolin3:
-            	print("hola")
+            	#print("hola")
             	if tablero[posx_trampolin3][1] > tablero[949][1] - largo_trampolin:
             		tablero[posx_trampolin3][1] -= 80
             	if move_trampolin == 1:
@@ -1421,7 +1423,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pantalla.fill(colorFondo)
             
             if trampolin1:
-            	print("hola")
+            	#print("hola")
             	if tablero[posx_trampolin][1] > tablero[949][1] - largo_trampolin:
             		tablero[posx_trampolin][1] -= 80
             	if move_trampolin == 1:
@@ -1482,7 +1484,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin2][0],tablero[posx_trampolin2][1],ancho_trampolin,largo_trampolin])
 
             if trampolin3:
-            	print("hola")
+            	#print("hola")
             	if tablero[posx_trampolin3][1] > tablero[949][1] - largo_trampolin:
             		tablero[posx_trampolin3][1] -= 80
             	if move_trampolin == 1:
@@ -1634,13 +1636,13 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 moveY_bola = -1
                 sound_bordes.play()
             if tablero[pos_bola][0] == 40:
-                print("Punto 1")
+                #print("Punto 1")
                 pos_bola = 461
                 punto = True
                 score2 += 1
 
             if tablero[pos_bola][0] == 820:
-                print("Punto 2")
+                #print("Punto 2")
                 pos_bola = 461
                 punto = True
                 score1 += 1
@@ -1743,7 +1745,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pantalla.fill(colorFondo)
             
             if trampolin1:
-            	print("hola")
+            	#print("hola")
             	if tablero[posx_trampolin][1] > tablero[949][1] - largo_trampolin:
             		tablero[posx_trampolin][1] -= 80
             	if move_trampolin == 1:
@@ -1804,7 +1806,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin2][0],tablero[posx_trampolin2][1],ancho_trampolin,largo_trampolin])
 
             if trampolin3:
-            	print("hola")
+            	#print("hola")
             	if tablero[posx_trampolin3][1] > tablero[949][1] - largo_trampolin:
             		tablero[posx_trampolin3][1] -= 80
             	if move_trampolin == 1:
@@ -2044,7 +2046,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             pantalla.fill(colorFondo)
             
             if trampolin1:
-            	print("hola")
+            	#print("hola")
             	if tablero[posx_trampolin][1] > tablero[949][1] - largo_trampolin:
             		tablero[posx_trampolin][1] -= 80
             	if move_trampolin == 1:
@@ -2105,7 +2107,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             	pygame.draw.rect(pantalla,blanco,[tablero[posx_trampolin2][0],tablero[posx_trampolin2][1],ancho_trampolin,largo_trampolin])
 
             if trampolin3:
-            	print("hola")
+            	#print("hola")
             	if tablero[posx_trampolin3][1] > tablero[949][1] - largo_trampolin:
             		tablero[posx_trampolin3][1] -= 80
             	if move_trampolin == 1:
