@@ -1,10 +1,10 @@
 import pygame
 import time
-#from time import time
 import tkinter
 from tkinter import *
 import os
 import random
+import serial
 
 pygame.init()
 # Globales
