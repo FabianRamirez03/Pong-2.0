@@ -54,7 +54,8 @@ pos_paletaDual2_2 = 987
 # Textos
 tipografia_juego = pygame.font.Font("Comfortaa-Bold.ttf", 30)  # fuente de texto para el juego
 
-
+#Arduino
+ser = serial.Serial('COM3', 9600)
 
 
 def matriz(A, B, a, b):  # funcion generadora de la matriz
@@ -114,31 +115,31 @@ def boton(pos_x, pos_y, ancho, alto, opcion):
             if opcion == "3":
                 Game.setDificultad(3)
             if opcion == "Si":
-            	if dificultad == 1:
-            		Game.setTrampolin1(True)
-            		Game.setTrampolin2(False)
-            		Game.setTrampolin3(False)
-            	if dificultad == 2:
-            		Game.setTrampolin1(True)
-            		Game.setTrampolin2(True)
-            		Game.setTrampolin3(False)
-            	if dificultad == 3:
-            		Game.setTrampolin1(True)
-            		Game.setTrampolin2(True)
-            		Game.setTrampolin3(True)
+                if dificultad == 1:
+                    Game.setTrampolin1(True)
+                    Game.setTrampolin2(False)
+                    Game.setTrampolin3(False)
+                if dificultad == 2:
+                    Game.setTrampolin1(True)
+                    Game.setTrampolin2(True)
+                    Game.setTrampolin3(False)
+                if dificultad == 3:
+                    Game.setTrampolin1(True)
+                    Game.setTrampolin2(True)
+                    Game.setTrampolin3(True)
             if opcion == "No":
-            	if dificultad == 1:
-            		Game.setTrampolin1(False)
-            		Game.setTrampolin2(False)
-            		Game.setTrampolin3(False)
-            	if dificultad == 2:
-            		Game.setTrampolin1(False)
-            		Game.setTrampolin2(False)
-            		Game.setTrampolin3(False)
-            	if dificultad == 3:
-            		Game.setTrampolin1(False)
-            		Game.setTrampolin2(False)
-            		Game.setTrampolin3(False)
+                if dificultad == 1:
+                    Game.setTrampolin1(False)
+                    Game.setTrampolin2(False)
+                    Game.setTrampolin3(False)
+                if dificultad == 2:
+                    Game.setTrampolin1(False)
+                    Game.setTrampolin2(False)
+                    Game.setTrampolin3(False)
+                if dificultad == 3:
+                    Game.setTrampolin1(False)
+                    Game.setTrampolin2(False)
+                    Game.setTrampolin3(False)
 
     if dificultad == 1:
         pygame.draw.rect(pantalla, negro, [tablero[535][0], tablero[535][1], 30, 30])
@@ -166,8 +167,8 @@ def boton(pos_x, pos_y, ancho, alto, opcion):
         pygame.draw.rect(pantalla, blanco, [tablero[682][0], tablero[682][1], 30, 30])
 
     if trampolin1 == True or trampolin2 == True or trampolin3 == True:
-    	pygame.draw.rect(pantalla, negro, [tablero[538][0], tablero[538][1], 30, 30])
-    	pygame.draw.rect(pantalla, blanco, [tablero[688][0], tablero[688][1], 30, 30])
+        pygame.draw.rect(pantalla, negro, [tablero[538][0], tablero[538][1], 30, 30])
+        pygame.draw.rect(pantalla, blanco, [tablero[688][0], tablero[688][1], 30, 30])
 
     if trampolin1 == False:
     	pygame.draw.rect(pantalla, blanco, [tablero[538][0], tablero[538][1], 30, 30])
@@ -269,6 +270,7 @@ class Juego:
         self.trampolin3 = trampolin3
         self.sonido = sonido
 
+
     def gettablero(self):
         return self.tablero
 
@@ -306,6 +308,9 @@ class Juego:
     	return self.trampolin3
     def getSonido(self):
         return self.sonido
+
+
+
 
     def aceptar(self):  # Esta funcion esta ligada al boton aceptar y llama el ciclo del juego con las variables definidas por el usuario
         print(Game.getmodo())
@@ -772,6 +777,21 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 if event.type == pygame.QUIT:
                     pygame.mixer.music.stop()
                     salir_juego = True  # si el usuario sale de la ventana, se finaliza el programa
+
+            def getArduino():
+                try:
+                    #entrada = str(ser.readline())
+                    #datos = entrada[entrada.index("") + 1: entrada.index("\\")]
+                    #comando = datos[:datos.index("%")]
+                    print(ser)
+                except ser.SerialTimeoutException:
+                    print('Data could not be read')
+                    time.sleep(1)
+
+            arduino = getArduino()
+            if arduino == "Boton 1":
+                Game.fondo_random()
+                colorFondo = Game.getFondo()
 
             if pos_paleta1 == 0:  # rebotes de las paletas
                 pos_paleta1 = 1
