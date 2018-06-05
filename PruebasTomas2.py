@@ -55,7 +55,7 @@ pos_paletaDual2_2 = 987
 tipografia_juego = pygame.font.Font("Comfortaa-Bold.ttf", 30)  # fuente de texto para el juego
 
 #Arduino
-ser = serial.Serial('COM3', 9600)
+#ser = serial.Serial('COM3', 9600)
 
 
 def matriz(A, B, a, b):  # funcion generadora de la matriz
@@ -355,6 +355,12 @@ class Juego:
         else:
             self.sonido = True
 
+def getArduino():
+    entrada = str(ser.readline())
+    datos = entrada[entrada.index("") + 1: entrada.index("\\")]
+    comando = datos[:datos.index("%")]
+    return comando
+
 
 
 
@@ -453,7 +459,7 @@ def ingresar_marcador(tiempo):
 
 
 
-    bt_ingresar = Button(canvas, bg = "black", fg = "white", text = "INGRESAR", relief = FLAT, command = verificar_aux, activebackground = green, font = ("Comfortaa-Bold.ttf", 18), width = 10)
+    bt_ingresar = Button(canvas, bg = "white", fg = "black", text = "INGRESAR", relief = FLAT, command = verificar_aux, activebackground = green, font = ("Comfortaa-Bold.ttf", 18), width = 10)
     bt_ingresar.place(x = 300, y = 350)
 
 
@@ -482,7 +488,7 @@ def ingresar_marcador(tiempo):
         ventana.destroy()
 
 
-    bt_volver = Button(canvas, bg="black", fg="white", font=("Comfortaa-Bold.ttf", 18), text="VOLVER", activebackground = green, relief = FLAT, command= volver, width = 10)
+    bt_volver = Button(canvas, bg="white", fg="black", font=("Comfortaa-Bold.ttf", 18), text="VOLVER", activebackground = green, relief = FLAT, command= volver, width = 10)
     bt_volver.place(x=75, y=350)
 
     ventana.mainloop()
@@ -690,6 +696,10 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
     practica = Game.getpractica()
     mute = Game.getSonido()
 
+    ser = serial.Serial('COM3', 9600)
+
+
+
 
     while not salir_juego:  # si no se cumple salir juego, sale y cierra la ventana
         pygame.mixer.music.load('RaymanTheme.mp3')
@@ -697,6 +707,12 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
         pygame.display.update()
         tiempo1 = time.time()
         colorFondo = Game.getFondo()
+
+        def getArduino():
+            entrada = str(ser.readline())
+            datos = entrada[entrada.index("") + 1: entrada.index("\\")]
+            comando = datos[:datos.index("%")]
+            return comando
 
         while not salir_juego and modo == True and jugador == True and practica == False:  # modo con solo una paleta y persona vs persona
 
@@ -778,20 +794,18 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     pygame.mixer.music.stop()
                     salir_juego = True  # si el usuario sale de la ventana, se finaliza el programa
 
-            def getArduino():
-                try:
-                    #entrada = str(ser.readline())
-                    #datos = entrada[entrada.index("") + 1: entrada.index("\\")]
-                    #comando = datos[:datos.index("%")]
-                    print(ser)
-                except ser.SerialTimeoutException:
-                    print('Data could not be read')
-                    time.sleep(1)
-
             arduino = getArduino()
-            if arduino == "Boton 1":
-                Game.fondo_random()
-                colorFondo = Game.getFondo()
+            if arduino != "'corriendo":
+                print(arduino)
+                if arduino ==  "'paleta 1.1":
+                    move_p1 = -1
+                if arduino == "'paleta 1.2":
+                    move_p1 = 1
+
+
+
+
+
 
             if pos_paleta1 == 0:  # rebotes de las paletas
                 pos_paleta1 = 1
@@ -993,7 +1007,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
         while not salir_juego and modo == False and jugador == True and practica == False:  # modo dual, PvP
             pygame.display.update()
 
-            lista = [pos_paletaDual1_1, pos_paletaDual1_2, pos_paletaDual2_1, pos_paletaDual2_2, pos_bola, 0, 24]
+            lista = [pos_paletaDual1_1, pos_paletaDual1_2, pos_paletaDual2_1, pos_paletaDual2_2, pos_bola, 0, 24,posx_trampolin, posx_trampolin2, posx_trampolin3]
 
             if punto == True:
                 if score1 == 10 or score2 == 10:
