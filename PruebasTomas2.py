@@ -355,11 +355,11 @@ class Juego:
         else:
             self.sonido = True
 
-def getArduino():
+"""def getArduino():
     entrada = str(ser.readline())
     datos = entrada[entrada.index("") + 1: entrada.index("\\")]
     comando = datos[:datos.index("%")]
-    return comando
+    return comando"""
 
 
 
@@ -797,10 +797,23 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             arduino = getArduino()
             if arduino != "'corriendo":
                 print(arduino)
-                if arduino ==  "'paleta 1.1":
+                if arduino ==  "'paleta 2.1":
+                    move_p2 = -1
+                if arduino == "'paleta 2.2":
+                    move_p2 = 1
+                if arduino == "'paleta 1.1":
                     move_p1 = -1
                 if arduino == "'paleta 1.2":
                     move_p1 = 1
+                if arduino == "inicio":
+                    Menu()
+                if arduino == "'fondo":
+                    Game.fondo_random()
+                if arduino ==  "'inspector":
+                    modoInspector(lista)
+
+
+
 
 
 
@@ -991,6 +1004,8 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             Marc1_rect = marcador_1.get_rect()
             Marc1_rect.center = (150, 20)
             pantalla.blit(marcador_1, Marc1_rect)
+            #ser.write(b"2")
+            #ser.close()
 
             marcador_2 = tipografia_juego.render(str(score2), True, blanco, colorFondo)
             Marc2_rect = marcador_2.get_rect()
