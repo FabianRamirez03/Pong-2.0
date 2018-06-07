@@ -1,3 +1,3 @@
-fabian|40
-prueba|100
-Jess|100
+fabian|23
+Tomas|57
+Jess|59

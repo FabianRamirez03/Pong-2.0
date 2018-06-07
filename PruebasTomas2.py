@@ -191,7 +191,8 @@ def boton_texto(mensaje,pos_x,pos_y,ancho,alto,color_activo, color_inactivo, opc
             Game.setTrampolin2(False)
             Game.setTrampolin3(False)
             Game.setPractica(False)
-            Menu()  
+            Menu()
+
         if click[0] == 1 and opcion == "Ganador":
             GameLoop()
         if click[0] == 1 and opcion == "Aceptar":
@@ -370,11 +371,11 @@ Game = Juego(0, 0, tablero, 1, True, False, False, False, (0,0,0), False, False,
 def ingresar_marcador(tiempo):
     green = "#00ff00"    
     ventana = Tk()
-    ventana.title("Modo Inspector")
-    ventana.minsize(ancho_display - 300, largo_display - 150)
+    ventana.title("HighScores")
+    ventana.minsize(ancho_display - 390, largo_display - 150)
     ventana.resizable(width=NO, height=NO)
     # ventana.geometry("880x850+500+100")
-    canvas = Canvas(ventana, width= ancho_display - 300, height=largo_display - 150, bg="black")
+    canvas = Canvas(ventana, width= ancho_display - 390, height=largo_display - 150, bg="black")
     canvas.place(x=-1, y=-1)
 
     def invertir_separar(matriz):  # Invierte las funciones de separar para la modificación del archivo txt
@@ -541,7 +542,7 @@ def modoInspector(lista ):
 
     verificar(lista, matriz)
 
-    lb_inspector = Label(canvas, font = ("Arial",24), text = "Modo Inpector", bg = "black", fg = "White")
+    lb_inspector = Label(canvas, font = ("Arial",24), text = "Modo Inspector", bg = "black", fg = "White")
     lb_inspector.place(x=310, y=5)
 
     bt_volver = Button(canvas, bd = 1, bg = "black", fg = "white", font = ("Arial",12), text = "Volver", command = volver)
@@ -631,7 +632,6 @@ def Menu(): #Este es el ciclo de inicio para que el usuario defina las variables
         boton(tablero[538][0],tablero[538][1], 30, 30, "Si")
         boton(tablero[688][0],tablero[688][1], 30, 30, "No")
 
-
         pygame.display.update()
         reloj.tick(FPS)
 
@@ -711,7 +711,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
         def getArduino():
             entrada = str(ser.readline())
             datos = entrada[entrada.index("") + 1: entrada.index("\\")]
-            comando = datos[:datos.index("%")]
+            comando = datos[:datos.index("#")]
             return comando
 
         while not salir_juego and modo == True and jugador == True and practica == False:  # modo con solo una paleta y persona vs persona
@@ -795,6 +795,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     salir_juego = True  # si el usuario sale de la ventana, se finaliza el programa
 
             arduino = getArduino()
+            print(arduino)
             if arduino != "'corriendo":
                 print(arduino)
                 if arduino ==  "'paleta 2.1":
@@ -802,15 +803,30 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 if arduino == "'paleta 2.2":
                     move_p2 = 1
                 if arduino == "'paleta 1.1":
+                    print("buuu")
                     move_p1 = -1
                 if arduino == "'paleta 1.2":
                     move_p1 = 1
-                if arduino == "inicio":
-                    Menu()
+                if arduino == "'volumen":
+                    Game.cambiarSonido()
+                    mute = Game.getSonido()
+                    if not mute:
+                        pygame.mixer.music.set_volume(1)
+                    if mute:
+                        pygame.mixer.music.set_volume(0)
+                    print(mute)
+
                 if arduino == "'fondo":
                     Game.fondo_random()
+                    colorFondo = Game.getFondo()
                 if arduino ==  "'inspector":
-                    modoInspector(lista)
+                    ser.close()
+                    Menu()
+            if arduino == "'corriendo":
+                move_p1 = 0
+                move_p2 = 0
+
+                    #modoInspector(lista)
 
 
 
@@ -1004,15 +1020,14 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             Marc1_rect = marcador_1.get_rect()
             Marc1_rect.center = (150, 20)
             pantalla.blit(marcador_1, Marc1_rect)
-            #ser.write(b"2")
-            #ser.close()
+
 
             marcador_2 = tipografia_juego.render(str(score2), True, blanco, colorFondo)
             Marc2_rect = marcador_2.get_rect()
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
 
-            boton_texto("INICIO", 740, 2, 100, 35, verde, verde_oscuro, "Inicio")
+
 
             pygame.display.update()
             reloj.tick(FPS)
@@ -1099,6 +1114,8 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 if event.type == pygame.QUIT:
                     pygame.mixer.music.stop()
                     salir_juego = True
+
+
 
             if pos_paletaDual1_1 == 0:
                 pos_paletaDual1_1 = 1
@@ -1222,6 +1239,38 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 moveX_bola = -25
                 if not mute:
                     sound_bordes.play()
+
+            arduino = getArduino()
+            print(arduino)
+            if arduino != "'corriendo":
+                print(arduino)
+                if arduino == "'paleta 2.1":
+                    move_p2 = -1
+                if arduino == "'paleta 2.2":
+                    move_p2 = 1
+                if arduino == "'paleta 1.1":
+                    print("buuu")
+                    move_p1 = -1
+                if arduino == "'paleta 1.2":
+                    move_p1 = 1
+                if arduino == "'volumen":
+                    Game.cambiarSonido()
+                    mute = Game.getSonido()
+                    if not mute:
+                        pygame.mixer.music.set_volume(1)
+                    if mute:
+                        pygame.mixer.music.set_volume(0)
+                    print(mute)
+
+                if arduino == "'fondo":
+                    Game.fondo_random()
+                    colorFondo = Game.getFondo()
+                if arduino == "'inspector":
+                    ser.close()
+                    Menu()
+            if arduino == "'corriendo":
+                move_p1 = 0
+                move_p2 = 0
 
             pos_bola += moveY_bola + moveX_bola  # Suma de indices para movimiento sobre la matriz
             pos_paletaDual1_1 += move_p1
@@ -1355,7 +1404,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
 
-            boton_texto("INICIO", 740, 2, 100, 35, verde, verde_oscuro, "Inicio")
+
 
             pygame.display.update()
             reloj.tick(FPS)
@@ -1510,6 +1559,39 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 if not mute:
                     sound_bordes.play()
 
+            arduino = getArduino()
+            print(arduino)
+            if arduino != "'corriendo":
+                print(arduino)
+                if arduino == "'paleta 2.1":
+                    move_p2 = -1
+                if arduino == "'paleta 2.2":
+                    move_p2 = 1
+                if arduino == "'paleta 1.1":
+                    print("buuu")
+                    move_p1 = -1
+                if arduino == "'paleta 1.2":
+                    move_p1 = 1
+                if arduino == "'volumen":
+                    Game.cambiarSonido()
+                    mute = Game.getSonido()
+                    if not mute:
+                        pygame.mixer.music.set_volume(1)
+                    if mute:
+                        pygame.mixer.music.set_volume(0)
+                    print(mute)
+
+                if arduino == "'fondo":
+                    Game.fondo_random()
+                    colorFondo = Game.getFondo()
+                if arduino == "'inspector":
+                    ser.close()
+                    Menu()
+            if arduino == "'corriendo":
+                move_p1 = 0
+                move_p2 = 0
+
+
             pos_bola += moveY_bola + moveX_bola
             pos_paleta1 += move_p1
 
@@ -1645,7 +1727,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
 
-            boton_texto("INICIO", 740, 2, 100, 35, verde, verde_oscuro, "Inicio")
+
 
             pygame.display.update()
             reloj.tick(FPS)
@@ -1850,6 +1932,38 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 if not mute:
                     sound_bordes.play()
 
+            arduino = getArduino()
+            print(arduino)
+            if arduino != "'corriendo":
+                print(arduino)
+                if arduino == "'paleta 2.1":
+                    move_p2 = -1
+                if arduino == "'paleta 2.2":
+                    move_p2 = 1
+                if arduino == "'paleta 1.1":
+                    print("buuu")
+                    move_p1 = -1
+                if arduino == "'paleta 1.2":
+                    move_p1 = 1
+                if arduino == "'volumen":
+                    Game.cambiarSonido()
+                    mute = Game.getSonido()
+                    if not mute:
+                        pygame.mixer.music.set_volume(1)
+                    if mute:
+                        pygame.mixer.music.set_volume(0)
+                    print(mute)
+
+                if arduino == "'fondo":
+                    Game.fondo_random()
+                    colorFondo = Game.getFondo()
+                if arduino == "'inspector":
+                    ser.close()
+                    Menu()
+            if arduino == "'corriendo":
+                move_p1 = 0
+                move_p2 = 0
+
             pos_bola += moveY_bola + moveX_bola  # Suma de indices para movimiento sobre la matriz
             pos_paletaDual1_1 += move_p1
             pos_paletaDual1_2 = pos_paletaDual1_1 + distancia_paletas
@@ -1998,7 +2112,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             Marc2_rect.center = (680, 20)
             pantalla.blit(marcador_2, Marc2_rect)
 
-            boton_texto("INICIO", 740, 2, 100, 35, verde, verde_oscuro, "Inicio")
+
 
             pygame.display.update()
             reloj.tick(FPS)
@@ -2180,9 +2294,37 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     if not mute:
                         sound_bordes.play()
 
+            arduino = getArduino()
+            print(arduino)
+            if arduino != "'corriendo":
+                print(arduino)
+                if arduino == "'paleta 2.1":
+                    move_p2 = -1
+                if arduino == "'paleta 2.2":
+                    move_p2 = 1
+                if arduino == "'paleta 1.1":
+                    print("buuu")
+                    move_p1 = -1
+                if arduino == "'paleta 1.2":
+                    move_p1 = 1
+                if arduino == "'volumen":
+                    Game.cambiarSonido()
+                    mute = Game.getSonido()
+                    if not mute:
+                        pygame.mixer.music.set_volume(1)
+                    if mute:
+                        pygame.mixer.music.set_volume(0)
+                    print(mute)
 
-
-
+                if arduino == "'fondo":
+                    Game.fondo_random()
+                    colorFondo = Game.getFondo()
+                if arduino == "'inspector":
+                    ser.close()
+                    Menu()
+            if arduino == "'corriendo":
+                move_p1 = 0
+                move_p2 = 0
 
 
             pos_bola += moveY_bola + moveX_bola
@@ -2302,10 +2444,12 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
             title_rect.center = (420, 20)
             pantalla.blit(title, title_rect)
 
-            boton_texto("INICIO", 740, 2, 100, 35, verde, verde_oscuro, "Inicio")
+
 
             pygame.display.update()
             reloj.tick(FPS)
+
+    ser.close()
         # ____________________________________________________________________________________________________________________________________________________________________________________________
     exit()
 
