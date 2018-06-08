@@ -693,6 +693,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
     distancia_paletas = 0
     sound_paletas = pygame.mixer.Sound('sonido_paletas.wav')
     sound_bordes = pygame.mixer.Sound('sonido_bordes.wav')
+    aplausos = pygame.mixer.Sound('aplausos.wav')
     practica = Game.getpractica()
     mute = Game.getSonido()
 
@@ -752,7 +753,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                         tiempo = int(tiempo)
                         ingresar_marcador(tiempo)
                         return Menu()
-                time.sleep(1)
+                time.sleep(1.5)
                 punto = False
 
             for event in pygame.event.get():  # movimiento de los jugadores.
@@ -795,7 +796,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                     salir_juego = True  # si el usuario sale de la ventana, se finaliza el programa
 
             arduino = getArduino()
-            print(arduino)
+            #print(arduino)
             if arduino != "'corriendo":
                 print(arduino)
                 if arduino ==  "'paleta 2.1":
@@ -864,10 +865,14 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 score2 += 1
                 pos_bola = 461
                 punto = True
+                if not mute:
+                    aplausos.play()
             if tablero[pos_bola][0] == 820:
                 score1 += 1
                 pos_bola = 461
                 punto = True
+                if not mute:
+                    aplausos.play()
 
             if tablero[pos_bola][0] == tablero[pos_paleta1 + 25][0] and tablero[pos_paleta1][1] <= tablero[pos_bola][
                 1] < (tablero[pos_paleta1][1] + seccion):
@@ -1051,7 +1056,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                         tiempo = int(tiempo)
                         ingresar_marcador(tiempo)
                         return Menu()
-                time.sleep(1)
+                time.sleep(1.5)
                 punto = False
 
             if dificultad == 1:
@@ -1147,12 +1152,16 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 pos_bola = 461
                 punto = True
                 score2 += 1
+                if not mute:
+                    aplausos.play()
 
             if tablero[pos_bola][0] == 820:
                 #print("Punto 2")
                 pos_bola = 461
                 punto = True
                 score1 += 1
+                if not mute:
+                    aplausos.play()
                 # moveX_bola =  random.choice([1,-1])
                 # moveY_bola = random.choice([25,-25])
 
@@ -1453,7 +1462,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                         ingresar_marcador(tiempo)
                         return Menu()
 
-                time.sleep(1)
+                time.sleep(1.5)
                 punto = False
 
             for event in pygame.event.get():  # movimiento de los jugadores.
@@ -1512,10 +1521,14 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 score2 += 1
                 pos_bola = 461
                 punto = True
+                if not mute:
+                    aplausos.play()
             if tablero[pos_bola][0] == 820:
                 score1 += 1
                 pos_bola = 461
                 punto = True
+                if not mute:
+                    aplausos.play()
                 # moveX_bola =  random.choice([1,-1])
                 # moveY_bola = random.choice([25,-25])
             if tablero[pos_bola][0] == tablero[pos_paleta1 + 25][0] and tablero[pos_paleta1][1] <= tablero[pos_bola][
@@ -1750,7 +1763,7 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                         tiempo = int(tiempo)
                         ingresar_marcador(tiempo)
                         return Menu()
-                time.sleep(1)
+                time.sleep(1.5)
                 punto = False
 
             if dificultad == 1:
@@ -1839,12 +1852,16 @@ def GameLoop():  # ciclo principal del juego que corra mientras el usuario quier
                 pos_bola = 461
                 punto = True
                 score2 += 1
+                if not mute:
+                    aplausos.play()
 
             if tablero[pos_bola][0] == 820:
                 #print("Punto 2")
                 pos_bola = 461
                 punto = True
                 score1 += 1
+                if not mute:
+                    aplausos.play()
 
             if tablero[pos_bola][0] == tablero[pos_paletaDual1_1 + 25][0] and tablero[pos_paletaDual1_1][1] <= \
                     tablero[pos_bola][1] < (tablero[pos_paletaDual1_1][1] + seccion):
